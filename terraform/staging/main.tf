@@ -24,7 +24,7 @@ terraform {
     bucket  = "terraform-state-academy-production" # Contains staging DB
     encrypt = true
     region  = "eu-west-2"
-    key     = services/academy-api/state
+    key     = "services/academy-api/state"
   }
 }
 
