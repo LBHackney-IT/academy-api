@@ -21,7 +21,7 @@ data "aws_iam_role" "ecs_task_execution_role" {
 
 terraform {
   backend "s3" {
-    bucket  = "terraform-state-academy-production" # Contains staging DB
+    bucket  = "terraform-state-academy-api-staging"
     encrypt = true
     region  = "eu-west-2"
     key     = "services/academy-api/state"
