@@ -45,6 +45,7 @@ Ankh.NoLoad
 
 #Other
 .svn
+.env
 
 # Include DLLs if they're in the NuGet packages directory
 !/packages/*/lib/*.dll
@@ -59,7 +60,7 @@ bin/
 .idea/
 tmp/
 .vs/
-/base-api.Tests/Properties/launchSettings.json
+/academy-api.Tests/Properties/launchSettings.json
 
 .fake
 .ionide
