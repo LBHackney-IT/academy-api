@@ -13,20 +13,12 @@ A platform API to share data from the Academy system within the Hackney ecosyste
 
 ## Contributing
 
-### Setup
-
-1. Install [Docker][docker-download].
-2. Install [AWS CLI][AWS-CLI].
-3. Clone this repository.
-4. Rename the initial template.
-5. Open it in your IDE.
-
 ### Development
 
 To serve the application, run it using your IDE of choice, we use Visual Studio CE and JetBrains Rider on Mac.
 
-**Note**
-When running locally the appropriate database conneciton details are still needed.
+> When running locally the appropriate database conneciton details are still needed.
+
 ##### Postgres
 For Postgres an approprate `CONNECTION_STRING` environment variable is needed,
 and if you want to use a local Postgres instance then that will of course need to be installed and running.
