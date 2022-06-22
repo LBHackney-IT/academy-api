@@ -110,11 +110,6 @@ jobs:
       - run:
           name: Run tests
           command: docker-compose run academy-api-test
-  assume-role-development:
-    executor: docker-python
-    steps:
-      - assume-role-and-persist-workspace:
-          aws-account: $AWS_ACCOUNT_DEVELOPMENT
   assume-role-staging:
     executor: docker-python
     steps:
@@ -125,11 +120,6 @@ jobs:
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_PRODUCTION
-  terraform-init-and-apply-to-development:
-    executor: docker-terraform
-    steps:
-      - terraform-init-then-apply:
-          environment: "development"
   terraform-init-and-apply-to-staging:
     executor: docker-terraform
     steps:
@@ -140,12 +130,6 @@ jobs:
     steps:
       - terraform-init-then-apply:
           environment: "production"
-  deploy-to-development:
-    executor: docker-dotnet
-    steps:
-      - deploy-lambda:
-          stage: "development"
-          aws-account: $AWS_ACCOUNT_DEVELOPMENT
   deploy-to-staging:
     executor: docker-dotnet
     steps:
@@ -160,32 +144,6 @@ jobs:
           aws-account: $AWS_ACCOUNT_PRODUCTION
 
 workflows:
-  check-and-deploy-development:
-    jobs:
-      - check-code-formatting:
-          context: api-nuget-token-context
-      - build-and-test:
-          context: api-nuget-token-context
-      - assume-role-development:
-          context: api-assume-role-housing-development-context
-          requires:
-            - build-and-test
-          filters:
-            branches:
-              only: development
-      - terraform-init-and-apply-to-development:
-          requires:
-            - assume-role-development
-          filters:
-            branches:
-              only: development
-      - deploy-to-development:
-          context: api-nuget-token-context
-          requires:
-            - terraform-init-and-apply-to-development
-          filters:
-            branches:
-              only: development
   check-and-deploy-staging-and-production:
     jobs:
        - build-and-test:
