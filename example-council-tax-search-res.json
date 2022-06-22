@@ -1,0 +1,41 @@
+[
+  {
+    "account_ref": 30548418,
+    "account_cd": "2",
+    "lead_liab_name": "SIMPSON,MR HOMER",
+    "lead_liab_title": "Mr",
+    "lead_liab_forename": "HOMER",
+    "lead_liab_surname": "SIMPSON",
+    "addr1": "FLAT 1ST FLR",
+    "addr2": "2 EVERGREEN TERRACE",
+    "addr3": "LONDON",
+    "addr4": "",
+    "postcode": "E8 2LN"
+  },
+  {
+    "account_ref": 30403567,
+    "account_cd": "9",
+    "lead_liab_name": "SIMPSON,MR HOMER",
+    "lead_liab_title": "Mr",
+    "lead_liab_forename": "HOMER",
+    "lead_liab_surname": "SIMPSON",
+    "addr1": "FLAT 1ST FLR",
+    "addr2": "2 EVERGREEN TERRACE",
+    "addr3": "LONDON",
+    "addr4": "",
+    "postcode": "E8 2LN"
+  },
+  {
+    "account_ref": 30000003,
+    "account_cd": "9",
+    "lead_liab_name": "SIMPSON,MR HOMER",
+    "lead_liab_title": "Mr",
+    "lead_liab_forename": "HOMER",
+    "lead_liab_surname": "SIMPSON",
+    "addr1": "FLAT 1ST FLR",
+    "addr2": "2 EVERGREEN TERRACE",
+    "addr3": "LONDON",
+    "addr4": "",
+    "postcode": "E8 2LN"
+  }
+]
