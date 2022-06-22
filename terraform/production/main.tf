@@ -29,7 +29,7 @@ locals {
 
 terraform {
   backend "s3" {
-    bucket  = "terraform-state-production-apis"
+    bucket  = "terraform-state-academy-api-production"
     encrypt = true
     region  = "eu-west-2"
     key     = "services/academy-api-production/state"
