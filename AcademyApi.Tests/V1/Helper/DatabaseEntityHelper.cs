@@ -6,19 +6,19 @@ namespace AcademyApi.Tests.V1.Helper
 {
     public static class DatabaseEntityHelper
     {
-        public static DatabaseEntity CreateDatabaseEntity()
+        public static CouncilTaxSearchResultDbEntity CreateDatabaseEntity()
         {
-            var entity = new Fixture().Create<Entity>();
+            var entity = new Fixture().Create<SearchResult>();
 
             return CreateDatabaseEntityFrom(entity);
         }
 
-        public static DatabaseEntity CreateDatabaseEntityFrom(Entity entity)
+        public static CouncilTaxSearchResultDbEntity CreateDatabaseEntityFrom(SearchResult searchResult)
         {
-            return new DatabaseEntity
+            return new CouncilTaxSearchResultDbEntity
             {
-                Id = entity.Id,
-                CreatedAt = entity.CreatedAt,
+                Id = searchResult.Id,
+                CreatedAt = searchResult.CreatedAt,
             };
         }
     }

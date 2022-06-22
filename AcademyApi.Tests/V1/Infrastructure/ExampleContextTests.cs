@@ -14,10 +14,10 @@ namespace AcademyApi.Tests.V1.Infrastructure
         {
             var databaseEntity = DatabaseEntityHelper.CreateDatabaseEntity();
 
-            DatabaseContext.Add(databaseEntity);
-            DatabaseContext.SaveChanges();
+            AcademyContext.Add(databaseEntity);
+            AcademyContext.SaveChanges();
 
-            var result = DatabaseContext.DatabaseEntities.ToList().FirstOrDefault();
+            var result = AcademyContext.CouncilTaxSearchResultDbEntities.ToList().FirstOrDefault();
 
             Assert.AreEqual(result, databaseEntity);
         }

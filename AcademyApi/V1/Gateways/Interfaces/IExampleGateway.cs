@@ -5,8 +5,8 @@ namespace AcademyApi.V1.Gateways
 {
     public interface IExampleGateway
     {
-        Entity GetEntityById(int id);
+        SearchResult GetEntityById(int id);
 
-        List<Entity> GetAll();
+        List<SearchResult> GetAll();
     }
 }

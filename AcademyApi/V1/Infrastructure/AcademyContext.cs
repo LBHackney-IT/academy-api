@@ -3,14 +3,14 @@ using Microsoft.EntityFrameworkCore;
 namespace AcademyApi.V1.Infrastructure
 {
 
-    public class DatabaseContext : DbContext
+    public class AcademyContext : DbContext
     {
         //TODO: rename DatabaseContext to reflect the data source it is representing. eg. MosaicContext.
         //Guidance on the context class can be found here https://github.com/LBHackney-IT/lbh-base-api/wiki/DatabaseContext
-        public DatabaseContext(DbContextOptions options) : base(options)
+        public AcademyContext(DbContextOptions options) : base(options)
         {
         }
 
-        public DbSet<DatabaseEntity> DatabaseEntities { get; set; }
+        public DbSet<CouncilTaxSearchResultDbEntity> CouncilTaxSearchResultDbEntities { get; set; }
     }
 }

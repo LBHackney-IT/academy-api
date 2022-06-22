@@ -30,7 +30,7 @@ public class CouncilTaxSearchUseCaseTests : LogCallAspectFixture
         var firstName = _fixture.Create<string>();
         var lastName = _fixture.Create<string>();
         var stubbedResponse = _fixture.Create<SearchResponseObjectList>();
-        _mockGateway.Setup(x => x.GetAll()).Returns(stubbedResponse);
+        _mockGateway.Setup(x => x.GetAll($"{lastName}%{firstName}" )).Returns(stubbedResponse);
 
         var expectedResponse = new SearchResponseObjectList();
 
@@ -42,7 +42,7 @@ public class CouncilTaxSearchUseCaseTests : LogCallAspectFixture
     {
         var firstName = _fixture.Create<string>();
         var lastName = _fixture.Create<string>();
-        _mockGateway.Setup(x => x.GetAll()).Returns("Error");
+        _mockGateway.Setup(x => x.GetAll($"{lastName}%{firstName}")).Returns("Error");
 
         var expectedResponse = new SearchResponseObjectList() { Error = "Error returned from Search" };
 

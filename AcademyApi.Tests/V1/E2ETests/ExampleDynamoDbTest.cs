@@ -41,7 +41,7 @@ using System.Threading.Tasks;
 //    private async Task SetupTestData(Entity entity)
 //    {
 //        await DynamoDbContext.SaveAsync(entity.ToDatabase()).ConfigureAwait(false);
-//        CleanupActions.Add(async () => await DynamoDbContext.DeleteAsync<DatabaseEntity>(entity.Id).ConfigureAwait(false));
+//        CleanupActions.Add(async () => await DynamoDbContext.DeleteAsync<CouncilTaxSearchResultDbEntity>(entity.Id).ConfigureAwait(false));
 //    }
 
 //    [Test]

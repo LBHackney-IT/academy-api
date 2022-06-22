@@ -10,7 +10,7 @@ namespace AcademyApi.Tests
     public class IntegrationTests<TStartup> where TStartup : class
     {
         protected HttpClient Client { get; private set; }
-        protected DatabaseContext DatabaseContext { get; private set; }
+        protected AcademyContext AcademyContext { get; private set; }
 
         private MockWebApplicationFactory<TStartup> _factory;
         private NpgsqlConnection _connection;
@@ -36,9 +36,9 @@ namespace AcademyApi.Tests
         {
             _factory = new MockWebApplicationFactory<TStartup>(_connection);
             Client = _factory.CreateClient();
-            DatabaseContext = new DatabaseContext(_builder.Options);
-            DatabaseContext.Database.EnsureCreated();
-            _transaction = DatabaseContext.Database.BeginTransaction();
+            AcademyContext = new AcademyContext(_builder.Options);
+            AcademyContext.Database.EnsureCreated();
+            _transaction = AcademyContext.Database.BeginTransaction();
         }
 
         [TearDown]

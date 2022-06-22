@@ -21,17 +21,17 @@ namespace AcademyApi.V1.Gateways
             _logger = logger;
         }
 
-        public List<Entity> GetAll()
+        public List<SearchResult> GetAll()
         {
-            return new List<Entity>();
+            return new List<SearchResult>();
         }
 
         [LogCall]
-        public async Task<Entity> GetEntityById(int id)
+        public async Task<SearchResult> GetEntityById(int id)
         {
             _logger.LogDebug($"Calling IDynamoDBContext.LoadAsync for id parameter {id}");
 
-            var result = await _dynamoDbContext.LoadAsync<DatabaseEntity>(id).ConfigureAwait(false);
+            var result = await _dynamoDbContext.LoadAsync<CouncilTaxSearchResultDbEntity>(id).ConfigureAwait(false);
             return result?.ToDomain();
         }
     }

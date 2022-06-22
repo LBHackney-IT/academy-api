@@ -8,23 +8,23 @@ namespace AcademyApi.V1.Gateways
     //TODO: Rename to match the data source that is being accessed in the gateway eg. MosaicGateway
     public class ExampleGateway : IExampleGateway
     {
-        private readonly DatabaseContext _databaseContext;
+        private readonly AcademyContext _academyContext;
 
-        public ExampleGateway(DatabaseContext databaseContext)
+        public ExampleGateway(AcademyContext academyContext)
         {
-            _databaseContext = databaseContext;
+            _academyContext = academyContext;
         }
 
-        public Entity GetEntityById(int id)
+        public SearchResult GetEntityById(int id)
         {
-            var result = _databaseContext.DatabaseEntities.Find(id);
+            var result = _academyContext.CouncilTaxSearchResultDbEntities.Find(id);
 
             return result?.ToDomain();
         }
 
-        public List<Entity> GetAll()
+        public List<SearchResult> GetAll()
         {
-            return new List<Entity>();
+            return new List<SearchResult>();
         }
     }
 }

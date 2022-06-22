@@ -19,7 +19,7 @@ namespace AcademyApi.Tests.V1.Gateways
         [SetUp]
         public void Setup()
         {
-            _classUnderTest = new ExampleGateway(DatabaseContext);
+            _classUnderTest = new ExampleGateway(AcademyContext);
         }
 
         [Test]
@@ -34,11 +34,11 @@ namespace AcademyApi.Tests.V1.Gateways
         [Test]
         public void GetEntityByIdReturnsTheEntityIfItExists()
         {
-            var entity = _fixture.Create<Entity>();
+            var entity = _fixture.Create<SearchResult>();
             var databaseEntity = DatabaseEntityHelper.CreateDatabaseEntityFrom(entity);
 
-            DatabaseContext.DatabaseEntities.Add(databaseEntity);
-            DatabaseContext.SaveChanges();
+            AcademyContext.CouncilTaxSearchResultDbEntities.Add(databaseEntity);
+            AcademyContext.SaveChanges();
 
             var response = _classUnderTest.GetEntityById(databaseEntity.Id);
 

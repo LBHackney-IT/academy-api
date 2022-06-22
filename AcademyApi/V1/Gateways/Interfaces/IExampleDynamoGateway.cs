@@ -8,8 +8,8 @@ namespace AcademyApi.V1.Gateways
 {
     public interface IExampleDynamoGateway
     {
-        List<Entity> GetAll();
-        Task<Entity> GetEntityById(int id);
+        List<SearchResult> GetAll();
+        Task<SearchResult> GetEntityById(int id);
 
     }
 }
