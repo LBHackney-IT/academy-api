@@ -15,12 +15,10 @@ namespace AcademyApi.V1.Controllers
     //TODO: rename class to match the API name
     public class CouncilTaxController : BaseController
     {
-        private readonly IGetAllUseCase _getAllUseCase;
-        private readonly IGetByIdUseCase _getByIdUseCase;
-        public CouncilTaxController(IGetAllUseCase getAllUseCase, IGetByIdUseCase getByIdUseCase)
+        private readonly ICouncilTaxSearchUseCase _councilTaxSearchUseCase;
+        public CouncilTaxController(ICouncilTaxSearchUseCase councilTaxSearchUseCase)
         {
-            _getAllUseCase = getAllUseCase;
-            _getByIdUseCase = getByIdUseCase;
+            _councilTaxSearchUseCase = councilTaxSearchUseCase;
         }
 
         /// <summary>
@@ -35,7 +33,8 @@ namespace AcademyApi.V1.Controllers
         [Route("search")]
         public IActionResult Search([FromQuery] string firstName, string lastName)
         {
-            return Ok(firstName + " " + lastName);
+            var result = _councilTaxSearchUseCase.Execute(firstName, lastName);
+            return Ok(result);
         }
     }
 }
