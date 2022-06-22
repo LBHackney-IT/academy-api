@@ -4,6 +4,6 @@ namespace AcademyApi.V1.UseCase.Interfaces
 {
     public interface IGetAllUseCase
     {
-        ResponseObjectList Execute();
+        SearchResponseObjectList Execute();
     }
 }

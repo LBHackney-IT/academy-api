@@ -29,7 +29,7 @@ namespace AcademyApi.V1.Controllers
         /// </summary>
         /// <response code="200">...</response>
         /// <response code="400">Invalid Query Parameter.</response>
-        [ProducesResponseType(typeof(ResponseObjectList), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SearchResponseObjectList), StatusCodes.Status200OK)]
         [HttpGet]
         [LogCall(LogLevel.Information)]
 
@@ -43,7 +43,7 @@ namespace AcademyApi.V1.Controllers
         /// </summary>
         /// <response code="200">...</response>
         /// <response code="404">No ? found for the specified ID</response>
-        [ProducesResponseType(typeof(ResponseObject), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SearchResponseObject), StatusCodes.Status200OK)]
         [HttpGet]
         [LogCall(LogLevel.Information)]
         //TODO: rename to match the identifier that will be used

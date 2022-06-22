@@ -15,9 +15,9 @@ namespace AcademyApi.V1.UseCase
             _gateway = gateway;
         }
         [LogCall]
-        public ResponseObjectList Execute()
+        public SearchResponseObjectList Execute()
         {
-            return new ResponseObjectList { ResponseObjects = _gateway.GetAll().ToResponse() };
+            return new SearchResponseObjectList { Customers = _gateway.GetAll().ToResponse() };
         }
     }
 }
