@@ -10,21 +10,21 @@ locals {
    parameter_store = "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter"
 }
 
-
-data "aws_iam_role" "ec2_container_service_role" {
-  name = "ecsServiceRole"
-}
-
-data "aws_iam_role" "ecs_task_execution_role" {
-  name = "ecsTaskExecutionRole"
-}
+#
+#data "aws_iam_role" "ec2_container_service_role" {
+#  name = "ecsServiceRole"
+#}
+#
+#data "aws_iam_role" "ecs_task_execution_role" {
+#  name = "ecsTaskExecutionRole"
+#}
 
 terraform {
   backend "s3" {
     bucket  = "terraform-state-academy-api-staging"
     encrypt = true
     region  = "eu-west-2"
-    key     = "services/academy-api/state"
+    key     = "services/academy-api-staging/state"
   }
 }
 
