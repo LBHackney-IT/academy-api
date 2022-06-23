@@ -9,6 +9,7 @@ namespace AcademyApi.V1.Infrastructure
         //Guidance on the context class can be found here https://github.com/LBHackney-IT/lbh-base-api/wiki/DatabaseContext
         public AcademyContext(DbContextOptions options) : base(options)
         {
+
         }
 
         public DbSet<CouncilTaxSearchResultDbEntity> CouncilTaxSearchResultDbEntities { get; set; }

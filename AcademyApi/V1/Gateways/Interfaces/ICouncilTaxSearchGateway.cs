@@ -6,5 +6,5 @@ namespace AcademyApi.V1.Gateways.Interfaces;
 
 public interface ICouncilTaxSearchGateway
 {
-    List<SearchResult> GetAll(string fullName);
+    List<SearchResult> GetAccountsByFullName(string fullName);
 }

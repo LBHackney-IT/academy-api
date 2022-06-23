@@ -1,4 +1,5 @@
 using AcademyApi.V1.Domain;
+using AcademyApi.V1.Factories;
 using AcademyApi.V1.Infrastructure;
 using AutoFixture;
 
@@ -15,11 +16,7 @@ namespace AcademyApi.Tests.V1.Helper
 
         public static CouncilTaxSearchResultDbEntity CreateDatabaseEntityFrom(SearchResult searchResult)
         {
-            return new CouncilTaxSearchResultDbEntity
-            {
-                Id = searchResult.Id,
-                CreatedAt = searchResult.CreatedAt,
-            };
+            return searchResult.ToDatabase();
         }
     }
 }
