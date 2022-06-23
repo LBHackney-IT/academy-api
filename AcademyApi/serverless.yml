@@ -32,7 +32,7 @@ functions:
     environment:
 # TODO: Create ssm variables for this API's postgres mirror
 # TODO: Remove this line if DynamoDb is being used
-      CONNECTION_STRING: Host=${ssm:/academy-api/${self:provider.stage}/db-hostname};Port=${ssm:/academy-api/${self:provider.stage}/db-port};Database=${ssm:/academy-api/${self:provider.stage}/db-database};Username=${ssm:/academy-api/${self:provider.stage}/db-username};Password=${ssm:/academy-api/${self:provider.stage}/db-password}
+      CONNECTION_STRING: Server=${ssm:/academy-api/${self:provider.stage}/db-hostname}.${ssm:/academy-api/${self:provider.stage}/db-port};Database=${ssm:/academy-api/${self:provider.stage}/db-database};User Id=${ssm:/academy-api/${self:provider.stage}/db-username};Password=${ssm:/academy-api/${self:provider.stage}/db-password};
     events:
       - http:
           path: /{proxy+}
