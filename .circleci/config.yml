@@ -152,9 +152,9 @@ workflows:
              branches:
                only: master
        - assume-role-staging:
-           context: api-assume-role-staging-context
-           requires:
-               - build-and-test
+           context: api-assume-role-academy-production-context
+#           requires:
+#               - build-and-test
            filters:
               branches:
                 only: master
@@ -176,7 +176,7 @@ workflows:
            requires:
              - deploy-to-staging
        - assume-role-production:
-           context: api-assume-role-production-context
+           context: api-assume-role-academy-production-context
            requires:
                - permit-production-terraform-release
            filters:
