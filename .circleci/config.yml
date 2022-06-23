@@ -152,7 +152,7 @@ workflows:
              branches:
                only: master
        - assume-role-staging:
-           context: aws-academy-terraform-staging-context
+           context: aws-academy-terraform-production-context
            #           requires:
 #               - build-and-test
            filters:
