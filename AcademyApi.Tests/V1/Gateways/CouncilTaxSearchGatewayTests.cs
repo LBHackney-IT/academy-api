@@ -15,7 +15,7 @@ public class CouncilTaxSearchGatewayTests : DatabaseTests
     [SetUp]
     public void Setup()
     {
-        _classUnderTest = new CouncilTaxSearchGateway(AcademyContext);
+        _classUnderTest = new CouncilTaxSearchGateway(AcademyContext, "Server=localhost,1433;Database=testdb;User Id=sa;Password=MyP@w0rd;");
     }
 
     [Test]
@@ -29,8 +29,8 @@ public class CouncilTaxSearchGatewayTests : DatabaseTests
         var fullName = $"{lastName}%{firstName}";
         var databaseEntity = DatabaseEntityHelper.CreateDatabaseEntityFrom(entity);
 
-        AcademyContext.CouncilTaxSearchResultDbEntities.Add(databaseEntity);
-        AcademyContext.SaveChanges();
+        // AcademyContext.CouncilTaxSearchResultDbEntities.Add(databaseEntity);
+        // AcademyContext.SaveChanges();
 
         var response = _classUnderTest.GetAccountsByFullName(fullName);
 
