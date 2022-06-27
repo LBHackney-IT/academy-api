@@ -143,7 +143,7 @@ namespace AcademyApi
             var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 
             services.AddDbContext<AcademyContext>(
-                opt => opt.UseNpgsql(connectionString).AddXRayInterceptor(true));
+                opt => opt.UseSqlServer(connectionString).AddXRayInterceptor(true));
         }
 
 
