@@ -14,12 +14,12 @@ namespace AcademyApi.Tests
         [SetUp]
         public void RunBeforeAnyTests()
         {
-            // var builder = new DbContextOptionsBuilder();
-            // builder.UseNpgsql(ConnectionString.TestDatabase());
-            // AcademyContext = new AcademyContext(builder.Options);
-            //
+            var builder = new DbContextOptionsBuilder();
+            builder.UseSqlServer(ConnectionString.TestDatabase());
+            AcademyContext = new AcademyContext(builder.Options);
+
             // AcademyContext.Database.EnsureCreated();
-            // _transaction = AcademyContext.Database.BeginTransaction();
+            // _transaction = AcademyContext.Database.ExecuteNonQuery();
         }
 
         [TearDown]
