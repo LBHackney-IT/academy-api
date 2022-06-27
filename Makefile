@@ -16,7 +16,7 @@ shell:
 
 .PHONY: test
 test:
-	export DOCKERFILE_DIR=default && docker-compose up test-database & docker-compose build academy-api-test && docker-compose up academy-api-test
+	docker-compose up test-database & docker-compose build academy-api-test && docker-compose up academy-api-test
 
 .PHONY: lint
 lint:
