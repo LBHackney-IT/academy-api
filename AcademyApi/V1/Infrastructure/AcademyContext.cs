@@ -12,6 +12,5 @@ namespace AcademyApi.V1.Infrastructure
 
         }
 
-        public DbSet<CouncilTaxSearchResultDbEntity> CouncilTaxSearchResultDbEntities { get; set; }
     }
 }
