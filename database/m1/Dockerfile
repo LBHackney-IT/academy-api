@@ -13,8 +13,8 @@ RUN (mkdir -p /opt/mssql-tools/bin && cd /opt/mssql-tools/bin && wget https://gi
 
 RUN  /opt/mssql/bin/sqlservr & sleep 20 && \
      /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -d master \
-     -Q "create database testdb;" && \
-     /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -d master -i  /database/schema.sql
+     -Q "create database core;" && \
+     /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -d core -i  /database/schema.sql
 
 
 

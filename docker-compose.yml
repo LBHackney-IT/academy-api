@@ -11,7 +11,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      - CONNECTION_STRING=Server=test-database,1433;Database=testdb;User Id=sa;Password=MyP@w0rd;
+      - CONNECTION_STRING=Server=test-database,1433;Database=core;User Id=sa;Password=MyP@w0rd;
     links:
       - test-database
 
@@ -23,7 +23,7 @@ services:
       args:
       - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
     environment:
-      - CONNECTION_STRING=Server=test-database,1433;Database=testdb;User Id=sa;Password=MyP@w0rd;
+      - CONNECTION_STRING=Server=test-database,1433;Database=core;User Id=sa;Password=MyP@w0rd;
     links:
       - test-database
 

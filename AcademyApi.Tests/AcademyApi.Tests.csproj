@@ -34,4 +34,9 @@
     <ProjectReference Include="..\AcademyApi\AcademyApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="V1\Helper" />
+    <Folder Include="V1\Infrastructure" />
+  </ItemGroup>
+
 </Project>

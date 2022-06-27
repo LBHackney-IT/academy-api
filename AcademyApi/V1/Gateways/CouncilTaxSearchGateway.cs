@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Threading.Tasks;
 using AcademyApi.V1.Domain;
-using AcademyApi.V1.Factories;
 using AcademyApi.V1.Gateways.Interfaces;
 using AcademyApi.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -12,20 +12,38 @@ namespace AcademyApi.V1.Gateways;
 public class CouncilTaxSearchGateway : ICouncilTaxSearchGateway
 {
     private readonly AcademyContext _academyContext;
-    private readonly string _connectionstring;
 
-    public CouncilTaxSearchGateway(AcademyContext academyContext, string connectionstring)
+    public CouncilTaxSearchGateway(AcademyContext academyContext)
     {
         _academyContext = academyContext;
-        _connectionstring = connectionstring;
     }
 
-    public async Task<List<SearchResult>> GetAccountsByFullName(string fullName)
+    public async Task<List<SearchResult>> GetAccountsByFullName(string firstName, string lastName)
     {
-        var foundResults = new List<CouncilTaxSearchResultDbEntity>();
+        string query = $@"
+SELECT
+  core.dbo.ctaccount.lead_liab_name,
+  core.dbo.ctaccount.lead_liab_title,
+  core.dbo.ctaccount.lead_liab_forename,
+  core.dbo.ctaccount.lead_liab_surname,
+  core.dbo.ctproperty.addr1,
+  core.dbo.ctproperty.addr2,
+  core.dbo.ctproperty.addr3,
+  core.dbo.ctproperty.addr4,
+  core.dbo.ctproperty.postcode,
+  core.dbo.ctaccount.account_ref,
+  core.dbo.ctaccount.account_cd
+FROM core.dbo.ctaccount LEFT JOIN core.dbo.ctoccupation ON core.dbo.ctaccount.account_ref = core.dbo.ctoccupation.account_ref
+                        LEFT JOIN core.dbo.ctproperty ON core.dbo.ctproperty.property_ref = core.dbo.ctoccupation.property_ref
+WHERE core.dbo.ctoccupation.vacation_date IN(
+  SELECT MAX(vacation_date) FROM core.dbo.ctoccupation WHERE core.dbo.ctoccupation.account_ref = core.dbo.ctaccount.account_ref)
+  AND lead_liab_name LIKE '{lastName.ToUpper()}%{firstName.ToUpper()}';
+";
+
+        var foundResults = new List<SearchResult>();
         using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
         {
-            command.CommandText = $"SELECT account_ref, account_cd, lead_liab_title, lead_liab_name, lead_liab_forename, lead_liab_surname, for_addr1, for_addr2, for_addr3, for_addr4, for_postcode, paymeth_code FROM master.dbo.ctaccount where lead_liab_name like '{fullName}'";
+            command.CommandText = query;
             command.CommandType = CommandType.Text;
 
             await _academyContext.Database.OpenConnectionAsync();
@@ -34,23 +52,36 @@ public class CouncilTaxSearchGateway : ICouncilTaxSearchGateway
             {
                 while (await reader.ReadAsync())
                 {
-                    foundResults.Add(new CouncilTaxSearchResultDbEntity()
+                    foundResults.Add(new SearchResult()
                     {
-                        AccountRef = reader.GetFieldValueAsync<int>("account_ref").Result,
-                        AccountCd = reader.GetFieldValueAsync<string>("account_cd").Result,
-                        LeadLiabTitle = reader.GetFieldValueAsync<string>("lead_liab_title").Result,
-                        LeadLiabName = reader.GetFieldValueAsync<string>("lead_liab_name").Result,
-                        LeadLiabForename = reader.GetFieldValueAsync<string>("lead_liab_forename").Result,
-                        LeadLiabSurname = reader.GetFieldValueAsync<string>("lead_liab_surname").Result,
-                        Addr1 = reader.GetFieldValueAsync<string>("for_addr1").Result,
-                        Addr2 = reader.GetFieldValueAsync<string>("for_addr2").Result,
-                        Addr3 = reader.GetFieldValueAsync<string>("for_addr3").Result,
-                        Addr4 = reader.GetFieldValueAsync<string>("for_addr4").Result,
-                        Postcode = reader.GetFieldValueAsync<string>("for_postcode").Result
+                        FullName = SafeGetString(reader, 0),
+                        Title = SafeGetString(reader, 1),
+                        FirstName = SafeGetString(reader, 2),
+                        LastName = SafeGetString(reader, 3),
+                        AddressLine1 = SafeGetString(reader, 4),
+                        AddressLine2 = SafeGetString(reader, 5),
+                        AddressLine3 = SafeGetString(reader, 6),
+                        AddressLine4 = SafeGetString(reader, 7),
+                        Postcode = SafeGetString(reader, 8),
+                        AccountReference = SafeGetInt(reader, 9),
+                        AccountCd = SafeGetString(reader, 10)
                     });
                 }
             }
         }
-        return foundResults.ToDomain();
+        return foundResults;
+    }
+
+    private static string SafeGetString(DbDataReader reader, int colIndex)
+    {
+        if (!reader.IsDBNull(colIndex))
+            return reader.GetString(colIndex);
+        return string.Empty;
+    }
+    private static int SafeGetInt(DbDataReader reader, int colIndex)
+    {
+        if (!reader.IsDBNull(colIndex))
+            return reader.GetInt32(colIndex);
+        return 0;
     }
 }

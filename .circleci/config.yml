@@ -109,7 +109,10 @@ jobs:
           command: docker-compose build academy-api-test
       - run:
           name: Run tests
-          command: docker-compose run academy-api-test
+          command: |
+            touch .env
+            echo "DOCKERFILE_DIR=default" >> .env
+            docker-compose run academy-api-test
   assume-role-staging:
     executor: docker-python
     steps:
