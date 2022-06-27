@@ -47,7 +47,7 @@ namespace AcademyApi
         }
 
         public IConfiguration Configuration { get; }
-        private static List<ApiVersionDescription> _apiVersions { get; set; }
+        private static List<ApiVersionDescription> ApiVersions { get; set; }
         private const string ApiName = "Academy API";
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -107,7 +107,7 @@ namespace AcademyApi
                 });
 
                 //Get every ApiVersion attribute specified and create swagger docs for them
-                foreach (var apiVersion in _apiVersions)
+                foreach (var apiVersion in ApiVersions)
                 {
                     var version = $"v{apiVersion.ApiVersion.ToString()}";
                     c.SwaggerDoc(version, new OpenApiInfo
@@ -150,7 +150,6 @@ namespace AcademyApi
 
         private static void RegisterGateways(IServiceCollection services)
         {
-            services.AddScoped<IExampleGateway, ExampleGateway>();
             services.AddScoped<ICouncilTaxSearchGateway, CouncilTaxSearchGateway>();
 
             //TODO: For DynamoDb, remove the line above and uncomment the line below.
@@ -191,12 +190,12 @@ namespace AcademyApi
 
             //Get All ApiVersions,
             var api = app.ApplicationServices.GetService<IApiVersionDescriptionProvider>();
-            _apiVersions = api.ApiVersionDescriptions.ToList();
+            ApiVersions = api.ApiVersionDescriptions.ToList();
 
             //Swagger ui to view the swagger.json file
             app.UseSwaggerUI(c =>
             {
-                foreach (var apiVersionDescription in _apiVersions)
+                foreach (var apiVersionDescription in ApiVersions)
                 {
                     //Create a swagger endpoint for each swagger version
                     c.SwaggerEndpoint($"{apiVersionDescription.GetFormattedApiVersion()}/swagger.json",
@@ -217,5 +216,9 @@ namespace AcademyApi
             });
             app.UseLogCall();
         }
+    }
+
+    public class CouncilTaxSearchResultDbEntity
+    {
     }
 }

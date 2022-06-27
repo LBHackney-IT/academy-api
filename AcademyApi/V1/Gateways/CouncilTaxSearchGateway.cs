@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Threading.Tasks;
 using AcademyApi.V1.Domain;
 using AcademyApi.V1.Factories;
@@ -13,20 +15,35 @@ namespace AcademyApi.V1.Gateways;
 public class CouncilTaxSearchGateway : ICouncilTaxSearchGateway
 {
     private readonly AcademyContext _academyContext;
-    private readonly string _connectionstring;
 
-    public CouncilTaxSearchGateway(AcademyContext academyContext, string connectionstring)
+    public CouncilTaxSearchGateway(AcademyContext academyContext)
     {
         _academyContext = academyContext;
-        _connectionstring = connectionstring;
     }
 
-    public async Task<List<SearchResult>> GetAccountsByFullName(string fullName)
+    public async Task<List<SearchResult>> GetAccountsByFullName(string firstName, string lastName)
     {
+        string query = $@"
+SELECT
+  core.dbo.ctaccount.lead_liab_name,
+  core.dbo.ctaccount.lead_liab_title,
+  core.dbo.ctaccount.lead_liab_forename,
+  core.dbo.ctaccount.lead_liab_surname,
+  core.dbo.ctproperty.addr1,
+  core.dbo.ctproperty.addr2,
+  core.dbo.ctproperty.addr3,
+  core.dbo.ctproperty.addr4,
+  core.dbo.ctproperty.postcode,
+  core.dbo.ctaccount.account_ref,
+  core.dbo.ctaccount.account_cd
+FROM core.dbo.ctaccount LEFT JOIN core.dbo.ctoccupation ON core.dbo.ctaccount.account_ref = core.dbo.ctoccupation.account_ref
+                        LEFT JOIN core.dbo.ctproperty ON core.dbo.ctproperty.property_ref = core.dbo.ctoccupation.property_ref
+WHERE core.dbo.ctoccupation.vacation_date IN(
+  SELECT MAX(vacation_date) FROM core.dbo.ctoccupation WHERE core.dbo.ctoccupation.account_ref = core.dbo.ctaccount.account_ref)
+  AND lead_liab_name LIKE '{lastName.ToUpper()}%{firstName.ToUpper()}';
+";
 
-        string query = "SELECT lead_liab_name, lead_liab_title, lead_liab_forename, lead_liab_surname FROM dbo.ctaccount";
-
-        var foundResults = new List<CouncilTaxSearchResultDbEntity>();
+        var foundResults = new List<SearchResult>();
         using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
         {
             command.CommandText = query;
@@ -38,93 +55,37 @@ public class CouncilTaxSearchGateway : ICouncilTaxSearchGateway
             {
                 while (await reader.ReadAsync())
                 {
-                    foundResults.Add(new CouncilTaxSearchResultDbEntity() {
-                        LeadLiabName = reader.GetFieldValueAsync<string>(0).Result,
-                        LeadLiabTitle = reader.GetFieldValueAsync<string>(1).Result,
-                        LeadLiabForename = reader.GetFieldValueAsync<string>(2).Result,
-                        LeadLiabSurname = reader.GetFieldValueAsync<string>(3).Result
+                    foundResults.Add(new SearchResult()
+                    {
+                        FullName = SafeGetString(reader, 0),
+                        Title = SafeGetString(reader, 1),
+                        FirstName = SafeGetString(reader, 2),
+                        LastName = SafeGetString(reader, 3),
+                        AddressLine1 = SafeGetString(reader, 4),
+                        AddressLine2 = SafeGetString(reader, 5),
+                        AddressLine3 = SafeGetString(reader, 6),
+                        AddressLine4 = SafeGetString(reader, 7),
+                        Postcode = SafeGetString(reader, 8),
+                        AccountReference = SafeGetInt(reader, 9),
+                        AccountCd = SafeGetString(reader, 10)
                     });
                 }
             }
         }
 
-        return foundResults.ToDomain();
+        return foundResults;
+    }
 
-        //
-        // var movies = new List<CouncilTaxSearchResultDbEntity>();
-        // //to get the connection string
-        // //build the sqlconnection and execute the sql command
-        // using (SqlConnection conn = new SqlConnection(_connectionstring))
-        // {
-        //     conn.Open();
-        //     string commandtext = "SELECT lead_liab_name, lead_liab_title, lead_liab_forename, lead_liab_surname FROM testdb.dbo.ctaccount";
-        //
-        //     SqlCommand cmd = new SqlCommand(commandtext, conn);
-        //
-        //     var reader = cmd.ExecuteReader();
-        //
-        //     while (reader.Read())
-        //     {
-        //         var movie = new CouncilTaxSearchResultDbEntity()
-        //         {
-        //             LeadLiabName = reader["lead_liab_name"].ToString(),
-        //             LeadLiabTitle = reader["lead_liab_title"].ToString(),
-        //             LeadLiabForename = reader["lead_liab_forename"].ToString(),
-        //             LeadLiabSurname = reader["lead_liab_surname"].ToString(),
-        //         };
-        //
-        //         movies.Add(movie);
-        //     }
-        // }
-        // return movies.ToDomain();
-
-
-        // var results = new List<CouncilTaxSearchResultDbEntity>
-        // {
-        //     new CouncilTaxSearchResultDbEntity()
-        //     {
-        //         AccountRef = 30548418,
-        //         AccountCd = "2", - check digit
-        //         LeadLiabName = "SIMPSON,MR HOMER",
-        //         LeadLiabTitle = "Mr",
-        //         LeadLiabForename = "HOMER",
-        //         LeadLiabSurname = "SIMPSON",
-        //         Addr1 = "FLAT 1ST FLR",
-        //         Addr2 = "2 EVERGREEN TERRACE",
-        //         Addr3 = "LONDON",
-        //         Addr4 = "",
-        //         Postcode = "E8 2LN"
-        //     },
-        //     new CouncilTaxSearchResultDbEntity()
-        //     {
-        //         AccountRef = 30403567,
-        //         AccountCd = "9",
-        //         LeadLiabName = "SIMPSON,MR HOMER",
-        //         LeadLiabTitle = "Mr",
-        //         LeadLiabForename = "HOMER",
-        //         LeadLiabSurname = "SIMPSON",
-        //         Addr1 = "FLAT 1ST FLR",
-        //         Addr2 = "2 EVERGREEN TERRACE",
-        //         Addr3 = "LONDON",
-        //         Addr4 = "",
-        //         Postcode = "E8 2LN"
-        //     },
-        //     new CouncilTaxSearchResultDbEntity()
-        //     {
-        //         AccountRef = 30000003,
-        //         AccountCd = "9",
-        //         LeadLiabName = "SIMPSON,MR HOMER",
-        //         LeadLiabTitle = "Mr",
-        //         LeadLiabForename = "HOMER",
-        //         LeadLiabSurname = "SIMPSON",
-        //         Addr1 = "FLAT 1ST FLR",
-        //         Addr2 = "2 EVERGREEN TERRACE",
-        //         Addr3 = "LONDON",
-        //         Addr4 = "",
-        //         Postcode = "E8 2LN"
-        //     }
-        // };
-        //
-        // return results.ToDomain();
+    private static string SafeGetString(DbDataReader reader, int colIndex)
+    {
+        if (!reader.IsDBNull(colIndex))
+            return reader.GetString(colIndex);
+        return string.Empty;
+    }
+    private static int SafeGetInt(DbDataReader reader, int colIndex)
+    {
+        if (!reader.IsDBNull(colIndex))
+            return reader.GetInt32(colIndex);
+        return 0;
     }
 }

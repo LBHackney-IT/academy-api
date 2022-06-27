@@ -1,4 +1,4 @@
-using AcademyApi.Tests.V1.Helper;
+using System;
 using AcademyApi.V1.Domain;
 using AcademyApi.V1.Gateways;
 using AutoFixture;
@@ -15,26 +15,29 @@ public class CouncilTaxSearchGatewayTests : DatabaseTests
     [SetUp]
     public void Setup()
     {
-        _classUnderTest = new CouncilTaxSearchGateway(AcademyContext, "Server=localhost,1433;Database=testdb;User Id=sa;Password=MyP@w0rd;");
+        _classUnderTest = new CouncilTaxSearchGateway(AcademyContext);
     }
 
     [Test]
     public void GetsEntityMatchingQuery()
     {
+        var expected = new SearchResult()
+        {
+            AccountCd = "5",
+            AccountReference = 815631207,
+            AddressLine1 = "5 Northfield Park",
+            AddressLine2 = "58 Muir Plaza",
+            AddressLine3 = "LONDON",
+            AddressLine4 = "",
+            FirstName = "Nady",
+            FullName = "COOKE,MS NADY",
+            LastName = "Cooke",
+            Postcode = "T9 7KR",
+            Title = "Ms"
+        };
 
-        var firstName = _fixture.Create<string>();
-        var lastName = _fixture.Create<string>();
-        var entity = _fixture.Build<SearchResult>().With(x => x.FirstName, firstName).With(x => x.LastName, lastName)
-            .Create();
-        var fullName = $"{lastName}%{firstName}";
-        var databaseEntity = DatabaseEntityHelper.CreateDatabaseEntityFrom(entity);
-
-        // AcademyContext.CouncilTaxSearchResultDbEntities.Add(databaseEntity);
-        // AcademyContext.SaveChanges();
-
-        var response = _classUnderTest.GetAccountsByFullName(fullName).Result;
-
-        databaseEntity.AccountRef.Should().Be(response[0].AccountReference);
+        var response = _classUnderTest.GetAccountsByFullName(expected.FirstName, expected.LastName).Result;
+        expected.Should().Equals(response[0]);
     }
 
 }
