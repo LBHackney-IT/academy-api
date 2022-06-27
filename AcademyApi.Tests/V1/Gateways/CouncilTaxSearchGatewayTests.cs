@@ -19,7 +19,6 @@ public class CouncilTaxSearchGatewayTests : DatabaseTests
     }
 
     [Test]
-    [Ignore("until sql is fixed")]
     public void GetsEntityMatchingQuery()
     {
 

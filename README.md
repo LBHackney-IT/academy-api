@@ -19,26 +19,12 @@ To serve the application, run it using your IDE of choice, we use Visual Studio 
 
 > When running locally the appropriate database conneciton details are still needed.
 
-##### Postgres
-For Postgres an approprate `CONNECTION_STRING` environment variable is needed,
-and if you want to use a local Postgres instance then that will of course need to be installed and running.
-##### DynamoDb
-To use a local instance of DynamoDb, this will need to be installed. This is most easily done using [Docker](https://www.docker.com/products/docker-desktop).
-Run the following command, specifying the local path where you want the container's shared volume to be stored.
-```
-docker run --name dynamodb-local -p 8000:8000 -v <PUT YOUR LOCAL PATH HERE>:/data/ amazon/dynamodb-local -jar DynamoDBLocal.jar -sharedDb -dbPath /data
-```
-
-If you would like to see what is in your local DynamoDb instance using a simple gui, then [this admin tool](https://github.com/aaronshaf/dynamodb-admin) can do that.
 
 The application can also be served locally using docker:
-1.  Add you security credentials to AWS CLI.
-```sh
-$ aws configure
-```
-2. Log into AWS ECR.
-```sh
-$ aws ecr get-login --no-include-email
+1. Copy .env.sample to .env and set the relevant secrets
+2. If you are using a *M1 Macbook pro*, set
+```bash
+DOCKERFILE_DIR=m1
 ```
 3. Build and serve the application. It will be available in the port 3000.
 ```sh

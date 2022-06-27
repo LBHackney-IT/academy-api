@@ -31,6 +31,6 @@ services:
     image: test-database
     build:
       context: .
-      dockerfile: database/Dockerfile
+      dockerfile: database/${DOCKERFILE_DIR}/Dockerfile
     ports:
       - 1433:1433
