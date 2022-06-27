@@ -1,40 +1,30 @@
-using AcademyApi.Tests.V1.Helper;
-using AcademyApi.V1.Domain;
+using System;
 using AcademyApi.V1.Gateways;
-using AutoFixture;
-using FluentAssertions;
 using NUnit.Framework;
 
 namespace AcademyApi.Tests.V1.Gateways;
 
 public class CouncilTaxSearchGatewayTests : DatabaseTests
 {
-    private readonly Fixture _fixture = new();
+    private readonly string _connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
     private CouncilTaxSearchGateway _classUnderTest;
 
     [SetUp]
     public void Setup()
     {
-        _classUnderTest = new CouncilTaxSearchGateway(AcademyContext, "Server=localhost,1433;Database=testdb;User Id=sa;Password=MyP@w0rd;");
+        _classUnderTest = new CouncilTaxSearchGateway(AcademyContext, _connectionString);
     }
 
     [Test]
     public void GetsEntityMatchingQuery()
     {
+        var accountReference = 3472806;
+        var firstName = "worthy";
+        var lastName = "goulbourn";
+        var response = _classUnderTest.GetAccountsByFullName($"{lastName}%{firstName}").Result;
 
-        var firstName = _fixture.Create<string>();
-        var lastName = _fixture.Create<string>();
-        var entity = _fixture.Build<SearchResult>().With(x => x.FirstName, firstName).With(x => x.LastName, lastName)
-            .Create();
-        var fullName = $"{lastName}%{firstName}";
-        var databaseEntity = DatabaseEntityHelper.CreateDatabaseEntityFrom(entity);
-
-        // AcademyContext.CouncilTaxSearchResultDbEntities.Add(databaseEntity);
-        // AcademyContext.SaveChanges();
-
-        var response = _classUnderTest.GetAccountsByFullName(fullName).Result;
-
-        databaseEntity.AccountRef.Should().Be(response[0].AccountReference);
+        Assert.AreEqual(response[0].AccountReference, accountReference);
+        Assert.AreEqual(response[0].FirstName.ToLower(), firstName);
+        Assert.AreEqual(response[0].LastName.ToLower(), lastName);
     }
-
 }
