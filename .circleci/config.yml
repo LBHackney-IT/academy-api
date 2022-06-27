@@ -111,7 +111,7 @@ jobs:
           name: Run tests
           command: |
             touch .env
-            echo "DOCKERFILE_DIR=default" >> test
+            echo "DOCKERFILE_DIR=default" >> .env
             docker-compose run academy-api-test
   assume-role-staging:
     executor: docker-python
