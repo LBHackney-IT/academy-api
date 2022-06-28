@@ -2,7 +2,7 @@ using System;
 
 namespace AcademyApi.V1.Boundary
 {
-    public abstract class Address
+    public class Address
     {
         public string Line1 { get; set; }
         public string Line2 { get; set; }
