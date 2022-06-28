@@ -39,7 +39,8 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
                     Line1 = account.AddressLine1,
                     Line2 = account.AddressLine2,
                     Line3 = account.AddressLine3,
-                    Line4 = account.AddressLine4
+                    Line4 = account.AddressLine4,
+                    Postcode = account.Postcode
                 },
             };
             customerResponse.Add(searchResponse);
