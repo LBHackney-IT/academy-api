@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AcademyApi.V1.Boundary.Response;
 using AcademyApi.V1.UseCase.Interfaces;
 using Hackney.Core.Logging;
@@ -49,6 +50,21 @@ namespace AcademyApi.V1.Controllers
         public IActionResult ViewRecord(int councilTaxId)
         {
             return Ok(new CouncilTaxResponseObject());
+        }
+
+        /// <summary>
+        /// ...
+        /// </summary>
+        /// <response code="200">...</response>
+        /// <response code="404">No notes found for the specified ID</response>
+        [ProducesResponseType(typeof(List<NoteResponseObject>), StatusCodes.Status200OK)]
+        [HttpGet]
+        [LogCall(LogLevel.Information)]
+        //TODO: rename to match the identifier that will be used
+        [Route("{councilTaxId}/notes")]
+        public IActionResult GetNotes(int councilTaxId)
+        {
+            return Ok(new NoteResponseObject());
         }
     }
 }
