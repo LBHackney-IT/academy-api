@@ -1,7 +1,5 @@
-using System;
 using AcademyApi.V1.Domain;
 using AcademyApi.V1.Gateways;
-using AutoFixture;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -9,7 +7,6 @@ namespace AcademyApi.Tests.V1.Gateways;
 
 public class CouncilTaxSearchGatewayTests : DatabaseTests
 {
-    private readonly Fixture _fixture = new();
     private CouncilTaxSearchGateway _classUnderTest;
 
     [SetUp]
@@ -39,5 +36,4 @@ public class CouncilTaxSearchGatewayTests : DatabaseTests
         var response = _classUnderTest.GetAccountsByFullName(expected.FirstName, expected.LastName).Result;
         expected.Should().Equals(response[0]);
     }
-
 }

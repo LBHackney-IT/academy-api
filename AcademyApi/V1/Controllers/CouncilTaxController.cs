@@ -30,11 +30,10 @@ namespace AcademyApi.V1.Controllers
         [ProducesResponseType(typeof(SearchResponseObjectList), StatusCodes.Status200OK)]
         [HttpGet]
         [LogCall(LogLevel.Information)]
-        //TODO: rename to match the identifier that will be used
         [Route("search")]
         public IActionResult Search([FromQuery] string firstName, string lastName)
         {
-            var result = _councilTaxSearchUseCase.Execute(firstName, lastName);
+            var result = _councilTaxSearchUseCase.Execute(firstName, lastName).Result;
             return Ok(result);
         }
 

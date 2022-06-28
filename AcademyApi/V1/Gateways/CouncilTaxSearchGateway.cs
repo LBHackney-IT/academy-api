@@ -1,13 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
 using AcademyApi.V1.Domain;
-using AcademyApi.V1.Factories;
 using AcademyApi.V1.Gateways.Interfaces;
 using AcademyApi.V1.Infrastructure;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace AcademyApi.V1.Gateways;
@@ -72,7 +69,6 @@ WHERE core.dbo.ctoccupation.vacation_date IN(
                 }
             }
         }
-
         return foundResults;
     }
 
