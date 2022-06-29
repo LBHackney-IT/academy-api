@@ -14,7 +14,6 @@ namespace AcademyApi.V1.Boundary.Response
         public string? NiNumber { get; set; }
 #nullable disable
         public Address FullAddress { get; set; }
-        public string PostCode { get; set; }
         // TODO: consider returning housing benefits claim ID
     }
 }

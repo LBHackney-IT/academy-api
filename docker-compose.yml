@@ -23,7 +23,7 @@ services:
       args:
       - LBHPACKAGESTOKEN=${LBHPACKAGESTOKEN}
     environment:
-      - CONNECTION_STRING=Server=test-database,1433;Database=core;User Id=sa;Password=MyP@w0rd;
+      - DB_HOST=test-database
     links:
       - test-database
 

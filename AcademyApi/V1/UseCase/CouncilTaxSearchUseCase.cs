@@ -33,7 +33,6 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
                 Id = account.AccountCd,
                 FirstName = account.FirstName,
                 LastName = account.LastName,
-                PostCode = account.Postcode,
                 FullAddress = new Address()
                 {
                     Line1 = account.AddressLine1,
