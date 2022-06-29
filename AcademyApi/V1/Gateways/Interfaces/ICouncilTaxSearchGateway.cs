@@ -6,5 +6,5 @@ namespace AcademyApi.V1.Gateways.Interfaces;
 
 public interface ICouncilTaxSearchGateway
 {
-    Task<List<SearchResult>> GetAccountsByFullName(string firstName, string lastName);
+    Task<List<CouncilTaxSearchResult>> GetAccountsByFullName(string firstName, string lastName);
 }

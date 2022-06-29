@@ -29,7 +29,7 @@
 //         [Test]
 //         public void CanMapADomainEntityToADatabaseObject()
 //         {
-//             var entity = _fixture.Create<SearchResult>();
+//             var entity = _fixture.Create<CouncilTaxSearchResult>();
 //             var databaseEntity = entity.ToDatabase();
 //
 //             entity.Id.Should().Be(databaseEntity.Id);

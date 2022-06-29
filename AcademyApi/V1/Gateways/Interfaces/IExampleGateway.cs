@@ -5,8 +5,8 @@ namespace AcademyApi.V1.Gateways
 {
     public interface IExampleGateway
     {
-        SearchResult GetEntityById(int id);
+        CouncilTaxSearchResult GetEntityById(int id);
 
-        List<SearchResult> GetAll();
+        List<CouncilTaxSearchResult> GetAll();
     }
 }
