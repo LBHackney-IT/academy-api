@@ -53,42 +53,56 @@ WHERE core.dbo.ctoccupation.vacation_date IN(
                 command.CommandText = query;
                 command.CommandType = CommandType.Text;
 
-                await _academyContext.Database.OpenConnectionAsync();
 
-                using (var reader = await command.ExecuteReaderAsync())
+                try
                 {
-                    try
+                    await _academyContext.Database.OpenConnectionAsync();
+
+                    using (var reader = await command.ExecuteReaderAsync())
                     {
-                        while (await reader.ReadAsync())
+                        try
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                Console.WriteLine("******************");
+                                Console.WriteLine("reading result");
+                                Console.WriteLine("******************");
+
+                                foundResults.Add(new SearchResult()
+                                {
+                                    FullName = SafeGetString(reader, 0),
+                                    Title = SafeGetString(reader, 1),
+                                    FirstName = SafeGetString(reader, 2),
+                                    LastName = SafeGetString(reader, 3),
+                                    AddressLine1 = SafeGetString(reader, 4),
+                                    AddressLine2 = SafeGetString(reader, 5),
+                                    AddressLine3 = SafeGetString(reader, 6),
+                                    AddressLine4 = SafeGetString(reader, 7),
+                                    Postcode = SafeGetString(reader, 8),
+                                    AccountReference = SafeGetInt(reader, 9),
+                                    AccountCd = SafeGetString(reader, 10)
+                                });
+                            }
+                        }
+                        catch (Exception e)
                         {
                             Console.WriteLine("******************");
-                            Console.WriteLine("reading result");
-                            Console.WriteLine("******************");
+                            Console.WriteLine("--- error running command:");
+                            Console.WriteLine(e);
 
-                            foundResults.Add(new SearchResult()
-                            {
-                                FullName = SafeGetString(reader, 0),
-                                Title = SafeGetString(reader, 1),
-                                FirstName = SafeGetString(reader, 2),
-                                LastName = SafeGetString(reader, 3),
-                                AddressLine1 = SafeGetString(reader, 4),
-                                AddressLine2 = SafeGetString(reader, 5),
-                                AddressLine3 = SafeGetString(reader, 6),
-                                AddressLine4 = SafeGetString(reader, 7),
-                                Postcode = SafeGetString(reader, 8),
-                                AccountReference = SafeGetInt(reader, 9),
-                                AccountCd = SafeGetString(reader, 10)
-                            });
+                            Console.WriteLine("******************");
                         }
                     }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("******************");
-                        Console.WriteLine("--- error running command:");
-                        Console.WriteLine(e);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("000000000000000");
+                    Console.WriteLine("--- error opening connection");
 
-                        Console.WriteLine("******************");
-                    }
+                    Console.WriteLine(e);
+                    Console.WriteLine("000000000000000");
+
+                    throw;
                 }
             }
         }
