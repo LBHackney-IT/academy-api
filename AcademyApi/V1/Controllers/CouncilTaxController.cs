@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using AcademyApi.V1.Boundary.Response;
 using AcademyApi.V1.UseCase.Interfaces;
@@ -33,6 +34,9 @@ namespace AcademyApi.V1.Controllers
         [Route("search")]
         public IActionResult Search([FromQuery] string firstName, string lastName)
         {
+            Console.WriteLine("******************");
+            Console.WriteLine("HIT CONTROLLER");
+            Console.WriteLine("******************");
             var result = _councilTaxSearchUseCase.Execute(firstName, lastName).Result;
             return Ok(result);
         }
