@@ -141,9 +141,24 @@ namespace AcademyApi
         private static void ConfigureDbContext(IServiceCollection services)
         {
             var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+            if (!string.IsNullOrEmpty(connectionString))
+            {
+                Console.WriteLine("00000000000000000");
+                Console.WriteLine("GOT CONNECTION STRING");
+                Console.WriteLine("00000000000000000");
+            }
 
-            services.AddDbContext<AcademyContext>(
-                opt => opt.UseSqlServer(connectionString).AddXRayInterceptor(true));
+            try
+            {
+                services.AddDbContext<AcademyContext>(
+                    opt => opt.UseSqlServer(connectionString).AddXRayInterceptor(true));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("0-0-0-0-0-0-0-0-0-0-0-0");
+                Console.WriteLine(e);
+                Console.WriteLine("0-0-0-0-0-0-0-0-0-0-0-0");
+            }
         }
 
 
