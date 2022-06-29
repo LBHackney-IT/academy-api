@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AcademyApi.V1.Boundary;
@@ -17,6 +18,9 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
     }
     public async Task<SearchResponseObjectList> Execute(string firstName, string lastName)
     {
+        Console.WriteLine("------------------");
+        Console.WriteLine($"usecase searching: ${firstName} ${lastName}");
+        Console.WriteLine("------------------");
         var accounts = await _councilTaxSearchGateway.GetAccountsByFullName(firstName, lastName);
 
         if (accounts.Count == 0)

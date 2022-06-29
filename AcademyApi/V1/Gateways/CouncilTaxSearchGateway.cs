@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -20,6 +21,9 @@ public class CouncilTaxSearchGateway : ICouncilTaxSearchGateway
 
     public async Task<List<SearchResult>> GetAccountsByFullName(string firstName, string lastName)
     {
+        Console.WriteLine("------------------");
+        Console.WriteLine($"gateway searching: ${firstName} ${lastName}");
+        Console.WriteLine("------------------");
         string query = $@"
 SELECT
   core.dbo.ctaccount.lead_liab_name,
@@ -39,7 +43,11 @@ WHERE core.dbo.ctoccupation.vacation_date IN(
   SELECT MAX(vacation_date) FROM core.dbo.ctoccupation WHERE core.dbo.ctoccupation.account_ref = core.dbo.ctaccount.account_ref)
   AND lead_liab_name LIKE '{lastName.ToUpper()}%{firstName.ToUpper()}';
 ";
-
+        Console.WriteLine("------------------");
+        Console.WriteLine("******************");
+        Console.WriteLine(query);
+        Console.WriteLine("******************");
+        Console.WriteLine("------------------");
         var foundResults = new List<SearchResult>();
         using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
         {
@@ -52,6 +60,10 @@ WHERE core.dbo.ctoccupation.vacation_date IN(
             {
                 while (await reader.ReadAsync())
                 {
+                    Console.WriteLine("******************");
+                    Console.WriteLine("reading result");
+                    Console.WriteLine("******************");
+
                     foundResults.Add(new SearchResult()
                     {
                         FullName = SafeGetString(reader, 0),
