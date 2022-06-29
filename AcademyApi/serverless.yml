@@ -6,7 +6,7 @@ provider:
   tracing:
     lambda: true
     apiGateway: true
-  vpc: ${self:custom.vpc.${opt:stage}}
+  vpc: ${self:custom.vpc}
   stage: ${opt:stage}
   # TODO: Enable this line if DynamoDb is in use
   #account: ${opt:account}
@@ -111,17 +111,13 @@ resources:
                   Action:
                     - "lambda:InvokeFunction"
                   Resource: "*"
+
 custom:
   vpc:
-    development:
-      subnetIds:
-        - subnet-0deabb5d8fb9c3446
-        - subnet-000b89c249f12a8ad
-    staging:
-      subnetIds:
-        - subnet-06d3de1bd9181b0d7
-        - subnet-0ed7d7713d1127656
-    production:
-      subnetIds:
-        - subnet-01d3657f97a243261
-        - subnet-0b7b8fea07efabf34
+    securityGroupIds:
+      - 'sgr-052101feb454122ef'
+    subnetIds:
+      - 'subnet-0144886d7ba21a972'
+      - 'subnet-0e67e260d1faf2bbb'
+      - 'subnet-035e6677a7a514366'
+      - 'subnet-0192786edcba28f41'
