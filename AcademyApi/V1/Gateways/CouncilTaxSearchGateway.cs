@@ -45,44 +45,63 @@ WHERE core.dbo.ctoccupation.vacation_date IN(
   SELECT MAX(vacation_date) FROM core.dbo.ctoccupation WHERE core.dbo.ctoccupation.account_ref = core.dbo.ctaccount.account_ref)
   AND lead_liab_name LIKE '{lastName.ToUpper()}%{firstName.ToUpper()}';
 ";
-        Console.WriteLine("------------------");
-        Console.WriteLine("******************");
-        Console.WriteLine(query);
-        Console.WriteLine("******************");
-        Console.WriteLine("------------------");
         var foundResults = new List<SearchResult>();
-        using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
+        try
         {
-            command.CommandText = query;
-            command.CommandType = CommandType.Text;
-
-            await _academyContext.Database.OpenConnectionAsync();
-
-            using (var reader = await command.ExecuteReaderAsync())
+            using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
             {
-                while (await reader.ReadAsync())
-                {
-                    Console.WriteLine("******************");
-                    Console.WriteLine("reading result");
-                    Console.WriteLine("******************");
+                command.CommandText = query;
+                command.CommandType = CommandType.Text;
 
-                    foundResults.Add(new SearchResult()
+                await _academyContext.Database.OpenConnectionAsync();
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    try
                     {
-                        FullName = SafeGetString(reader, 0),
-                        Title = SafeGetString(reader, 1),
-                        FirstName = SafeGetString(reader, 2),
-                        LastName = SafeGetString(reader, 3),
-                        AddressLine1 = SafeGetString(reader, 4),
-                        AddressLine2 = SafeGetString(reader, 5),
-                        AddressLine3 = SafeGetString(reader, 6),
-                        AddressLine4 = SafeGetString(reader, 7),
-                        Postcode = SafeGetString(reader, 8),
-                        AccountReference = SafeGetInt(reader, 9),
-                        AccountCd = SafeGetString(reader, 10)
-                    });
+                        while (await reader.ReadAsync())
+                        {
+                            Console.WriteLine("******************");
+                            Console.WriteLine("reading result");
+                            Console.WriteLine("******************");
+
+                            foundResults.Add(new SearchResult()
+                            {
+                                FullName = SafeGetString(reader, 0),
+                                Title = SafeGetString(reader, 1),
+                                FirstName = SafeGetString(reader, 2),
+                                LastName = SafeGetString(reader, 3),
+                                AddressLine1 = SafeGetString(reader, 4),
+                                AddressLine2 = SafeGetString(reader, 5),
+                                AddressLine3 = SafeGetString(reader, 6),
+                                AddressLine4 = SafeGetString(reader, 7),
+                                Postcode = SafeGetString(reader, 8),
+                                AccountReference = SafeGetInt(reader, 9),
+                                AccountCd = SafeGetString(reader, 10)
+                            });
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("******************");
+                        Console.WriteLine("--- error running command:");
+                        Console.WriteLine(e);
+
+                        Console.WriteLine("******************");
+                    }
                 }
             }
         }
+        catch (Exception e)
+        {
+            Console.WriteLine("******************");
+            Console.WriteLine("--- error creating command:");
+            Console.WriteLine(e);
+
+            Console.WriteLine("******************");
+
+        }
+
         return foundResults;
     }
 
