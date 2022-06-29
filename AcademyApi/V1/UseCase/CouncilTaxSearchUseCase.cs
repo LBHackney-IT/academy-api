@@ -5,6 +5,7 @@ using AcademyApi.V1.Boundary;
 using AcademyApi.V1.Boundary.Response;
 using AcademyApi.V1.Gateways.Interfaces;
 using AcademyApi.V1.UseCase.Interfaces;
+using Hackney.Core.Logging;
 
 namespace AcademyApi.V1.UseCase;
 
@@ -16,6 +17,8 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
     {
         _councilTaxSearchGateway = councilTaxSearchGateway;
     }
+
+    [LogCall]
     public async Task<SearchResponseObjectList> Execute(string firstName, string lastName)
     {
         Console.WriteLine("------------------");

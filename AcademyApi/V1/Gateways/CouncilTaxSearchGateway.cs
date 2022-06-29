@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AcademyApi.V1.Domain;
 using AcademyApi.V1.Gateways.Interfaces;
 using AcademyApi.V1.Infrastructure;
+using Hackney.Core.Logging;
 using Microsoft.EntityFrameworkCore;
 
 namespace AcademyApi.V1.Gateways;
@@ -19,6 +20,7 @@ public class CouncilTaxSearchGateway : ICouncilTaxSearchGateway
         _academyContext = academyContext;
     }
 
+    [LogCall]
     public async Task<List<SearchResult>> GetAccountsByFullName(string firstName, string lastName)
     {
         Console.WriteLine("------------------");
