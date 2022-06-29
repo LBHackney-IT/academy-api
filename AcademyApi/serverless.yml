@@ -115,7 +115,7 @@ resources:
 custom:
   vpc:
     securityGroupIds:
-      - 'sgr-052101feb454122ef'
+      - 'sg-0e69148f9b0325410'
     subnetIds:
       - 'subnet-0144886d7ba21a972'
       - 'subnet-0e67e260d1faf2bbb'
