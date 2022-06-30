@@ -21,12 +21,8 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
     [LogCall]
     public async Task<SearchResponseObjectList> Execute(string firstName, string lastName)
     {
-        Console.WriteLine("------------------");
-        Console.WriteLine($"usecase searching: ${firstName} ${lastName}");
-        Console.WriteLine("------------------");
-
         var customerResponse = new List<SearchResponseObject>();
-
+        string errorMsg = "";
         try
         {
             var accounts = await _councilTaxSearchGateway.GetAccountsByFullName(firstName, lastName);
@@ -59,11 +55,11 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
         }
         catch (Exception e)
         {
-            Console.WriteLine("%%%%%%%%%%%%%%%%%%%%");
+            Console.WriteLine("--- ERROR SEARCHING: ");
             Console.WriteLine(e);
-            Console.WriteLine("%%%%%%%%%%%%%%%%%%%%");
+            errorMsg = e.Message;
         }
-        return new SearchResponseObjectList() { Error = null, Customers = customerResponse };
+        return new SearchResponseObjectList() { Error = errorMsg, Customers = customerResponse };
 
     }
 }
