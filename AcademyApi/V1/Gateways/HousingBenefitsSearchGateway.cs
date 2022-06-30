@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AcademyApi.V1.Gateways;
 
-public class HousingBenefitsSearchGateway : ISearchGateway
+public class HousingBenefitsSearchGateway : IHousingBenefitsSearchGateway
 {
     private readonly AcademyContext _academyContext;
 
@@ -21,9 +21,9 @@ public class HousingBenefitsSearchGateway : ISearchGateway
         _academyContext = academyContext;
     }
 
-    public async Task<List<ISearchResult>> GetAccountsByFullName(string firstName, string lastName)
+    public async Task<List<HousingBenefitsSearchResult>> GetAccountsByFullName(string firstName, string lastName)
     {
-        var foundResults = new List<ISearchResult>();
+        var foundResults = new List<HousingBenefitsSearchResult>();
         var query = @"
 SELECT
     hbclaim.claim_id,

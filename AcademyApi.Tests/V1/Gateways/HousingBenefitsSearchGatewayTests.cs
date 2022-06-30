@@ -36,6 +36,7 @@ public class HousingBenefitsSearchGatewayTests : DatabaseTests
         };
 
         var response = _classUnderTest.GetAccountsByFullName(expected.FirstName, expected.LastName).Result;
+
         expected.Should().Equals(response[0]);
     }
 }

@@ -10,17 +10,17 @@ namespace AcademyApi.V1.UseCase;
 
 public class HousingBenefitsSearchUseCase : ISearchUseCase
 {
-    private readonly ISearchGateway _searchGateway;
+    private readonly IHousingBenefitsSearchGateway _housingBenefitsSearchGateway;
 
-    public HousingBenefitsSearchUseCase(ISearchGateway searchGateway)
+    public HousingBenefitsSearchUseCase(IHousingBenefitsSearchGateway housingBenefitsSearchGateway)
     {
-        _searchGateway = searchGateway;
+        _housingBenefitsSearchGateway = housingBenefitsSearchGateway;
     }
 
     [LogCall]
     public async Task<SearchResponseObjectList> Execute(string firstName, string lastName)
     {
-        var accounts = await _searchGateway.GetAccountsByFullName(firstName, lastName);
+        var accounts = await _housingBenefitsSearchGateway.GetAccountsByFullName(firstName, lastName);
 
         if (accounts.Count == 0)
         {
