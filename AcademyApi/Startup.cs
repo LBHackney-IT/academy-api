@@ -151,7 +151,9 @@ namespace AcademyApi
             try
             {
                 services.AddDbContext<AcademyContext>(
-                    opt => opt.UseSqlServer(connectionString).AddXRayInterceptor(true));
+                    opt => opt.UseSqlServer(connectionString)
+                        // .AddXRayInterceptor(false)
+                    );
             }
             catch (Exception e)
             {

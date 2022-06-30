@@ -28,18 +28,18 @@ public class CouncilTaxSearchGateway : ICouncilTaxSearchGateway
         Console.WriteLine("------------------");
         string query = $@"
 SELECT
-  LBHATestRBViews.core.ctaccount.lead_liab_name,
-  LBHATestRBViews.core.ctaccount.lead_liab_title,
-  LBHATestRBViews.core.ctaccount.lead_liab_forename,
-  LBHATestRBViews.core.ctaccount.lead_liab_surname,
-  LBHATestRBViews.core.ctproperty.addr1,
-  LBHATestRBViews.core.ctproperty.addr2,
-  LBHATestRBViews.core.ctproperty.addr3,
-  LBHATestRBViews.core.ctproperty.addr4,
-  LBHATestRBViews.core.ctproperty.postcode,
-  LBHATestRBViews.core.ctaccount.account_ref,
-  LBHATestRBViews.core.ctaccount.account_cd
-FROM LBHATestRBViews.core.ctaccount LEFT JOIN LBHATestRBViews.core.ctoccupation ON LBHATestRBViews.core.ctaccount.account_ref = LBHATestRBViews.core.ctoccupation.account_ref
+  core.ctaccount.lead_liab_name,
+  core.ctaccount.lead_liab_title,
+  core.ctaccount.lead_liab_forename,
+  core.ctaccount.lead_liab_surname,
+  core.ctproperty.addr1,
+  core.ctproperty.addr2,
+  core.ctproperty.addr3,
+  core.ctproperty.addr4,
+  core.ctproperty.postcode,
+  core.ctaccount.account_ref,
+  core.ctaccount.account_cd
+FROM core.ctaccount LEFT JOIN LBHATestRBViews.core.ctoccupation ON LBHATestRBViews.core.ctaccount.account_ref = LBHATestRBViews.core.ctoccupation.account_ref
                         LEFT JOIN LBHATestRBViews.core.ctproperty ON LBHATestRBViews.core.ctproperty.property_ref = LBHATestRBViews.core.ctoccupation.property_ref
 WHERE LBHATestRBViews.core.ctoccupation.vacation_date IN(
   SELECT MAX(vacation_date) FROM LBHATestRBViews.core.ctoccupation WHERE LBHATestRBViews.core.ctoccupation.account_ref = LBHATestRBViews.core.ctaccount.account_ref)
