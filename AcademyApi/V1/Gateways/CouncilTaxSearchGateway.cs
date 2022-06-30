@@ -28,21 +28,21 @@ public class CouncilTaxSearchGateway : ICouncilTaxSearchGateway
         Console.WriteLine("------------------");
         string query = $@"
 SELECT
-  ctaccount.lead_liab_name,
-  ctaccount.lead_liab_title,
-  ctaccount.lead_liab_forename,
-  ctaccount.lead_liab_surname,
-  ctproperty.addr1,
-  ctproperty.addr2,
-  ctproperty.addr3,
-  ctproperty.addr4,
-  ctproperty.postcode,
-  ctaccount.account_ref,
-  ctaccount.account_cd
-FROM ctaccount LEFT JOIN ctoccupation ON ctaccount.account_ref = ctoccupation.account_ref
-                        LEFT JOIN ctproperty ON ctproperty.property_ref = ctoccupation.property_ref
-WHERE ctoccupation.vacation_date IN(
-  SELECT MAX(vacation_date) FROM ctoccupation WHERE ctoccupation.account_ref = ctaccount.account_ref)
+  dbo.ctaccount.lead_liab_name,
+  dbo.ctaccount.lead_liab_title,
+  dbo.ctaccount.lead_liab_forename,
+  dbo.ctaccount.lead_liab_surname,
+  dbo.ctproperty.addr1,
+  dbo.ctproperty.addr2,
+  dbo.ctproperty.addr3,
+  dbo.ctproperty.addr4,
+  dbo.ctproperty.postcode,
+  dbo.ctaccount.account_ref,
+  dbo.ctaccount.account_cd
+FROM dbo.ctaccount LEFT JOIN dbo.ctoccupation ON dbo.ctaccount.account_ref = dbo.ctoccupation.account_ref
+                        LEFT JOIN dbo.ctproperty ON dbo.ctproperty.property_ref = dbo.ctoccupation.property_ref
+WHERE dbo.ctoccupation.vacation_date IN(
+  SELECT MAX(vacation_date) FROM dbo.ctoccupation WHERE dbo.ctoccupation.account_ref = dbo.ctaccount.account_ref)
   AND lead_liab_name LIKE '{lastName.ToUpper()}%{firstName.ToUpper()}';
 ";
         var foundResults = new List<SearchResult>();
