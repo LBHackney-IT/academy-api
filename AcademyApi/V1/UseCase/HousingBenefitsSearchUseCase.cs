@@ -8,7 +8,7 @@ using Hackney.Core.Logging;
 
 namespace AcademyApi.V1.UseCase;
 
-public class HousingBenefitsSearchUseCase : ISearchUseCase
+public class HousingBenefitsSearchUseCase : IHousingBenefitsSearchUseCase
 {
     private readonly IHousingBenefitsSearchGateway _housingBenefitsSearchGateway;
 
