@@ -24,34 +24,45 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
         Console.WriteLine("------------------");
         Console.WriteLine($"usecase searching: ${firstName} ${lastName}");
         Console.WriteLine("------------------");
-        var accounts = await _councilTaxSearchGateway.GetAccountsByFullName(firstName, lastName);
-
-        if (accounts.Count == 0)
-        {
-            return new SearchResponseObjectList() { Error = "No Results Found" };
-        }
 
         var customerResponse = new List<SearchResponseObject>();
 
-        foreach (var account in accounts)
+        try
         {
-            var searchResponse = new SearchResponseObject()
-            {
-                Id = account.AccountCd,
-                FirstName = account.FirstName,
-                LastName = account.LastName,
-                FullAddress = new Address()
-                {
-                    Line1 = account.AddressLine1,
-                    Line2 = account.AddressLine2,
-                    Line3 = account.AddressLine3,
-                    Line4 = account.AddressLine4,
-                    Postcode = account.Postcode
-                },
-            };
-            customerResponse.Add(searchResponse);
-        }
+            var accounts = await _councilTaxSearchGateway.GetAccountsByFullName(firstName, lastName);
 
+            if (accounts.Count == 0)
+            {
+                return new SearchResponseObjectList() { Error = "No Results Found" };
+            }
+
+
+            foreach (var account in accounts)
+            {
+                var searchResponse = new SearchResponseObject()
+                {
+                    Id = account.AccountCd,
+                    FirstName = account.FirstName,
+                    LastName = account.LastName,
+                    FullAddress = new Address()
+                    {
+                        Line1 = account.AddressLine1,
+                        Line2 = account.AddressLine2,
+                        Line3 = account.AddressLine3,
+                        Line4 = account.AddressLine4,
+                        Postcode = account.Postcode
+                    },
+                };
+                customerResponse.Add(searchResponse);
+            }
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("%%%%%%%%%%%%%%%%%%%%");
+            Console.WriteLine(e);
+            Console.WriteLine("%%%%%%%%%%%%%%%%%%%%");
+        }
         return new SearchResponseObjectList() { Error = null, Customers = customerResponse };
 
     }

@@ -150,8 +150,23 @@ namespace AcademyApi
 
             try
             {
+                Console.WriteLine("@@@@@@@@@@@@@@@@@");
+                Console.WriteLine("ADDING THE CONTEXT");
+                Console.WriteLine("@@@@@@@@@@@@@@@@@");
                 services.AddDbContext<AcademyContext>(
-                    opt => opt.UseSqlServer(connectionString)
+                    opt =>
+                    {
+                        try
+                        {
+                            opt.UseSqlServer(connectionString);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("@-@-@-@-@-@-@-@-@");
+                            Console.WriteLine(e);
+                            Console.WriteLine("@-@-@-@-@-@-@-@-@");
+                        }
+                    }
                         // .AddXRayInterceptor(false)
                     );
             }
