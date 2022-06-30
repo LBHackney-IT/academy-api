@@ -28,21 +28,21 @@ public class CouncilTaxSearchGateway : ICouncilTaxSearchGateway
         Console.WriteLine("------------------");
         string query = $@"
 SELECT
-  core.dbo.ctaccount.lead_liab_name,
-  core.dbo.ctaccount.lead_liab_title,
-  core.dbo.ctaccount.lead_liab_forename,
-  core.dbo.ctaccount.lead_liab_surname,
-  core.dbo.ctproperty.addr1,
-  core.dbo.ctproperty.addr2,
-  core.dbo.ctproperty.addr3,
-  core.dbo.ctproperty.addr4,
-  core.dbo.ctproperty.postcode,
-  core.dbo.ctaccount.account_ref,
-  core.dbo.ctaccount.account_cd
-FROM core.dbo.ctaccount LEFT JOIN core.dbo.ctoccupation ON core.dbo.ctaccount.account_ref = core.dbo.ctoccupation.account_ref
-                        LEFT JOIN core.dbo.ctproperty ON core.dbo.ctproperty.property_ref = core.dbo.ctoccupation.property_ref
-WHERE core.dbo.ctoccupation.vacation_date IN(
-  SELECT MAX(vacation_date) FROM core.dbo.ctoccupation WHERE core.dbo.ctoccupation.account_ref = core.dbo.ctaccount.account_ref)
+  LBHATestRBViews.core.ctaccount.lead_liab_name,
+  LBHATestRBViews.core.ctaccount.lead_liab_title,
+  LBHATestRBViews.core.ctaccount.lead_liab_forename,
+  LBHATestRBViews.core.ctaccount.lead_liab_surname,
+  LBHATestRBViews.core.ctproperty.addr1,
+  LBHATestRBViews.core.ctproperty.addr2,
+  LBHATestRBViews.core.ctproperty.addr3,
+  LBHATestRBViews.core.ctproperty.addr4,
+  LBHATestRBViews.core.ctproperty.postcode,
+  LBHATestRBViews.core.ctaccount.account_ref,
+  LBHATestRBViews.core.ctaccount.account_cd
+FROM LBHATestRBViews.core.ctaccount LEFT JOIN LBHATestRBViews.core.ctoccupation ON LBHATestRBViews.core.ctaccount.account_ref = LBHATestRBViews.core.ctoccupation.account_ref
+                        LEFT JOIN LBHATestRBViews.core.ctproperty ON LBHATestRBViews.core.ctproperty.property_ref = LBHATestRBViews.core.ctoccupation.property_ref
+WHERE LBHATestRBViews.core.ctoccupation.vacation_date IN(
+  SELECT MAX(vacation_date) FROM LBHATestRBViews.core.ctoccupation WHERE LBHATestRBViews.core.ctoccupation.account_ref = LBHATestRBViews.core.ctaccount.account_ref)
   AND lead_liab_name LIKE '{lastName.ToUpper()}%{firstName.ToUpper()}';
 ";
         var foundResults = new List<SearchResult>();
@@ -57,8 +57,8 @@ WHERE core.dbo.ctoccupation.vacation_date IN(
                 try
                 {
                     await _academyContext.Database.OpenConnectionAsync();
-
-                    using (var reader = await command.ExecuteReaderAsync())
+                    var reader = await command.ExecuteReaderAsync();
+                    using (reader)
                     {
                         try
                         {
