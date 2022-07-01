@@ -9,12 +9,12 @@ namespace AcademyApi.V1.Factories
     {
         //TODO: Map the fields in the domain object(s) to fields in the response object(s).
         // More information on this can be found here https://github.com/LBHackney-IT/lbh-base-api/wiki/Factory-object-mappings
-        public static SearchResponseObject ToResponse(this SearchResult domain)
+        public static SearchResponseObject ToResponse(this CouncilTaxSearchResult domain)
         {
             return new SearchResponseObject();
         }
 
-        public static List<SearchResponseObject> ToResponse(this IEnumerable<SearchResult> domainList)
+        public static List<SearchResponseObject> ToResponse(this IEnumerable<CouncilTaxSearchResult> domainList)
         {
             return domainList.Select(domain => domain.ToResponse()).ToList();
         }

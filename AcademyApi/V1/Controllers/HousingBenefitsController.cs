@@ -9,17 +9,16 @@ using Microsoft.Extensions.Logging;
 namespace AcademyApi.V1.Controllers
 {
     [ApiController]
-    //TODO: Rename to match the APIs endpoint
     [Route("api/v1/benefits")]
     [Produces("application/json")]
     [ApiVersion("1.0")]
-    //TODO: rename class to match the API name
-    public class BenefitsController : BaseController
+    public class HousingBenefitsController : BaseController
     {
-        private readonly ICouncilTaxSearchUseCase _councilTaxSearchUseCase;
-        public BenefitsController(ICouncilTaxSearchUseCase councilTaxSearchUseCase)
+        private readonly IHousingBenefitsSearchUseCase _housingBenefitsSearchUseCase;
+
+        public HousingBenefitsController(IHousingBenefitsSearchUseCase housingBenefitsSearchUseCase)
         {
-            _councilTaxSearchUseCase = councilTaxSearchUseCase;
+            _housingBenefitsSearchUseCase = housingBenefitsSearchUseCase;
         }
 
         /// <summary>
@@ -30,11 +29,10 @@ namespace AcademyApi.V1.Controllers
         [ProducesResponseType(typeof(SearchResponseObjectList), StatusCodes.Status200OK)]
         [HttpGet]
         [LogCall(LogLevel.Information)]
-        //TODO: rename to match the identifier that will be used
         [Route("search")]
         public IActionResult Search([FromQuery] string firstName, string lastName)
         {
-            return Ok(new SearchResponseObjectList());
+            return Ok(_housingBenefitsSearchUseCase.Execute(firstName, lastName).Result);
         }
 
         /// <summary>
