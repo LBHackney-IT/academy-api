@@ -4,11 +4,11 @@ namespace AcademyApi.V1.Domain;
 
 public class HousingBenefitsSearchResult
 {
-    public string ClaimId { get; set; }
+    public int ClaimId { get; set; }
 
     public string CheckDigit { get; set; }
 
-    public string PersonReference { get; set; }
+    public int PersonReference { get; set; }
 
     public string Title { get; set; }
 
@@ -17,6 +17,8 @@ public class HousingBenefitsSearchResult
     public string LastName { get; set; }
 
     public DateTime DateOfBirth { get; set; }
+
+    public string NiNumber { get; set; }
 
     public string AddressLine1 { get; set; }
 
@@ -27,4 +29,6 @@ public class HousingBenefitsSearchResult
     public string AddressLine4 { get; set; }
 
     public string Postcode { get; set; }
+
+    public DateTime AddressToDate { get; set; }
 }

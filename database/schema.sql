@@ -96,3 +96,67 @@ insert into ctoccupation (account_ref, property_ref, vacation_date) values (1078
 insert into ctoccupation (account_ref, property_ref, vacation_date) values (864594800, '301103337', '2019-02-28');
 insert into ctoccupation (account_ref, property_ref, vacation_date) values (998885383, '953980029', '2018-04-15');
 -------------
+
+---ACADEMY HOUSING BENEFITS---
+
+CREATE TABLE [hbclaim] (
+  [claim_id] int,
+  [check_digit] nvarchar(1),
+  [status_ind] int,
+  [notes_db_handle] nvarchar(14)
+  );
+
+insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values (5260765, '6', 1, '11111111111111');
+insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values (5759744, '0', 2, '11111111111111');
+insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values (6060591, '3', 3, '11111111111111');
+insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values (5479047, '8', 4, '11111111111111');
+insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values (5879391, '3', 5, '11111111111111');
+insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values (6115325, '5', 6, '11111111111111');
+insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values (5587103, '4', 7, '11111111111111');
+insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values (5315153, '5', 8, '11111111111111');
+insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values (5167284, '3', 9, '11111111111111');
+insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values (5448076, '2', 0, '11111111111111');
+
+CREATE TABLE [hbmember] (
+  [claim_id] int,
+  [house_id] smallint,
+  [person_ref] int,
+  [surname] nvarchar(32),
+  [forename] nvarchar(32),
+  [birth_date] datetime2(7),
+  [nino] nvarchar(10),
+  [title] nvarchar(4)
+  );
+
+insert into hbmember (claim_id, house_id, person_ref, surname, forename, birth_date, nino, title) values (5260765, 1, 1, 'Moncur', 'Elwira', '1971-12-22', 'CD877332Z', 'Ms');
+insert into hbmember (claim_id, house_id, person_ref, surname, forename, birth_date, nino, title) values (5759744, 1, 1, 'Bullimore', 'Tate', '1971-09-25', 'CD877534Z', 'Ms');
+insert into hbmember (claim_id, house_id, person_ref, surname, forename, birth_date, nino, title) values (6060591, 2, 2, 'Beden', 'Flor', '1981-02-08', 'CD877342Z', 'Mr');
+insert into hbmember (claim_id, house_id, person_ref, surname, forename, birth_date, nino, title) values (5479047, 1, 1, 'Veare', 'Arlette', '1986-11-07', 'CD657332Z', 'Mr');
+insert into hbmember (claim_id, house_id, person_ref, surname, forename, birth_date, nino, title) values (5879391, 3, 3, 'Manoelli', 'Nanny', '1987-05-22', 'CF877332Z', 'Ms');
+insert into hbmember (claim_id, house_id, person_ref, surname, forename, birth_date, nino, title) values (6115325, 3, 3, 'Wegener', 'Tera', '1969-08-09', 'CD877332O', 'Mr');
+insert into hbmember (claim_id, house_id, person_ref, surname, forename, birth_date, nino, title) values (6233154, 17, 2, 'Wherrett', 'Ruggiero', '1989-08-07', 'CD877355Z', 'Mr');
+insert into hbmember (claim_id, house_id, person_ref, surname, forename, birth_date, nino, title) values (6534331, 11, 1, 'Metzing', 'Adara', '1949-12-29', 'CD877334E', 'Mrs');
+insert into hbmember (claim_id, house_id, person_ref, surname, forename, birth_date, nino, title) values (6111340, 5, 3, 'Swettenham', 'Babara', '1941-08-05', 'FF577332Z', 'Miss');
+insert into hbmember (claim_id, house_id, person_ref, surname, forename, birth_date, nino, title) values (5932526, 11, 1, 'Bourthouloume', 'Damaris', '1944-10-03', 'CE354652Z', 'Mr');
+
+CREATE TABLE [hbhousehold] (
+  [claim_id] int,
+  [house_id] smallint,
+  [to_date] datetime2(7),
+  [addr1] nvarchar(35),
+  [addr2] nvarchar(35),
+  [addr3] nvarchar(32),
+  [addr4] nvarchar(32),
+  [post_code] nvarchar(10)
+  );
+
+insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (5260765, 1, '2099-12-31', '6 Cascade Junction', '49 Norway Maple Pass', 'LONDON', 'I3 0RP');
+insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (5759744, 1, '2099-12-31', '8 Schlimgen Terrace', '5111 Basil Avenue', 'LONDON', 'E0 1MO');
+insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (6060591, 2, '2099-12-31', '8017 Garrison Point', '2 Lake View Crossing', 'LONDON', 'S3 1EV');
+insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (5479047, 1, '2099-12-31', '320 Little Fleur Way', '62 Warrior Avenue', 'LONDON', 'L0 3DM');
+insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (5879391, 3, '2099-12-31', '07 Orin Lane', '73 Steensland Terrace', 'LONDON', 'H5 2HM');
+insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (6115325, 3, '2099-12-31', '2499 Toban Drive', '40 Butterfield Junction', 'LONDON', 'T6 2KQ');
+insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (5696752, 12, '2019-07-14', '6037 Dexter Way', '1 Sommers Way', 'LONDON', 'H5 7ZN');
+insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (6908963, 18, '2019-09-05', '4065 Debs Hill', '8491 John Wall Plaza', 'LONDON', 'R1 1GT');
+insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (6724267, 9, '2019-05-01', '540 Pawling Street', '063 Mitchell Way', 'LONDON', 'U9 1CX');
+insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (6969380, 20, '2019-04-28', '0 Clemons Place', '93931 Norway Maple Street', 'LONDON', 'F6 5QI');

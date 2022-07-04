@@ -1,3 +1,4 @@
+using System;
 using AcademyApi.V1.Domain;
 using AcademyApi.V1.Gateways;
 using FluentAssertions;
@@ -18,21 +19,22 @@ public class HousingBenefitsSearchGatewayTests : DatabaseTests
     [Test]
     public void GetsEntityMatchingQuery()
     {
-        // TODO: Create test schema
         var expected = new HousingBenefitsSearchResult
         {
-            ClaimId = null,
-            CheckDigit = null,
-            PersonReference = null,
-            Title = null,
-            FirstName = "",
-            LastName = "",
-            DateOfBirth = default,
-            AddressLine1 = null,
-            AddressLine2 = null,
-            AddressLine3 = null,
+            ClaimId = 5260765,
+            CheckDigit = "6",
+            PersonReference = 1,
+            Title = "Ms",
+            FirstName = "Elwira",
+            LastName = "Moncur",
+            DateOfBirth = new DateTime(1971, 12, 22),
+            NiNumber = "CD877332Z",
+            AddressLine1 = "6 Cascade Junction",
+            AddressLine2 = "49 Norway Maple Pass",
+            AddressLine3 = "LONDON",
             AddressLine4 = null,
-            Postcode = null
+            Postcode = "I3 0RP",
+            AddressToDate = new DateTime(2099, 12, 31)
         };
 
         var response = _classUnderTest.GetAccountsByFullName(expected.FirstName, expected.LastName).Result;

@@ -26,28 +26,29 @@ public class HousingBenefitsSearchGateway : IHousingBenefitsSearchGateway
         var foundResults = new List<HousingBenefitsSearchResult>();
         var query = @"
 SELECT
-    hbclaim.claim_id,
-    hbclaim.check_digit,
-    hbmember.person_ref,
-    hbmember.forename,
-    hbmember.surname,
-    hbmember.birth_date,
-    hbmember.nino,
-    hbhousehold.addr1,
-    hbhousehold.addr2,
-    hbhousehold.addr3,
-    hbhousehold.addr4,
-    hbhousehold.post_code,
-    hbmember.title
+    core.dbo.hbclaim.claim_id,
+    core.dbo.hbclaim.check_digit,
+    core.dbo.hbmember.person_ref,
+    core.dbo.hbmember.title,
+    core.dbo.hbmember.forename,
+    core.dbo.hbmember.surname,
+    core.dbo.hbmember.birth_date,
+    core.dbo.hbmember.nino,
+    core.dbo.hbhousehold.addr1,
+    core.dbo.hbhousehold.addr2,
+    core.dbo.hbhousehold.addr3,
+    core.dbo.hbhousehold.addr4,
+    core.dbo.hbhousehold.post_code,
+    core.dbo.hbhousehold.to_date
 FROM
-    hbmember
-JOIN hbclaim ON hbclaim.claim_id = hbmember.claim_id
-LEFT JOIN hbhousehold ON hbmember.claim_id = hbhousehold.claim_id
-    AND hbmember.house_id = hbhousehold.house_id
+    core.dbo.hbmember
+JOIN core.dbo.hbclaim ON core.dbo.hbclaim.claim_id = core.dbo.hbmember.claim_id
+LEFT JOIN core.dbo.hbhousehold ON core.dbo.hbmember.claim_id = core.dbo.hbhousehold.claim_id
+    AND core.dbo.hbmember.house_id = core.dbo.hbhousehold.house_id
 WHERE
-    hbhousehold.to_date = '2099-12-31'
-    AND hbmember.forename LIKE @firstName
-    AND hbmember.surname LIKE @lastName;
+    core.dbo.hbhousehold.to_date = '2099-12-31'
+    AND core.dbo.hbmember.forename LIKE @firstName
+    AND core.dbo.hbmember.surname LIKE @lastName;
 ";
 
         using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
@@ -65,18 +66,20 @@ WHERE
                 {
                     foundResults.Add(new HousingBenefitsSearchResult
                     {
-                        ClaimId = SafeGetString(reader, 0),
+                        ClaimId = SafeGetInt(reader, 0),
                         CheckDigit = SafeGetString(reader, 1),
-                        PersonReference = SafeGetString(reader, 2),
-                        Title = SafeGetString(reader, 12),
-                        FirstName = SafeGetString(reader, 3),
-                        LastName = SafeGetString(reader, 4),
-                        DateOfBirth = reader.GetDateTime(5), // TODO: Make safe get
-                        AddressLine1 = SafeGetString(reader, 7),
-                        AddressLine2 = SafeGetString(reader, 8),
-                        AddressLine3 = SafeGetString(reader, 9),
-                        AddressLine4 = SafeGetString(reader, 10),
-                        Postcode = SafeGetString(reader, 11)
+                        PersonReference = SafeGetInt(reader, 2),
+                        Title = SafeGetString(reader, 3),
+                        FirstName = SafeGetString(reader, 4),
+                        LastName = SafeGetString(reader, 5),
+                        DateOfBirth = reader.GetDateTime(6),
+                        NiNumber = SafeGetString(reader, 7),
+                        AddressLine1 = SafeGetString(reader, 8),
+                        AddressLine2 = SafeGetString(reader, 9),
+                        AddressLine3 = SafeGetString(reader, 10),
+                        AddressLine4 = SafeGetString(reader, 11),
+                        Postcode = SafeGetString(reader, 12),
+                        AddressToDate = reader.GetDateTime(13)
                     });
                 }
             }
