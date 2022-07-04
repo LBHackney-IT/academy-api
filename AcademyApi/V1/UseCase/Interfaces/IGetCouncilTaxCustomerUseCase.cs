@@ -4,7 +4,7 @@ using AcademyApi.V1.Domain;
 
 namespace AcademyApi.V1.UseCase.Interfaces;
 
-public interface ICouncilTaxSearchUseCase
+public interface IGetCouncilTaxCustomerUseCase
 {
-    Task<SearchResponseObjectList> Execute(string firstName, string lastName);
+    Task<CouncilTaxRecord> Execute(int accountReference);
 }

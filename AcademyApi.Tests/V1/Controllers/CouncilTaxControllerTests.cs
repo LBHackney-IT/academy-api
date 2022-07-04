@@ -13,24 +13,37 @@ namespace AcademyApi.Tests.V1.Controllers
         private CouncilTaxController _classUnderTest;
         private Mock<ICouncilTaxSearchUseCase> _mockCouncilTaxSearchUseCase;
         private Fixture _fixture;
+        private Mock<IGetCouncilTaxCustomerUseCase> _mockGetCouncilTaxCustomerUseCase;
 
         [SetUp]
         public void SetUp()
         {
             _fixture = new Fixture();
             _mockCouncilTaxSearchUseCase = new Mock<ICouncilTaxSearchUseCase>();
-            _classUnderTest = new CouncilTaxController(_mockCouncilTaxSearchUseCase.Object);
+            _mockGetCouncilTaxCustomerUseCase = new Mock<IGetCouncilTaxCustomerUseCase>();
+            _classUnderTest = new CouncilTaxController(
+                _mockCouncilTaxSearchUseCase.Object,
+                _mockGetCouncilTaxCustomerUseCase.Object
+            );
         }
 
         [Test]
-        public void SearchUsecaseIsCalled()
+        public void SearchUseCaseIsCalled()
         {
             var dummyFirstName = _fixture.Create<string>();
             var dummyLastName = _fixture.Create<string>();
             _classUnderTest.Search(dummyFirstName, dummyLastName);
 
             _mockCouncilTaxSearchUseCase.Verify(x => x.Execute(dummyFirstName, dummyLastName), Times.Once);
+        }
 
+        [Test]
+        public void GetCustomerUseCaseIsCalled()
+        {
+            var dummyCouncilTaxId = _fixture.Create<int>();
+            _classUnderTest.ViewRecord(dummyCouncilTaxId);
+
+            _mockGetCouncilTaxCustomerUseCase.Verify(x => x.Execute(dummyCouncilTaxId), Times.Once);
         }
     }
 }
