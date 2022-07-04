@@ -167,7 +167,7 @@ namespace AcademyApi
                             Console.WriteLine("@-@-@-@-@-@-@-@-@");
                         }
                     }
-                        // .AddXRayInterceptor(false)
+                    // .AddXRayInterceptor(false)
                     );
             }
             catch (Exception e)

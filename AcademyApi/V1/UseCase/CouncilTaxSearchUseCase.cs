@@ -22,7 +22,10 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
     public async Task<SearchResponseObjectList> Execute(string firstName, string lastName)
     {
         var customerResponse = new List<SearchResponseObject>();
-        string errorMsg = "";
+#nullable enable
+        string? errorMsg = null;
+#nullable disable
+
         try
         {
             var accounts = await _councilTaxSearchGateway.GetAccountsByFullName(firstName, lastName);
@@ -59,7 +62,7 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
             Console.WriteLine(e);
             errorMsg = e.Message;
         }
-        return new SearchResponseObjectList() { Error = errorMsg, Customers = customerResponse };
 
+        return new SearchResponseObjectList() { Error = errorMsg, Customers = customerResponse };
     }
 }
