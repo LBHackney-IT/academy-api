@@ -39,7 +39,7 @@ public class CouncilTaxSearchUseCaseTests : LogCallAspectFixture
 
         var expectedResponse = new SearchResponseObjectList()
         {
-            Error = null,
+            Error = "",
             Customers = new List<SearchResponseObject>()
         };
 
