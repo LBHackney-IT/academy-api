@@ -47,8 +47,10 @@ LEFT JOIN core.dbo.hbhousehold ON core.dbo.hbmember.claim_id = core.dbo.hbhouseh
     AND core.dbo.hbmember.house_id = core.dbo.hbhousehold.house_id
 WHERE
     core.dbo.hbhousehold.to_date = '2099-12-31'
-    AND core.dbo.hbmember.forename LIKE @firstName
-    AND core.dbo.hbmember.surname LIKE @lastName;
+    AND (
+        core.dbo.hbmember.forename LIKE @firstName
+            OR core.dbo.hbmember.surname LIKE @lastName
+    )
 ";
 
         using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
