@@ -22,9 +22,7 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
     public async Task<SearchResponseObjectList> Execute(string firstName, string lastName)
     {
         var customerResponse = new List<SearchResponseObject>();
-#nullable enable
-        string? errorMsg = null;
-#nullable disable
+        string errorMsg = "";
 
         try
         {
