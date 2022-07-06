@@ -14,8 +14,6 @@ namespace AcademyApi.V1.Domain
 
         public string LastName { get; set; }
 
-        public string PaymentMethod { get; set; }
-
         public decimal AccountBalance { get; set; }
 
         public Address PropertyAddress { get; set; }
