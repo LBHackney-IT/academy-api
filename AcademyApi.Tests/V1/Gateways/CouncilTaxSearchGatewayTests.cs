@@ -18,7 +18,7 @@ public class CouncilTaxSearchGatewayTests : DatabaseTests
     [Test]
     public void GetAccountsByFullName()
     {
-        var expected = new SearchResult()
+        var expected = new CouncilTaxSearchResult()
         {
             AccountCd = "5",
             AccountReference = 815631207,

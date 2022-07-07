@@ -21,7 +21,7 @@ public class CouncilTaxSearchGateway : ICouncilTaxSearchGateway
     }
 
     [LogCall]
-    public async Task<List<SearchResult>> GetAccountsByFullName(string firstName, string lastName)
+    public async Task<List<CouncilTaxSearchResult>> GetAccountsByFullName(string firstName, string lastName)
     {
         Console.WriteLine("------------------");
         Console.WriteLine($"gateway searching: ${firstName} ${lastName}");
@@ -45,7 +45,7 @@ WHERE dbo.ctoccupation.vacation_date IN(
   SELECT MAX(vacation_date) FROM dbo.ctoccupation WHERE dbo.ctoccupation.account_ref = dbo.ctaccount.account_ref)
   AND lead_liab_name LIKE '{lastName.ToUpper()}%{firstName.ToUpper()}';
 ";
-        var foundResults = new List<SearchResult>();
+        var foundResults = new List<CouncilTaxSearchResult>();
         try
         {
             using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
@@ -68,7 +68,7 @@ WHERE dbo.ctoccupation.vacation_date IN(
                                 Console.WriteLine("reading result");
                                 Console.WriteLine("******************");
 
-                                foundResults.Add(new SearchResult()
+                                foundResults.Add(new CouncilTaxSearchResult()
                                 {
                                     FullName = SafeGetString(reader, 0),
                                     Title = SafeGetString(reader, 1),

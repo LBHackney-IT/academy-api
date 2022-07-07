@@ -23,6 +23,7 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
     {
         var customerResponse = new List<SearchResponseObject>();
         string errorMsg = "";
+
         try
         {
             var accounts = await _councilTaxSearchGateway.GetAccountsByFullName(firstName, lastName);
@@ -59,7 +60,7 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
             Console.WriteLine(e);
             errorMsg = e.Message;
         }
-        return new SearchResponseObjectList() { Error = errorMsg, Customers = customerResponse };
 
+        return new SearchResponseObjectList() { Error = errorMsg, Customers = customerResponse };
     }
 }

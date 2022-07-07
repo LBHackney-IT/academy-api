@@ -34,7 +34,7 @@ public class CouncilTaxSearchUseCaseTests : LogCallAspectFixture
     {
         var firstName = _fixture.Create<string>();
         var lastName = _fixture.Create<string>();
-        var stubbedResponse = _fixture.CreateMany<SearchResult>().ToList();
+        var stubbedResponse = _fixture.CreateMany<CouncilTaxSearchResult>().ToList();
         _mockGateway.Setup(x => x.GetAccountsByFullName(firstName, lastName)).ReturnsAsync(stubbedResponse);
 
         var expectedResponse = new SearchResponseObjectList()
@@ -57,7 +57,7 @@ public class CouncilTaxSearchUseCaseTests : LogCallAspectFixture
     {
         var firstName = _fixture.Create<string>();
         var lastName = _fixture.Create<string>();
-        _mockGateway.Setup(x => x.GetAccountsByFullName(firstName, lastName)).ReturnsAsync(new List<SearchResult>());
+        _mockGateway.Setup(x => x.GetAccountsByFullName(firstName, lastName)).ReturnsAsync(new List<CouncilTaxSearchResult>());
 
         var expectedResponse = new SearchResponseObjectList() { Error = "No Results Found" };
 

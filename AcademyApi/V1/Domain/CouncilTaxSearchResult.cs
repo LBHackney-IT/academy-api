@@ -1,6 +1,6 @@
 namespace AcademyApi.V1.Domain
 {
-    public class SearchResult
+    public class CouncilTaxSearchResult
     {
         public int AccountReference { get; set; }
 
