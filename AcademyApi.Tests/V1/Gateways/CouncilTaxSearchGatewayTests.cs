@@ -16,7 +16,7 @@ public class CouncilTaxSearchGatewayTests : DatabaseTests
     }
 
     [Test]
-    public void GetsEntityMatchingQuery()
+    public void GetAccountsByFullName()
     {
         var expected = new CouncilTaxSearchResult()
         {
@@ -36,4 +36,31 @@ public class CouncilTaxSearchGatewayTests : DatabaseTests
         var response = _classUnderTest.GetAccountsByFullName(expected.FirstName, expected.LastName).Result;
         expected.Should().Equals(response[0]);
     }
+
+    [Test]
+    public void GetsCustomer()
+    {
+        var expected = new CouncilTaxRecord()
+        {
+            AccountCheckDigit = "5",
+            AccountReference = 815631207,
+            PropertyAddress = new Address()
+            {
+                AddressLine1 = "5 Northfield Park",
+                AddressLine2 = "58 Muir Plaza",
+                AddressLine3 = "LONDON",
+                AddressLine4 = "",
+                Postcode = "T9 7KR",
+            },
+            ForwardingAddress = new Address(),
+            FirstName = "Nady",
+            LastName = "Cooke",
+            Title = "Ms",
+            AccountBalance = (decimal)2228.00
+        };
+
+        var response = _classUnderTest.GetCustomer(815631207).Result;
+        expected.Should().Equals(response);
+    }
+
 }

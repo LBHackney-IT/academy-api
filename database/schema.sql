@@ -1,16 +1,3 @@
--- CREATE TABLE council_tax_search (
---                         account_ref int,
---                         account_cd varchar,
---                         lead_liab_name varchar,
---                         lead_liab_title varchar,
---                         lead_liab_forename varchar,
---                         lead_liab_surname varchar,
---                         addr1 varchar,
---                         addr2 varchar,
---                         addr3 varchar,
---                         addr4 varchar,
---                         postcode varchar
--- );
 
 ---ACADEMY COUNCIL TAX---
 
@@ -26,6 +13,11 @@ CREATE TABLE [ctaccount] (
   [addr3] nvarchar(32),
   [addr4] nvarchar(32),
   [postcode] nvarchar(8),
+  [for_addr1] nvarchar(32),
+  [for_addr2] nvarchar(32),
+  [for_addr3] nvarchar(32),
+  [for_addr4] nvarchar(32),
+  [for_postcode] nvarchar(8),
   [paymeth_code] nvarchar(5)
   );
 
@@ -95,6 +87,59 @@ insert into ctoccupation (account_ref, property_ref, vacation_date) values (2050
 insert into ctoccupation (account_ref, property_ref, vacation_date) values (107807366, '247646667', '2018-12-07');
 insert into ctoccupation (account_ref, property_ref, vacation_date) values (864594800, '301103337', '2019-02-28');
 insert into ctoccupation (account_ref, property_ref, vacation_date) values (998885383, '953980029', '2018-04-15');
+
+CREATE TABLE [ctnotice] (
+  [account_ref] int,
+    [bill_no] smallint,
+    [bill_adjust] smallint,
+    [notice_type] numeric(3),
+    [property_ref] varchar(18),
+    [notice_from] datetime2,
+    [notice_to] datetime2,
+    [notice_issued] datetime2,
+    [paymeth_code] char(5),
+    [paymeth_type] numeric(3),
+    [inhibit_cred_tfr] numeric(3),
+    [reason] numeric(3),
+    [reason1] numeric(3),
+    [reason2] numeric(3),
+    [reason3] numeric(3),
+    [amt_benefit] numeric(14,2),
+    [amt_costs] numeric(14,2),
+    [amt_debit] numeric(14,2),
+    [amt_penalties] numeric(14,2),
+    [amt_refunds] numeric(14,2),
+    [amt_remit] numeric(14,2),
+    [amt_transitional] numeric(14,2),
+    [amt_write_off] numeric(14,2),
+    [amt_lump_disc] numeric(14,2),
+    [amt_paym_disc] numeric(14,2),
+    [amt_water] numeric(14,2),
+    [amt_water_disab_redn] numeric(14,2),
+    [amt_water_disc] numeric(14,2),
+    [amt_sewerage] numeric(14,2),
+    [amt_sewerage_disab_redn] numeric(14,2),
+    [amt_sewerage_disc] numeric(14,2),
+    [amt_sewerage_transit] numeric(14,2),
+    [notice_balance] numeric(14,2),
+    [notice_text] varchar(40),
+    [notice_request] numeric(3),
+    [notice_request_date] datetime2,
+    [vouchers_request] numeric(3),
+    [vouchers_issued] datetime2,
+    [live_ind] numeric(3),
+    [notice_hold] numeric(3),
+    [notice_hold_date] datetime2,
+    [last_updated_int] int,
+    [woff_reason_code] varchar(2),
+    [dd_adjust_hold] datetime2
+
+);
+
+insert into dbo.ctnotice (account_ref, bill_no, bill_adjust, notice_type, property_ref, notice_from, notice_to, notice_issued, paymeth_code, paymeth_type, inhibit_cred_tfr, reason, reason1, reason2, reason3, amt_benefit, amt_costs, amt_debit, amt_penalties, amt_refunds, amt_remit, amt_transitional, amt_write_off, amt_lump_disc, amt_paym_disc, amt_water, amt_water_disab_redn, amt_water_disc, amt_sewerage, amt_sewerage_disab_redn, amt_sewerage_disc, amt_sewerage_transit, notice_balance, notice_text, notice_request, notice_request_date, vouchers_request, vouchers_issued, live_ind, notice_hold, notice_hold_date, last_updated_int, woff_reason_code, dd_adjust_hold) values (815631207, 1, 0, 1, N'109262008', N'2021-01-30 00:00:00.0000000', N'2021-04-01 00:00:00.0000000', N'2022-04-01 00:00:00.0000000', N'ARRG ', 2, 0, 2, 0, 0, 0, 0.00, 0.00, 224.57, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 224.57, N'', 0, null, 0, null, 1, 0, null, 1017586620, N'', null);
+insert into dbo.ctnotice (account_ref, bill_no, bill_adjust, notice_type, property_ref, notice_from, notice_to, notice_issued, paymeth_code, paymeth_type, inhibit_cred_tfr, reason, reason1, reason2, reason3, amt_benefit, amt_costs, amt_debit, amt_penalties, amt_refunds, amt_remit, amt_transitional, amt_write_off, amt_lump_disc, amt_paym_disc, amt_water, amt_water_disab_redn, amt_water_disc, amt_sewerage, amt_sewerage_disab_redn, amt_sewerage_disc, amt_sewerage_transit, notice_balance, notice_text, notice_request, notice_request_date, vouchers_request, vouchers_issued, live_ind, notice_hold, notice_hold_date, last_updated_int, woff_reason_code, dd_adjust_hold) values (815631207, 2, 0, 1, N'109262008', N'2021-04-01 00:00:00.0000000', N'2022-04-01 00:00:00.0000000', N'2022-04-01 00:00:00.0000000', N'ARRG ', 2, 0, 2, 0, 0, 0, 0.00, 0.00, 1424.11, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 923.43, N'', 0, null, 0, null, 1, 0, null, 1017586620, N'', null);
+insert into dbo.ctnotice (account_ref, bill_no, bill_adjust, notice_type, property_ref, notice_from, notice_to, notice_issued, paymeth_code, paymeth_type, inhibit_cred_tfr, reason, reason1, reason2, reason3, amt_benefit, amt_costs, amt_debit, amt_penalties, amt_refunds, amt_remit, amt_transitional, amt_write_off, amt_lump_disc, amt_paym_disc, amt_water, amt_water_disab_redn, amt_water_disc, amt_sewerage, amt_sewerage_disab_redn, amt_sewerage_disc, amt_sewerage_transit, notice_balance, notice_text, notice_request, notice_request_date, vouchers_request, vouchers_issued, live_ind, notice_hold, notice_hold_date, last_updated_int, woff_reason_code, dd_adjust_hold) values (815631207, 3, 0, 1, N'109262008', N'2022-04-01 00:00:00.0000000', N'2023-04-01 00:00:00.0000000', N'2022-04-01 00:00:00.0000000', N'DD01 ', 2, 0, 2, 0, 0, 0, 0.00, 0.00, 1485.42, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 1080.00, N'', 0, null, 0, null, 1, 0, null, 1017586522, N'', null);
+
 -------------
 
 ---ACADEMY HOUSING BENEFITS---
