@@ -56,7 +56,7 @@ public class CouncilTaxSearchGatewayTests : DatabaseTests
             FirstName = "Nady",
             LastName = "Cooke",
             Title = "Ms",
-            AccountBalance = (decimal)2228.00
+            AccountBalance = (decimal) 2228.00
         };
 
         var response = _classUnderTest.GetCustomer(815631207).Result;

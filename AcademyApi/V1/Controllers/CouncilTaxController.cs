@@ -7,6 +7,7 @@ using Hackney.Core.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace AcademyApi.V1.Controllers
 {
@@ -38,11 +39,8 @@ namespace AcademyApi.V1.Controllers
         [Route("search")]
         public IActionResult Search([FromQuery] string firstName, string lastName)
         {
-            Console.WriteLine("******************");
-            Console.WriteLine("HIT CONTROLLER");
-            Console.WriteLine("******************");
-            var result = _councilTaxSearchUseCase.Execute(firstName, lastName).Result;
-            return Ok(result);
+           var result = _councilTaxSearchUseCase.Execute(firstName, lastName).Result;
+           return Ok(result);
         }
 
         /// <summary>
