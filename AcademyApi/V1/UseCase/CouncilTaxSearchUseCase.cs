@@ -40,7 +40,7 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
             {
                 var searchResponse = new SearchResponseObject()
                 {
-                    Id = account.AccountCd,
+                    Id = account.AccountReference.ToString(),
                     FirstName = account.FirstName,
                     LastName = account.LastName,
                     FullAddress = new Address()
