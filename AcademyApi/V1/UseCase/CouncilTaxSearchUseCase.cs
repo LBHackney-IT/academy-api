@@ -6,6 +6,7 @@ using AcademyApi.V1.Boundary.Response;
 using AcademyApi.V1.Gateways.Interfaces;
 using AcademyApi.V1.UseCase.Interfaces;
 using Hackney.Core.Logging;
+using Newtonsoft.Json;
 
 namespace AcademyApi.V1.UseCase;
 
@@ -27,6 +28,9 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
         try
         {
             var accounts = await _councilTaxSearchGateway.GetAccountsByFullName(firstName, lastName);
+
+            Console.WriteLine("*********** DEBUG RESPONSE ************");
+            Console.WriteLine(JsonConvert.SerializeObject(accounts));
 
             if (accounts.Count == 0)
             {
