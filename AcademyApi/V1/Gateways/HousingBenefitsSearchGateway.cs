@@ -26,30 +26,30 @@ public class HousingBenefitsSearchGateway : IHousingBenefitsSearchGateway
         var foundResults = new List<HousingBenefitsSearchResult>();
         var query = @"
 SELECT
-    core.dbo.hbclaim.claim_id,
-    core.dbo.hbclaim.check_digit,
-    core.dbo.hbmember.person_ref,
-    core.dbo.hbmember.title,
-    core.dbo.hbmember.forename,
-    core.dbo.hbmember.surname,
-    core.dbo.hbmember.birth_date,
-    core.dbo.hbmember.nino,
-    core.dbo.hbhousehold.addr1,
-    core.dbo.hbhousehold.addr2,
-    core.dbo.hbhousehold.addr3,
-    core.dbo.hbhousehold.addr4,
-    core.dbo.hbhousehold.post_code,
-    core.dbo.hbhousehold.to_date
+    dbo.hbclaim.claim_id,
+    dbo.hbclaim.check_digit,
+    dbo.hbmember.person_ref,
+    dbo.hbmember.title,
+    dbo.hbmember.forename,
+    dbo.hbmember.surname,
+    dbo.hbmember.birth_date,
+    dbo.hbmember.nino,
+    dbo.hbhousehold.addr1,
+    dbo.hbhousehold.addr2,
+    dbo.hbhousehold.addr3,
+    dbo.hbhousehold.addr4,
+    dbo.hbhousehold.post_code,
+    dbo.hbhousehold.to_date
 FROM
-    core.dbo.hbmember
-JOIN core.dbo.hbclaim ON core.dbo.hbclaim.claim_id = core.dbo.hbmember.claim_id
-LEFT JOIN core.dbo.hbhousehold ON core.dbo.hbmember.claim_id = core.dbo.hbhousehold.claim_id
-    AND core.dbo.hbmember.house_id = core.dbo.hbhousehold.house_id
+    dbo.hbmember
+JOIN dbo.hbclaim ON dbo.hbclaim.claim_id = dbo.hbmember.claim_id
+LEFT JOIN dbo.hbhousehold ON dbo.hbmember.claim_id = dbo.hbhousehold.claim_id
+    AND dbo.hbmember.house_id = dbo.hbhousehold.house_id
 WHERE
-    core.dbo.hbhousehold.to_date = '2099-12-31'
+    dbo.hbhousehold.to_date = '2099-12-31'
     AND (
-        core.dbo.hbmember.forename LIKE @firstName
-            OR core.dbo.hbmember.surname LIKE @lastName
+        dbo.hbmember.forename LIKE @firstName
+            OR dbo.hbmember.surname LIKE @lastName
     )
 ";
 
