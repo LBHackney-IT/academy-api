@@ -46,7 +46,7 @@ public class CouncilTaxSearchUseCaseTests : LogCallAspectFixture
         var response = await _classUnderTest.Execute(firstName, lastName);
 
         response.Error.Should().BeEquivalentTo(expectedResponse.Error);
-        response.Customers[0].Id.Should().BeEquivalentTo(stubbedResponse[0].AccountCd);
+        response.Customers[0].Id.Should().BeEquivalentTo(stubbedResponse[0].AccountReference.ToString());
         response.Customers[0].FirstName.Should().BeEquivalentTo(stubbedResponse[0].FirstName);
         response.Customers[0].LastName.Should().BeEquivalentTo(stubbedResponse[0].LastName);
         response.Customers[0].FullAddress.Line1.Should().BeEquivalentTo(stubbedResponse[0].AddressLine1);
