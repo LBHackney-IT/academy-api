@@ -65,7 +65,7 @@ resources:
       Type: AWS::IAM::Role
       Properties:
         Path: /${self:service}/${self:provider.stage}/
-        RoleName: ${self:service}-{self:provider.stage}-lambdaExecutionRole
+        RoleName: ${self:service}-${self:provider.stage}-lambdaExecutionRole
         AssumeRolePolicyDocument:
           Version: '2012-10-17'
           Statement:
