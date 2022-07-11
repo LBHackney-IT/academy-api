@@ -29,10 +29,6 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
         {
             var accounts = await _councilTaxSearchGateway.GetAccountsByFullName(firstName, lastName);
 
-            Console.WriteLine("*********** DEBUG RESPONSE ************");
-            Console.WriteLine(JsonConvert.SerializeObject(accounts));
-            Console.WriteLine($"The total amount of results is ${accounts.Count}");
-
             if (accounts.Count == 0)
             {
                 Console.WriteLine("Count is zero");

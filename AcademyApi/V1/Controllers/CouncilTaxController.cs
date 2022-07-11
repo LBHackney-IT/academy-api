@@ -7,6 +7,7 @@ using Hackney.Core.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace AcademyApi.V1.Controllers
 {
@@ -42,6 +43,9 @@ namespace AcademyApi.V1.Controllers
             Console.WriteLine("HIT CONTROLLER");
             Console.WriteLine("******************");
             var result = _councilTaxSearchUseCase.Execute(firstName, lastName).Result;
+            Console.WriteLine("******************");
+            Console.WriteLine(JsonConvert.SerializeObject(result));
+
             return Ok(result);
         }
 
