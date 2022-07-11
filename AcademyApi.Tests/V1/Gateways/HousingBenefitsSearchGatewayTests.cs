@@ -17,7 +17,7 @@ public class HousingBenefitsSearchGatewayTests : DatabaseTests
     }
 
     [Test]
-    public void GetsEntityMatchingQuery()
+    public void GetAccountsByFullNameReturnsHousingBenefitsSearchResultList()
     {
         var expected = new HousingBenefitsSearchResult
         {
@@ -40,5 +40,23 @@ public class HousingBenefitsSearchGatewayTests : DatabaseTests
         var response = _classUnderTest.GetAccountsByFullName(expected.FirstName, expected.LastName).Result;
 
         expected.Should().Equals(response[0]);
+    }
+
+    [Test]
+    public void GetAccountByAccountRefReturnsHousingBenefitsRecord()
+    {
+        var expected = new HousingBenefitsRecord();
+
+        var response = _classUnderTest.GetAccountByAccountRef(1).Result;
+
+        expected.Should().Equals(response);
+    }
+
+    [Test]
+    public void GetAccountByAccountRefNotFoundReturnsNull()
+    {
+        var response = _classUnderTest.GetAccountByAccountRef(1).Result;
+
+        response.Should().BeNull();
     }
 }

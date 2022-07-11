@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
-using AcademyApi.V1.Boundary;
-using AcademyApi.V1.Boundary.Response;
 using AcademyApi.V1.Domain;
 using AcademyApi.V1.Gateways.Interfaces;
 using AcademyApi.V1.Infrastructure;
@@ -87,6 +85,31 @@ WHERE
             }
         }
         return foundResults;
+    }
+
+    public async Task<HousingBenefitsRecord> GetAccountByAccountRef(int accountRef)
+    {
+#nullable enable
+        HousingBenefitsRecord? account = null;
+#nullable disable
+
+        using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
+        {
+            command.CommandText = "";
+            command.CommandType = CommandType.Text;
+
+            await _academyContext.Database.OpenConnectionAsync();
+            var reader = await command.ExecuteReaderAsync();
+            using (reader)
+            {
+
+                while (await reader.ReadAsync())
+                {
+                }
+            }
+        }
+
+        return account;
     }
 
     private static string SafeGetString(DbDataReader reader, int colIndex)

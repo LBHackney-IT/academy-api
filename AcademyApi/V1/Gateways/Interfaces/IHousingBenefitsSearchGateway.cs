@@ -7,4 +7,6 @@ namespace AcademyApi.V1.Gateways.Interfaces;
 public interface IHousingBenefitsSearchGateway
 {
     Task<List<HousingBenefitsSearchResult>> GetAccountsByFullName(string firstName, string lastName);
+
+    Task<HousingBenefitsRecord> GetAccountByAccountRef(int accountRef);
 }
