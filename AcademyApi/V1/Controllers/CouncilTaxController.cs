@@ -39,14 +39,8 @@ namespace AcademyApi.V1.Controllers
         [Route("search")]
         public IActionResult Search([FromQuery] string firstName, string lastName)
         {
-            Console.WriteLine("******************");
-            Console.WriteLine("HIT CONTROLLER");
-            Console.WriteLine("******************");
-            var result = _councilTaxSearchUseCase.Execute(firstName, lastName).Result;
-            Console.WriteLine("******************");
-            Console.WriteLine(JsonConvert.SerializeObject(result));
-
-            return Ok(result);
+           var result = _councilTaxSearchUseCase.Execute(firstName, lastName).Result;
+           return Ok(result);
         }
 
         /// <summary>
