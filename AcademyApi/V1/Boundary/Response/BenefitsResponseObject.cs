@@ -14,6 +14,7 @@ namespace AcademyApi.V1.Boundary.Response
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
+        public string NiNumber { get; set; }
         public Address FullAddress { get; set; }
         public string PostCode { get; set; }
         public List<HouseHoldMember> HouseholdMembers { get; set; }
@@ -28,7 +29,7 @@ namespace AcademyApi.V1.Boundary.Response
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
     }
-    public abstract class Benefits
+    public class Benefits
     {
         public decimal Amount { get; set; }
         public string Description { get; set; }

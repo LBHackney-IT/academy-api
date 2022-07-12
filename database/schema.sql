@@ -205,3 +205,40 @@ insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_
 insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (6908963, 18, '2019-09-05', '4065 Debs Hill', '8491 John Wall Plaza', 'LONDON', 'R1 1GT');
 insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (6724267, 9, '2019-05-01', '540 Pawling Street', '063 Mitchell Way', 'LONDON', 'U9 1CX');
 insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (6969380, 20, '2019-04-28', '0 Clemons Place', '93931 Norway Maple Street', 'LONDON', 'F6 5QI');
+
+CREATE TABLE [hbincome] (
+  [claim_id] int,
+  [house_id] smallint,
+  [inc_amt] numeric(14,2),
+  [freq_period] smallint,
+  [freq_len] smallint,
+  [inc_code] nvarchar(3),
+  );
+
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (5260765, 1, 89.56, 1, 2, 'DLL');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (5759744, 1, 27.61, 1, 2, 'DLL');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (6060591, 2, 2.03, 1, 2, 'DLL');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (5479047, 1, 29.48, 1, 2, 'DLL');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (5879391, 3, 22.47, 1, 2, 'DLL');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (6115325, 3, 2.25, 1, 2, 'DLL');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (5696752, 1, 67.75, 1, 2, 'YTS');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (6908963, 1, 58.08, 1, 2, 'YTS');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (6724267, 9, 25.13, 1, 2, 'YTS');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (6969380, 2, 45.08, 1, 2, 'YTS');
+
+CREATE TABLE [hbinccode] (
+  [code] nvarchar(3),
+  [to_date] datetime2(7),
+  [descrip1] nvarchar(64)
+  );
+
+insert into hbinccode (code, to_date, descrip1) values ('DLL', '2099-12-31', 'Future-proofed motivating workforce');
+insert into hbinccode (code, to_date, descrip1) values ('DLL', '2099-12-31', 'Virtual encompassing internet solution');
+insert into hbinccode (code, to_date, descrip1) values ('DLL', '2099-12-31', 'Multi-lateral tertiary extranet');
+insert into hbinccode (code, to_date, descrip1) values ('DLL', '2099-12-31', 'Advanced clear-thinking algorithm');
+insert into hbinccode (code, to_date, descrip1) values ('YTS', '2099-12-31', 'Managed methodical framework');
+insert into hbinccode (code, to_date, descrip1) values ('YTS', '2099-12-31', 'Enterprise-wide coherent service-desk');
+insert into hbinccode (code, to_date, descrip1) values ('YTS', '2099-12-31', 'Team-oriented system-worthy migration');
+insert into hbinccode (code, to_date, descrip1) values ('YTS', '2099-12-31', 'Multi-channelled holistic alliance');
+insert into hbinccode (code, to_date, descrip1) values ('YTS', '2099-12-31', 'Face to face responsive architecture');
+insert into hbinccode (code, to_date, descrip1) values ('YTS', '2099-12-31', 'Innovative tertiary monitoring');

@@ -26,6 +26,10 @@ public class GetHousingBenefitsCustomerUseCase : IGetHousingBenefitsCustomerUseC
         int claimId = Int32.Parse(benefitsIdParts[0]);
         int personRef = Int32.Parse(benefitsIdParts[1]);
 
-        return await _housingBenefitsGateway.GetCustomer(claimId, personRef);
+        var customer = await _housingBenefitsGateway.GetCustomer(claimId, personRef);
+        if (customer == null) return null;
+        customer.Benefits = await _housingBenefitsGateway.GetBenefits(claimId);
+
+        return customer;
     }
 }

@@ -10,4 +10,6 @@ public interface IHousingBenefitsGateway
     Task<List<HousingBenefitsSearchResult>> GetAccountsByFullName(string firstName, string lastName);
 
     Task<BenefitsResponseObject> GetCustomer(int claimId, int personRef);
+
+    Task<List<Benefits>> GetBenefits(int claimId);
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AcademyApi.V1.Boundary.Response;
 using AcademyApi.V1.Domain;
 using AcademyApi.V1.Gateways;
@@ -90,5 +91,27 @@ public class HousingBenefitsGatewayTests : DatabaseTests
         var response = _classUnderTest.GetCustomer(1, 1).Result;
 
         response.Should().BeNull();
+    }
+
+    [Test]
+    public async Task GetBenefitsReturnsBenefits()
+    {
+        int claimId = 5260765;
+        var stubBenefits = new Benefits()
+        {
+            Amount = 89.56M, Description = "Future-proofed motivating workforce", Period = "1", Frequency = "2",
+        };
+
+        var response = await _classUnderTest.GetBenefits(claimId);
+
+        response[0].Should().BeEquivalentTo(stubBenefits);
+    }
+
+    [Test]
+    public void GetBenefitsReturnsEmptyListIfNotFound()
+    {
+        var response = _classUnderTest.GetBenefits(1).Result;
+
+        response.Should().BeEmpty();
     }
 }
