@@ -8,17 +8,14 @@ provider:
     apiGateway: true
   vpc: ${self:custom.vpc}
   stage: ${opt:stage}
-  # TODO: Enable this line if DynamoDb is in use
-  #account: ${opt:account}
   region: eu-west-2
-  apiKeys:
-    - secureAccess:
-      - api-key-${self:service}-${self:provider.stage}
-  usagePlan:
-    - secureAccess:
-        throttle:
-          burstLimit: 200
-          rateLimit: 100
+  apiGateway:
+    apiKeys:
+      - name: api-key-${self:service}-${self:provider.stage}
+        value: ${ssm:/academy-api/${self:provider.stage}/academy-api-key}
+
+
+
 
 package:
 # TODO: Rename zipfile in build.sh and build.cmd to match this
@@ -37,12 +34,7 @@ functions:
       - http:
           path: /{proxy+}
           method: ANY
-          authorizer:
-            arn: ${ssm:/api-authenticator/${self:provider.stage}/arn}
-            type: request
-            resultTtlInSeconds: 0
-            identitySource: method.request.header.Authorization
-            managedExternally: true
+          private: true
           cors:
             origin: '*'
             headers:
@@ -58,7 +50,7 @@ functions:
       - http:
           path: /swagger/{proxy+}
           method: GET
-          private: false
+          private: true
 resources:
   Resources:
     lambdaExecutionRole:
