@@ -9,6 +9,14 @@ provider:
   vpc: ${self:custom.vpc}
   stage: ${opt:stage}
   region: eu-west-2
+  apiKeys:
+    - secureAccess:
+        - api-key-${self:service}-${self:provider.stage}
+    usagePlan:
+      - secureAccess:
+          throttle:
+            burstLimit: 200
+            rateLimit: 100
 #  apiGateway:
 #    apiKeys:
 #      - name: api-key-${self:service}-${self:provider.stage}
