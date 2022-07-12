@@ -9,13 +9,10 @@ provider:
   vpc: ${self:custom.vpc}
   stage: ${opt:stage}
   region: eu-west-2
-  apiGateway:
-    apiKeys:
-      - name: api-key-${self:service}-${self:provider.stage}
-        value: ${ssm:/academy-api/${self:provider.stage}/academy-api-key}
-
-
-
+#  apiGateway:
+#    apiKeys:
+#      - name: api-key-${self:service}-${self:provider.stage}
+#        value: ${ssm:/academy-api/${self:provider.stage}/academy-api-key}
 
 package:
 # TODO: Rename zipfile in build.sh and build.cmd to match this
