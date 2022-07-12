@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AcademyApi.V1.Boundary.Response;
-using AcademyApi.V1.Domain;
 using AcademyApi.V1.Gateways.Interfaces;
 using AcademyApi.V1.UseCase;
 using AutoFixture;
@@ -18,7 +17,6 @@ public class GetHousingBenefitsCustomerUseCaseTests : LogCallAspectFixture
 {
     private Mock<IHousingBenefitsGateway> _mockGateway;
     private GetHousingBenefitsCustomerUseCase _classUnderTest;
-    private Fixture _fixture = new();
 
     [SetUp]
     public void Setup()
@@ -65,7 +63,7 @@ public class GetHousingBenefitsCustomerUseCaseTests : LogCallAspectFixture
         _mockGateway.Setup(x =>
             x.GetCustomer(claimId, personRef)).ReturnsAsync(stubBenefitsResponseObject);
 
-        var response = await _classUnderTest.Execute($"{claimId}/{personRef}");
+        var response = await _classUnderTest.Execute($"{claimId}{GetHousingBenefitsCustomerUseCase.IdSeparator}{personRef}");
 
         response.Should().BeEquivalentTo(stubBenefitsResponseObject);
     }
@@ -76,7 +74,7 @@ public class GetHousingBenefitsCustomerUseCaseTests : LogCallAspectFixture
         _mockGateway.Setup(x =>
             x.GetCustomer(1, 1)).ReturnsAsync((BenefitsResponseObject) null);
 
-        var response = await _classUnderTest.Execute("1/1");
+        var response = await _classUnderTest.Execute($"1{GetHousingBenefitsCustomerUseCase.IdSeparator}1");
 
         response.Should().BeNull();
     }

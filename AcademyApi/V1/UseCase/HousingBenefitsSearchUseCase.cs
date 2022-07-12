@@ -33,7 +33,7 @@ public class HousingBenefitsSearchUseCase : IHousingBenefitsSearchUseCase
         {
             var searchResponse = new SearchResponseObject()
             {
-                Id = $"{account.ClaimId.ToString()}/{account.PersonReference.ToString()}",
+                Id = $"{account.ClaimId.ToString()}{GetHousingBenefitsCustomerUseCase.IdSeparator}{account.PersonReference.ToString()}",
                 FirstName = account.FirstName,
                 LastName = account.LastName,
                 DateOfBirth = account.DateOfBirth,

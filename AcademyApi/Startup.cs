@@ -195,6 +195,7 @@ namespace AcademyApi
             services.AddScoped<IGetByIdUseCase, GetByIdUseCase>();
             services.AddScoped<ICouncilTaxSearchUseCase, CouncilTaxSearchUseCase>();
             services.AddScoped<IHousingBenefitsSearchUseCase, HousingBenefitsSearchUseCase>();
+            services.AddScoped<IGetHousingBenefitsCustomerUseCase, GetHousingBenefitsCustomerUseCase>();
             services.AddScoped<IGetCouncilTaxCustomerUseCase, GetCouncilTaxCustomerUseCase>();
         }
 
