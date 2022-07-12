@@ -12,6 +12,7 @@ namespace AcademyApi.Tests.V1.Controllers
     {
         private HousingBenefitsController _classUnderTest;
         private Mock<IHousingBenefitsSearchUseCase> _mockSearchUseCase;
+        private Mock<IGetHousingBenefitsCustomerUseCase> _mockGetCustomerUseCase;
         private Fixture _fixture;
 
         [SetUp]
@@ -19,7 +20,8 @@ namespace AcademyApi.Tests.V1.Controllers
         {
             _fixture = new Fixture();
             _mockSearchUseCase = new Mock<IHousingBenefitsSearchUseCase>();
-            _classUnderTest = new HousingBenefitsController(_mockSearchUseCase.Object);
+            _mockGetCustomerUseCase = new Mock<IGetHousingBenefitsCustomerUseCase>();
+            _classUnderTest = new HousingBenefitsController(_mockSearchUseCase.Object, _mockGetCustomerUseCase.Object);
         }
 
         [Test]
@@ -31,6 +33,16 @@ namespace AcademyApi.Tests.V1.Controllers
             _classUnderTest.Search(dummyFirstName, dummyLastName);
 
             _mockSearchUseCase.Verify(x => x.Execute(dummyFirstName, dummyLastName), Times.Once);
+        }
+
+        [Test]
+        public void ViewRecordGetCustomerUseCaseExecutesOnce()
+        {
+            string benefitsId = _fixture.Create<string>();
+
+            _classUnderTest.ViewRecord(benefitsId);
+
+            _mockGetCustomerUseCase.Verify(x => x.Execute(benefitsId), Times.Once);
         }
     }
 }
