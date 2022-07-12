@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using AcademyApi.V1.Boundary.Response;
 using AcademyApi.V1.Domain;
 using AcademyApi.V1.Gateways;
 using FluentAssertions;
 using NUnit.Framework;
+using Address = AcademyApi.V1.Boundary.Address;
 
 namespace AcademyApi.Tests.V1.Gateways;
 
@@ -46,24 +48,40 @@ public class HousingBenefitsGatewayTests : DatabaseTests
     [Test]
     public void GetCustomerReturnsHousingBenefitsRecord()
     {
-        var expected = new BenefitsResponseObject
+        var stubBenefitsResponseObject = new BenefitsResponseObject
         {
-            ClaimId = 0,
-            CheckDigit = null,
-            PersonReference = 0,
-            Title = null,
-            FirstName = null,
-            LastName = null,
-            DateOfBirth = default,
-            FullAddress = null,
-            PostCode = null,
-            HouseholdMembers = null,
+            ClaimId = 5260765,
+            CheckDigit = "6",
+            PersonReference = 1,
+            Title = "Ms",
+            FirstName = "Elwira",
+            LastName = "Moncur",
+            DateOfBirth = new DateTime(1971, 12, 22),
+            FullAddress = new Address()
+            {
+                Line1 = "6 Cascade Junction",
+                Line2 = "49 Norway Maple Pass",
+                Line3 = "LONDON",
+                Line4 = "",
+                Postcode = "I3 0RP",
+            },
+            PostCode = "I3 0RP",
+            HouseholdMembers = new List<HouseHoldMember>()
+            {
+                new()
+                {
+                    Title = "Ms",
+                    FirstName = "Elwira",
+                    LastName = "Moncur",
+                    DateOfBirth = new DateTime(1971, 12, 22),
+                }
+            },
             Benefits = null
         };
 
-        var response = _classUnderTest.GetCustomer(1, 1).Result;
+        var response = _classUnderTest.GetCustomer(stubBenefitsResponseObject.ClaimId, stubBenefitsResponseObject.PersonReference).Result;
 
-        response.Should().BeEquivalentTo(expected);
+        response.Should().BeEquivalentTo(stubBenefitsResponseObject);
     }
 
     [Test]

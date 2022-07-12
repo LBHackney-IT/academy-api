@@ -90,13 +90,11 @@ WHERE
 
     public async Task<BenefitsResponseObject> GetCustomer(int claimId, int personRef)
     {
-#nullable enable
-        BenefitsResponseObject? benefitsResponseObject = null;
-#nullable disable
         var query = @"
 SELECT
     dbo.hbclaim.claim_id,
     dbo.hbclaim.check_digit,
+    dbo.hbmember.person_ref,
     dbo.hbmember.title,
     dbo.hbmember.forename,
     dbo.hbmember.surname,
@@ -106,8 +104,7 @@ SELECT
     dbo.hbhousehold.addr2,
     dbo.hbhousehold.addr3,
     dbo.hbhousehold.addr4,
-  dbo.hbhousehold.post_code,
-  dbo.hbclaim.status_ind
+  dbo.hbhousehold.post_code
 FROM
   dbo.hbmember
   JOIN dbo.hbclaim ON dbo.hbclaim.claim_id = dbo.hbmember.claim_id
@@ -129,14 +126,42 @@ WHERE dbo.hbmember.claim_id = @claimId
             var reader = await command.ExecuteReaderAsync();
             using (reader)
             {
-                while (await reader.ReadAsync())
+                var record = await reader.ReadAsync();
+
+                if (!record) return null;
+
+                return new BenefitsResponseObject
                 {
-                    //
-                }
+                    ClaimId = SafeGetInt(reader, 0),
+                    CheckDigit = SafeGetString(reader, 1),
+                    PersonReference = SafeGetInt(reader, 2),
+                    Title = SafeGetString(reader, 3),
+                    FirstName = SafeGetString(reader, 4),
+                    LastName = SafeGetString(reader, 5),
+                    DateOfBirth = reader.GetDateTime(6),
+                    FullAddress = new()
+                    {
+                        Line1 = SafeGetString(reader, 8),
+                        Line2 = SafeGetString(reader, 9),
+                        Line3 = SafeGetString(reader, 10),
+                        Line4 = SafeGetString(reader, 11),
+                        Postcode = SafeGetString(reader, 12),
+                    },
+                    PostCode = SafeGetString(reader, 12),
+                    HouseholdMembers = new List<HouseHoldMember>()
+                    {
+                        new()
+                        {
+                            Title = SafeGetString(reader, 3),
+                            FirstName = SafeGetString(reader, 4),
+                            LastName = SafeGetString(reader, 5),
+                            DateOfBirth = reader.GetDateTime(6),
+                        }
+                    },
+                    Benefits = null
+                };
             }
         }
-
-        return benefitsResponseObject;
     }
 
     private static string SafeGetString(DbDataReader reader, int colIndex)
