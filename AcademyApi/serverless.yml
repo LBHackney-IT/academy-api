@@ -9,14 +9,10 @@ provider:
   vpc: ${self:custom.vpc}
   stage: ${opt:stage}
   region: eu-west-2
-  apiKeys:
-    - secureAccess:
-        - api-key-${self:service}-${self:provider.stage}
-  usagePlan:
-    - secureAccess:
-        throttle:
-          burstLimit: 200
-          rateLimit: 100
+  apiGateway:
+    apiKeys:
+      - name: api-key-${self:service}-${self:provider.stage}
+        value: ${ssm:/academy-api/${self:provider.stage}/academy-api-key}
 
 package:
   # TODO: Rename zipfile in build.sh and build.cmd to match this
@@ -35,6 +31,7 @@ functions:
       - http:
           path: /{proxy+}
           method: ANY
+          private: true
           cors:
             origin: '*'
             headers:
@@ -46,7 +43,7 @@ functions:
               - X-Amz-Security-Token
               - X-Amz-User-Agent
               - x-correlation-id
-            allowCredentials: false
+            allowCredentials: true
       - http:
           path: /swagger/{proxy+}
           method: GET
