@@ -183,7 +183,7 @@ namespace AcademyApi
         private static void RegisterGateways(IServiceCollection services)
         {
             services.AddScoped<ICouncilTaxSearchGateway, CouncilTaxSearchGateway>();
-            services.AddScoped<IHousingBenefitsSearchGateway, HousingBenefitsSearchGateway>();
+            services.AddScoped<IHousingBenefitsGateway, HousingBenefitsGateway>();
 
             //TODO: For DynamoDb, remove the line above and uncomment the line below.
             //services.AddScoped<IExampleDynamoGateway, DynamoDbGateway>();

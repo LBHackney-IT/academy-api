@@ -7,9 +7,9 @@ namespace AcademyApi.V1.Boundary.Response
 
     public class BenefitsResponseObject
     {
-        public string ClaimId { get; set; }
+        public int ClaimId { get; set; }
         public string CheckDigit { get; set; }
-        public string PersonReference { get; set; }
+        public int PersonReference { get; set; }
         public string Title { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -21,7 +21,7 @@ namespace AcademyApi.V1.Boundary.Response
         // TODO: consider returning housing benefits claim ID
     }
 
-    public abstract class HouseHoldMember
+    public class HouseHoldMember
     {
         public string Title { get; set; }
         public string FirstName { get; set; }

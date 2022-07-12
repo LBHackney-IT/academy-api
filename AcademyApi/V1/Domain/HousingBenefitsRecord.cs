@@ -2,6 +2,7 @@ using System;
 
 namespace AcademyApi.V1.Domain
 {
+    // TODO: Find more fields from Academy
     public class HousingBenefitsRecord
     {
         public int AccountReference { get; set; }

@@ -1,4 +1,5 @@
 using System;
+using AcademyApi.V1.Boundary.Response;
 using AcademyApi.V1.Domain;
 using AcademyApi.V1.Gateways;
 using FluentAssertions;
@@ -8,12 +9,12 @@ namespace AcademyApi.Tests.V1.Gateways;
 
 public class HousingBenefitsSearchGatewayTests : DatabaseTests
 {
-    private HousingBenefitsSearchGateway _classUnderTest;
+    private HousingBenefitsGateway _classUnderTest;
 
     [SetUp]
     public void Setup()
     {
-        _classUnderTest = new HousingBenefitsSearchGateway(AcademyContext);
+        _classUnderTest = new HousingBenefitsGateway(AcademyContext);
     }
 
     [Test]
@@ -43,19 +44,32 @@ public class HousingBenefitsSearchGatewayTests : DatabaseTests
     }
 
     [Test]
-    public void GetAccountByAccountRefReturnsHousingBenefitsRecord()
+    public void GetCustomerReturnsHousingBenefitsRecord()
     {
-        var expected = new HousingBenefitsRecord();
+        var expected = new BenefitsResponseObject
+        {
+            ClaimId = 0,
+            CheckDigit = null,
+            PersonReference = 0,
+            Title = null,
+            FirstName = null,
+            LastName = null,
+            DateOfBirth = default,
+            FullAddress = null,
+            PostCode = null,
+            HouseholdMembers = null,
+            Benefits = null
+        };
 
-        var response = _classUnderTest.GetAccountByAccountRef(1).Result;
+        var response = _classUnderTest.GetCustomer(1, 1).Result;
 
-        expected.Should().Equals(response);
+        response.Should().BeEquivalentTo(expected);
     }
 
     [Test]
-    public void GetAccountByAccountRefNotFoundReturnsNull()
+    public void GetCustomerReturnsNullIfNotFound()
     {
-        var response = _classUnderTest.GetAccountByAccountRef(1).Result;
+        var response = _classUnderTest.GetCustomer(1, 1).Result;
 
         response.Should().BeNull();
     }
