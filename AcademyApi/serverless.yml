@@ -31,7 +31,6 @@ functions:
       - http:
           path: /{proxy+}
           method: ANY
-          private: true
           cors:
             origin: '*'
             headers:
@@ -47,7 +46,7 @@ functions:
       - http:
           path: /swagger/{proxy+}
           method: GET
-          private: true
+          private: false
 resources:
   Resources:
     lambdaExecutionRole:
