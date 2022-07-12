@@ -12,18 +12,14 @@ provider:
   apiKeys:
     - secureAccess:
         - api-key-${self:service}-${self:provider.stage}
-    usagePlan:
-      - secureAccess:
-          throttle:
-            burstLimit: 200
-            rateLimit: 100
-#  apiGateway:
-#    apiKeys:
-#      - name: api-key-${self:service}-${self:provider.stage}
-#        value: ${ssm:/academy-api/${self:provider.stage}/academy-api-key}
+  usagePlan:
+    - secureAccess:
+        throttle:
+          burstLimit: 200
+          rateLimit: 100
 
 package:
-# TODO: Rename zipfile in build.sh and build.cmd to match this
+  # TODO: Rename zipfile in build.sh and build.cmd to match this
   artifact: ./bin/release/net6.0/academy-api.zip
 
 functions:
@@ -32,8 +28,8 @@ functions:
     handler: AcademyApi::AcademyApi.LambdaEntryPoint::FunctionHandlerAsync
     role: lambdaExecutionRole
     environment:
-# TODO: Create ssm variables for this API's postgres mirror
-# TODO: Remove this line if DynamoDb is being used
+      # TODO: Create ssm variables for this API's postgres mirror
+      # TODO: Remove this line if DynamoDb is being used
       CONNECTION_STRING: Server=${ssm:/academy-api/${self:provider.stage}/db-hostname},${ssm:/academy-api/${self:provider.stage}/db-port};Database=${ssm:/academy-api/${self:provider.stage}/db-database};User Id=${ssm:/academy-api/${self:provider.stage}/db-username};Password=${ssm:/academy-api/${self:provider.stage}/db-password};
     events:
       - http:
@@ -61,7 +57,7 @@ resources:
       Type: AWS::IAM::Role
       Properties:
         Path: /${self:service}/${self:provider.stage}/
-        RoleName: ${self:service}-${self:provider.stage}-lambdaExecutionRole
+        RoleName: ${self:service}-lambdaExecutionRole
         AssumeRolePolicyDocument:
           Version: '2012-10-17'
           Statement:
