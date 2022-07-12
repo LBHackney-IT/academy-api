@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace AcademyApi.Tests.V1.Gateways;
 
-public class HousingBenefitsSearchGatewayTests : DatabaseTests
+public class HousingBenefitsGatewayTests : DatabaseTests
 {
     private HousingBenefitsGateway _classUnderTest;
 
