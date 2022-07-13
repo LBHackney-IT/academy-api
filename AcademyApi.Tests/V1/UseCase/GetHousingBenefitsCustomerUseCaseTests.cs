@@ -15,7 +15,7 @@ public class GetHousingBenefitsCustomerUseCaseTests : LogCallAspectFixture
 {
     private Mock<IHousingBenefitsGateway> _mockGateway;
     private GetHousingBenefitsCustomerUseCase _classUnderTest;
-    private Fixture _fixture = new();
+    private readonly Fixture _fixture = new();
 
     [SetUp]
     public void Setup()

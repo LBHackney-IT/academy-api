@@ -58,6 +58,7 @@ public class HousingBenefitsGatewayTests : DatabaseTests
             FirstName = "Elwira",
             LastName = "Moncur",
             DateOfBirth = new DateTime(1971, 12, 22),
+            NiNumber = "CD877332Z",
             FullAddress = new Address()
             {
                 Line1 = "6 Cascade Junction",

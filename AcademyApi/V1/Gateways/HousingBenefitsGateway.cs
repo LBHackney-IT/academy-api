@@ -139,6 +139,7 @@ WHERE dbo.hbmember.claim_id = @claimId
                     FirstName = SafeGetString(reader, 4),
                     LastName = SafeGetString(reader, 5),
                     DateOfBirth = reader.GetDateTime(6),
+                    NiNumber = SafeGetString(reader, 7),
                     FullAddress = new()
                     {
                         Line1 = SafeGetString(reader, 8),
