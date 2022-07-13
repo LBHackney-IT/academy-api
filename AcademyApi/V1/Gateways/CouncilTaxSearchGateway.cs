@@ -186,18 +186,18 @@ SELECT distinct
                                     LastName = SafeGetString(reader, 4),
                                     ForwardingAddress = new Address()
                                     {
-                                        AddressLine1 = SafeGetString(reader, 5),
-                                        AddressLine2 = SafeGetString(reader, 6),
-                                        AddressLine3 = SafeGetString(reader, 7),
-                                        AddressLine4 = SafeGetString(reader, 8),
+                                        Line1 = SafeGetString(reader, 5),
+                                        Line2 = SafeGetString(reader, 6),
+                                        Line3 = SafeGetString(reader, 7),
+                                        Line4 = SafeGetString(reader, 8),
                                         Postcode = SafeGetString(reader, 9),
                                     },
                                     PropertyAddress = new Address()
                                     {
-                                        AddressLine1 = SafeGetString(reader, 10),
-                                        AddressLine2 = SafeGetString(reader, 11),
-                                        AddressLine3 = SafeGetString(reader, 12),
-                                        AddressLine4 = SafeGetString(reader, 13),
+                                        Line1 = SafeGetString(reader, 10),
+                                        Line2 = SafeGetString(reader, 11),
+                                        Line3 = SafeGetString(reader, 12),
+                                        Line4 = SafeGetString(reader, 13),
                                         Postcode = SafeGetString(reader, 14),
                                     },
                                     AccountBalance = SafeGetDecimal(reader, 15),

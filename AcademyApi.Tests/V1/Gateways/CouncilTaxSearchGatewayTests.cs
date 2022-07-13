@@ -46,10 +46,10 @@ public class CouncilTaxSearchGatewayTests : DatabaseTests
             AccountReference = 815631207,
             PropertyAddress = new Address()
             {
-                AddressLine1 = "5 Northfield Park",
-                AddressLine2 = "58 Muir Plaza",
-                AddressLine3 = "LONDON",
-                AddressLine4 = "",
+                Line1 = "5 Northfield Park",
+                Line2 = "58 Muir Plaza",
+                Line3 = "LONDON",
+                Line4 = "",
                 Postcode = "T9 7KR",
             },
             ForwardingAddress = new Address(),
