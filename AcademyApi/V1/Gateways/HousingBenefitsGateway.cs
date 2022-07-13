@@ -165,7 +165,9 @@ WHERE dbo.hbmember.claim_id = @claimId
 
     public async Task<List<Benefits>> GetBenefits(int claimId)
     {
-        var benefits = new List<Benefits>();
+#nullable enable
+        List<Benefits>? benefits = null;
+#nullable disable
         var query = @"
 SELECT
 hbincome.inc_amt as amount,
@@ -193,6 +195,7 @@ AND hbincome.claim_id = @claimId
             {
                 while (await reader.ReadAsync())
                 {
+                    benefits ??= new();
                     benefits.Add(new()
                     {
                         Amount = reader.GetDecimal(0),

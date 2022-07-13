@@ -77,7 +77,6 @@ public class HousingBenefitsGatewayTests : DatabaseTests
                     DateOfBirth = new DateTime(1971, 12, 22),
                 }
             },
-            Benefits = null
         };
 
         var response = _classUnderTest.GetCustomer(stubBenefitsResponseObject.ClaimId, stubBenefitsResponseObject.PersonReference).Result;
@@ -99,7 +98,10 @@ public class HousingBenefitsGatewayTests : DatabaseTests
         int claimId = 5260765;
         var stubBenefits = new Benefits()
         {
-            Amount = 89.56M, Description = "Future-proofed motivating workforce", Period = "1", Frequency = "2",
+            Amount = 89.56M,
+            Description = "Future-proofed motivating workforce",
+            Period = "1",
+            Frequency = "2",
         };
 
         var response = await _classUnderTest.GetBenefits(claimId);
@@ -108,10 +110,10 @@ public class HousingBenefitsGatewayTests : DatabaseTests
     }
 
     [Test]
-    public void GetBenefitsReturnsEmptyListIfNotFound()
+    public void GetBenefitsReturnsNullIfNotFound()
     {
         var response = _classUnderTest.GetBenefits(1).Result;
 
-        response.Should().BeEmpty();
+        response.Should().BeNull();
     }
 }
