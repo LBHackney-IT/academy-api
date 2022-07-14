@@ -14,8 +14,6 @@ namespace AcademyApi.V1.Domain
 
         public string LastName { get; set; }
 
-        public string PaymentMethod { get; set; }
-
         public decimal AccountBalance { get; set; }
 
         public Address PropertyAddress { get; set; }
@@ -25,13 +23,13 @@ namespace AcademyApi.V1.Domain
 
     public class Address
     {
-        public string AddressLine1 { get; set; }
+        public string Line1 { get; set; }
 
-        public string AddressLine2 { get; set; }
+        public string Line2 { get; set; }
 
-        public string AddressLine3 { get; set; }
+        public string Line3 { get; set; }
 
-        public string AddressLine4 { get; set; }
+        public string Line4 { get; set; }
 
         public string Postcode { get; set; }
     }

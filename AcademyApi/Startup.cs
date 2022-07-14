@@ -167,7 +167,7 @@ namespace AcademyApi
                             Console.WriteLine("@-@-@-@-@-@-@-@-@");
                         }
                     }
-                        // .AddXRayInterceptor(false)
+                    // .AddXRayInterceptor(false)
                     );
             }
             catch (Exception e)
@@ -183,6 +183,7 @@ namespace AcademyApi
         private static void RegisterGateways(IServiceCollection services)
         {
             services.AddScoped<ICouncilTaxSearchGateway, CouncilTaxSearchGateway>();
+            services.AddScoped<IHousingBenefitsSearchGateway, HousingBenefitsSearchGateway>();
 
             //TODO: For DynamoDb, remove the line above and uncomment the line below.
             //services.AddScoped<IExampleDynamoGateway, DynamoDbGateway>();
@@ -193,6 +194,7 @@ namespace AcademyApi
             services.AddScoped<IGetAllUseCase, GetAllUseCase>();
             services.AddScoped<IGetByIdUseCase, GetByIdUseCase>();
             services.AddScoped<ICouncilTaxSearchUseCase, CouncilTaxSearchUseCase>();
+            services.AddScoped<IHousingBenefitsSearchUseCase, HousingBenefitsSearchUseCase>();
             services.AddScoped<IGetCouncilTaxCustomerUseCase, GetCouncilTaxCustomerUseCase>();
         }
 

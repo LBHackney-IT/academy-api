@@ -34,7 +34,7 @@ public class CouncilTaxSearchUseCaseTests : LogCallAspectFixture
     {
         var firstName = _fixture.Create<string>();
         var lastName = _fixture.Create<string>();
-        var stubbedResponse = _fixture.CreateMany<SearchResult>().ToList();
+        var stubbedResponse = _fixture.CreateMany<CouncilTaxSearchResult>().ToList();
         _mockGateway.Setup(x => x.GetAccountsByFullName(firstName, lastName)).ReturnsAsync(stubbedResponse);
 
         var expectedResponse = new SearchResponseObjectList()
@@ -46,7 +46,7 @@ public class CouncilTaxSearchUseCaseTests : LogCallAspectFixture
         var response = await _classUnderTest.Execute(firstName, lastName);
 
         response.Error.Should().BeEquivalentTo(expectedResponse.Error);
-        response.Customers[0].Id.Should().BeEquivalentTo(stubbedResponse[0].AccountCd);
+        response.Customers[0].Id.Should().BeEquivalentTo(stubbedResponse[0].AccountReference.ToString());
         response.Customers[0].FirstName.Should().BeEquivalentTo(stubbedResponse[0].FirstName);
         response.Customers[0].LastName.Should().BeEquivalentTo(stubbedResponse[0].LastName);
         response.Customers[0].FullAddress.Line1.Should().BeEquivalentTo(stubbedResponse[0].AddressLine1);
@@ -57,7 +57,7 @@ public class CouncilTaxSearchUseCaseTests : LogCallAspectFixture
     {
         var firstName = _fixture.Create<string>();
         var lastName = _fixture.Create<string>();
-        _mockGateway.Setup(x => x.GetAccountsByFullName(firstName, lastName)).ReturnsAsync(new List<SearchResult>());
+        _mockGateway.Setup(x => x.GetAccountsByFullName(firstName, lastName)).ReturnsAsync(new List<CouncilTaxSearchResult>());
 
         var expectedResponse = new SearchResponseObjectList() { Error = "No Results Found" };
 

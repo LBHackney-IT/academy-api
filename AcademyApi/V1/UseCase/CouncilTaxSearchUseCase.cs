@@ -6,6 +6,7 @@ using AcademyApi.V1.Boundary.Response;
 using AcademyApi.V1.Gateways.Interfaces;
 using AcademyApi.V1.UseCase.Interfaces;
 using Hackney.Core.Logging;
+using Newtonsoft.Json;
 
 namespace AcademyApi.V1.UseCase;
 
@@ -23,12 +24,14 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
     {
         var customerResponse = new List<SearchResponseObject>();
         string errorMsg = "";
+
         try
         {
             var accounts = await _councilTaxSearchGateway.GetAccountsByFullName(firstName, lastName);
 
             if (accounts.Count == 0)
             {
+                Console.WriteLine("Count is zero");
                 return new SearchResponseObjectList() { Error = "No Results Found" };
             }
 
@@ -37,7 +40,7 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
             {
                 var searchResponse = new SearchResponseObject()
                 {
-                    Id = account.AccountCd,
+                    Id = account.AccountReference.ToString(),
                     FirstName = account.FirstName,
                     LastName = account.LastName,
                     FullAddress = new Address()
@@ -59,7 +62,7 @@ public class CouncilTaxSearchUseCase : ICouncilTaxSearchUseCase
             Console.WriteLine(e);
             errorMsg = e.Message;
         }
-        return new SearchResponseObjectList() { Error = errorMsg, Customers = customerResponse };
 
+        return new SearchResponseObjectList() { Error = errorMsg, Customers = customerResponse };
     }
 }

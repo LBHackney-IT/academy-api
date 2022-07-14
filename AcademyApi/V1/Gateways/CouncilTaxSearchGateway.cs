@@ -24,7 +24,7 @@ public class CouncilTaxSearchGateway : ICouncilTaxSearchGateway
     }
 
     [LogCall]
-    public async Task<List<SearchResult>> GetAccountsByFullName(string firstName, string lastName)
+    public async Task<List<CouncilTaxSearchResult>> GetAccountsByFullName(string firstName, string lastName)
     {
         Console.WriteLine("------------------");
         Console.WriteLine($"gateway searching: ${firstName} ${lastName}");
@@ -48,7 +48,7 @@ WHERE dbo.ctoccupation.vacation_date IN(
   SELECT MAX(vacation_date) FROM dbo.ctoccupation WHERE dbo.ctoccupation.account_ref = dbo.ctaccount.account_ref)
   AND lead_liab_name LIKE '{lastName.ToUpper()}%{firstName.ToUpper()}';
 ";
-        var foundResults = new List<SearchResult>();
+        var foundResults = new List<CouncilTaxSearchResult>();
         try
         {
             using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
@@ -71,7 +71,7 @@ WHERE dbo.ctoccupation.vacation_date IN(
                                 Console.WriteLine("reading result");
                                 Console.WriteLine("******************");
 
-                                foundResults.Add(new SearchResult()
+                                foundResults.Add(new CouncilTaxSearchResult()
                                 {
                                     FullName = SafeGetString(reader, 0),
                                     Title = SafeGetString(reader, 1),
@@ -125,9 +125,6 @@ WHERE dbo.ctoccupation.vacation_date IN(
     [LogCall]
     public async Task<CouncilTaxRecord> GetCustomer(int accountRef)
     {
-        Console.WriteLine("------------------");
-        Console.WriteLine("------------------");
-        string currentYear = DateTime.Now.Year.ToString();
         string query = $@"
 WITH ctoccupation_cte (
     account_ref,
@@ -137,7 +134,7 @@ WITH ctoccupation_cte (
       ctoccupation.account_ref = ${accountRef}
     ORDER BY vacation_date DESC
 )
-SELECT
+SELECT distinct
   dbo.ctaccount.account_ref,
   dbo.ctaccount.account_cd,
   dbo.ctaccount.lead_liab_title,
@@ -153,17 +150,14 @@ SELECT
   dbo.ctproperty.addr3,
   dbo.ctproperty.addr4,
   dbo.ctproperty.postcode,
-  dbo.vw_acc_bal.total AS account_balance,
-  ctpaymethod.paymeth_desc AS payment_method,
+  SUM(dbo.ctnotice.notice_balance) over (partition by dbo.ctnotice.account_ref ) as account_balance
   FROM
-    ctaccount
-    JOIN vw_acc_bal ON dbo.vw_acc_bal.account_ref = dbo.ctaccount.account_ref
-    JOIN ctpaymethod ON dbo.ctpaymethod.paymeth_code = dbo.ctaccount.paymeth_code
-    JOIN ctoccupation_cte ON dbo.ctaccount.account_ref = dbo.ctoccupation_cte.account_ref
-    JOIN ctproperty ON dbo.ctproperty.property_ref = dbo.ctoccupation_cte.property_ref
+    dbo.ctaccount
+    JOIN dbo.ctnotice on dbo.ctnotice.account_ref = ctaccount.account_ref
+    JOIN ctoccupation_cte ON dbo.ctaccount.account_ref = ctoccupation_cte.account_ref
+    JOIN dbo.ctproperty ON dbo.ctproperty.property_ref = ctoccupation_cte.property_ref
   WHERE
-    dbo.ctpaymethod.paymeth_year = '${currentYear}-04-01'
-    AND dbo.ctaccount.account_ref = ${accountRef}
+    dbo.ctaccount.account_ref = ${accountRef}
 ";
         var foundResults = new CouncilTaxRecord();
         try
@@ -195,22 +189,21 @@ SELECT
                                     LastName = SafeGetString(reader, 4),
                                     ForwardingAddress = new Address()
                                     {
-                                        AddressLine1 = SafeGetString(reader, 5),
-                                        AddressLine2 = SafeGetString(reader, 6),
-                                        AddressLine3 = SafeGetString(reader, 7),
-                                        AddressLine4 = SafeGetString(reader, 8),
+                                        Line1 = SafeGetString(reader, 5),
+                                        Line2 = SafeGetString(reader, 6),
+                                        Line3 = SafeGetString(reader, 7),
+                                        Line4 = SafeGetString(reader, 8),
                                         Postcode = SafeGetString(reader, 9),
                                     },
                                     PropertyAddress = new Address()
                                     {
-                                        AddressLine1 = SafeGetString(reader, 10),
-                                        AddressLine2 = SafeGetString(reader, 11),
-                                        AddressLine3 = SafeGetString(reader, 12),
-                                        AddressLine4 = SafeGetString(reader, 13),
+                                        Line1 = SafeGetString(reader, 10),
+                                        Line2 = SafeGetString(reader, 11),
+                                        Line3 = SafeGetString(reader, 12),
+                                        Line4 = SafeGetString(reader, 13),
                                         Postcode = SafeGetString(reader, 14),
                                     },
                                     AccountBalance = SafeGetDecimal(reader, 15),
-                                    PaymentMethod = SafeGetString(reader, 16)
                                 };
                             }
                         }
