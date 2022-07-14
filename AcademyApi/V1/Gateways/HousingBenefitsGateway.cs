@@ -218,19 +218,24 @@ AND hbincome.claim_id = @claimId
         if (1 == freqLen)
         {
             benefitsPeriod = "Daily";
-        } else if (2 == freqLen)
+        }
+        else if (2 == freqLen)
         {
             benefitsPeriod = "Weekly";
-        } else if (3 == freqLen)
+        }
+        else if (3 == freqLen)
         {
             benefitsPeriod = "Monthly";
-        } else if (4 == freqLen)
+        }
+        else if (4 == freqLen)
         {
             benefitsPeriod = "Half-Yearly";
-        } else if (5 == freqLen)
+        }
+        else if (5 == freqLen)
         {
             benefitsPeriod = "Annually";
-        } else if (14 == freqLen)
+        }
+        else if (14 == freqLen)
         {
             benefitsPeriod = "Quarterly";
         }
