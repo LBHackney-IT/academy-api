@@ -4,11 +4,13 @@ using System.Data;
 using System.Data.Common;
 using System.Dynamic;
 using System.Threading.Tasks;
+using AcademyApi.V1.Boundary;
 using AcademyApi.V1.Domain;
 using AcademyApi.V1.Gateways.Interfaces;
 using AcademyApi.V1.Infrastructure;
 using Hackney.Core.Logging;
 using Microsoft.EntityFrameworkCore;
+using Address = AcademyApi.V1.Domain.Address;
 
 namespace AcademyApi.V1.Gateways;
 
@@ -246,87 +248,54 @@ SELECT
     }
 
         [LogCall]
-    public async Task<List<SearchResult>> GetNotes(int accountRef)
+    public async Task<List<Note>> GetNotes(int accountRef)
     {
-        Console.WriteLine("------------------");
-        Console.WriteLine("------------------");
-
         string notePadQuery = $@"select user_id, notes_db_handle from dbo.ctnotepad where account_ref = {accountRef};";
-        // select user_id, notes_db_handle from core.ctnotepad where account_ref = 30532993
-        //
-        //     select * from core.ctnotes_so where string_id = 1091665
 
-        Dictionary<string, string> notePad = new Dictionary<string, string>();
-        try
+        var foundNotes = new List<Note>();
+
+        using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
         {
-            using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
+            command.CommandText = notePadQuery;
+            command.CommandType = CommandType.Text;
+
+            await _academyContext.Database.OpenConnectionAsync();
+            var reader = await command.ExecuteReaderAsync();
+            using (reader)
             {
-                command.CommandText = notePadQuery;
-                command.CommandType = CommandType.Text;
-
-                try
+                while (await reader.ReadAsync())
                 {
-                    await _academyContext.Database.OpenConnectionAsync();
-                    var reader = await command.ExecuteReaderAsync();
-                    using (reader)
+                    foundNotes.Add(new Note()
                     {
-                        try
-                        {
-                            while (await reader.ReadAsync())
-                            {
-                                Console.WriteLine("******************");
-                                Console.WriteLine("reading result");
-                                Console.WriteLine("******************");
-
-                                foundResults.Add(new SearchResult()
-                                {
-                                    FullName = SafeGetString(reader, 0),
-                                    Title = SafeGetString(reader, 1),
-                                    FirstName = SafeGetString(reader, 2),
-                                    LastName = SafeGetString(reader, 3),
-                                    AddressLine1 = SafeGetString(reader, 4),
-                                    AddressLine2 = SafeGetString(reader, 5),
-                                    AddressLine3 = SafeGetString(reader, 6),
-                                    AddressLine4 = SafeGetString(reader, 7),
-                                    Postcode = SafeGetString(reader, 8),
-                                    AccountReference = SafeGetInt(reader, 9),
-                                    AccountCd = SafeGetString(reader, 10)
-                                });
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine("******************");
-                            Console.WriteLine("--- error running command:");
-                            Console.WriteLine(e);
-
-                            Console.WriteLine("******************");
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("000000000000000");
-                    Console.WriteLine("--- error opening connection");
-
-                    Console.WriteLine(e);
-                    Console.WriteLine("000000000000000");
-
-                    throw;
+                        Username = SafeGetString(reader, 0),
+                        StringId = SafeGetString(reader, 1).Split(':')[1],
+                    });
                 }
             }
         }
-        catch (Exception e)
+
+
+        foreach (var note in foundNotes)
         {
-            Console.WriteLine("******************");
-            Console.WriteLine("--- error creating command:");
-            Console.WriteLine(e);
+            string noteQuery = $@"select text_value from dbo.ctnotes_so where string_id = {note.StringId};";
 
-            Console.WriteLine("******************");
+            using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = noteQuery;
+                command.CommandType = CommandType.Text;
 
+                await _academyContext.Database.OpenConnectionAsync();
+                var reader = await command.ExecuteReaderAsync();
+                using (reader)
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        note.Text = SafeGetString(reader, 0);
+                    }
+                }
+            }
         }
-
-        return foundResults;
+        return foundNotes;
     }
 
     private static string SafeGetString(DbDataReader reader, int colIndex)
