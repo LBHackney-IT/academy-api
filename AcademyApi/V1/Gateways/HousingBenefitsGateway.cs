@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -67,20 +68,20 @@ WHERE
                 {
                     foundResults.Add(new HousingBenefitsSearchResult
                     {
-                        ClaimId = SafeGetInt(reader, 0),
+                        ClaimId = SafeGetInt32(reader, 0),
                         CheckDigit = SafeGetString(reader, 1),
-                        PersonReference = SafeGetInt(reader, 2),
+                        PersonReference = SafeGetInt32(reader, 2),
                         Title = SafeGetString(reader, 3),
                         FirstName = SafeGetString(reader, 4),
                         LastName = SafeGetString(reader, 5),
-                        DateOfBirth = reader.GetDateTime(6), // TODO: Make a safe get
+                        DateOfBirth = SafeGetDateTime(reader, 6),
                         NiNumber = SafeGetString(reader, 7),
                         AddressLine1 = SafeGetString(reader, 8),
                         AddressLine2 = SafeGetString(reader, 9),
                         AddressLine3 = SafeGetString(reader, 10),
                         AddressLine4 = SafeGetString(reader, 11),
                         Postcode = SafeGetString(reader, 12),
-                        AddressToDate = reader.GetDateTime(13)
+                        AddressToDate = SafeGetDateTime(reader, 13),
                     });
                 }
             }
@@ -132,13 +133,13 @@ WHERE dbo.hbmember.claim_id = @claimId
 
                 return new BenefitsResponseObject
                 {
-                    ClaimId = SafeGetInt(reader, 0),
+                    ClaimId = SafeGetInt32(reader, 0),
                     CheckDigit = SafeGetString(reader, 1),
-                    PersonReference = SafeGetInt(reader, 2),
+                    PersonReference = SafeGetInt32(reader, 2),
                     Title = SafeGetString(reader, 3),
                     FirstName = SafeGetString(reader, 4),
                     LastName = SafeGetString(reader, 5),
-                    DateOfBirth = reader.GetDateTime(6),
+                    DateOfBirth = SafeGetDateTime(reader, 6),
                     NiNumber = SafeGetString(reader, 7),
                     FullAddress = new()
                     {
@@ -156,7 +157,7 @@ WHERE dbo.hbmember.claim_id = @claimId
                             Title = SafeGetString(reader, 3),
                             FirstName = SafeGetString(reader, 4),
                             LastName = SafeGetString(reader, 5),
-                            DateOfBirth = reader.GetDateTime(6),
+                            DateOfBirth = SafeGetDateTime(reader, 6),
                         }
                     },
                 };
@@ -171,10 +172,10 @@ WHERE dbo.hbmember.claim_id = @claimId
 #nullable disable
         var query = @"
 SELECT
-hbincome.inc_amt as amount,
+hbincome.inc_amt,
 hbincome.freq_len,
 hbincome.freq_period,
-hbinccode.descrip1 as description
+hbinccode.descrip1
 FROM
     hbincome
 JOIN hbhousehold ON hbincome.claim_id = hbhousehold.claim_id AND hbincome.house_id = hbhousehold.house_id
@@ -199,10 +200,10 @@ AND hbincome.claim_id = @claimId
                     benefits ??= new();
                     benefits.Add(new()
                     {
-                        Amount = reader.GetDecimal(0),
+                        Amount = SafeGetDecimal(reader, 0),
                         Description = SafeGetString(reader, 3),
-                        Period = reader.GetInt16(2).ToString(),
-                        Frequency = reader.GetInt16(1).ToString(),
+                        Period = GetBenefitsPeriod(SafeGetDecimal(reader, 1)),
+                        Frequency = SafeGetInt16(reader, 2),
                     });
                 }
             }
@@ -210,17 +211,55 @@ AND hbincome.claim_id = @claimId
         return benefits;
     }
 
-    private static string SafeGetString(DbDataReader reader, int colIndex)
+    private static string GetBenefitsPeriod(decimal freqLen)
     {
-        if (!reader.IsDBNull(colIndex))
-            return reader.GetString(colIndex);
-        return string.Empty;
+        string benefitsPeriod = "N/A";
+
+        if (1 == freqLen)
+        {
+            benefitsPeriod = "Daily";
+        } else if (2 == freqLen)
+        {
+            benefitsPeriod = "Weekly";
+        } else if (3 == freqLen)
+        {
+            benefitsPeriod = "Monthly";
+        } else if (4 == freqLen)
+        {
+            benefitsPeriod = "Half-Yearly";
+        } else if (5 == freqLen)
+        {
+            benefitsPeriod = "Annually";
+        } else if (14 == freqLen)
+        {
+            benefitsPeriod = "Quarterly";
+        }
+
+        return benefitsPeriod;
     }
 
-    private static int SafeGetInt(DbDataReader reader, int colIndex)
+    private static decimal SafeGetDecimal(DbDataReader reader, int colIndex)
     {
-        if (!reader.IsDBNull(colIndex))
-            return reader.GetInt32(colIndex);
-        return 0;
+        return reader.IsDBNull(colIndex) ? 0.0M : reader.GetDecimal(colIndex);
+    }
+
+    private static int SafeGetInt16(DbDataReader reader, int colIndex)
+    {
+        return reader.IsDBNull(colIndex) ? 0 : reader.GetInt16(colIndex);
+    }
+
+    private static int SafeGetInt32(DbDataReader reader, int colIndex)
+    {
+        return reader.IsDBNull(colIndex) ? 0 : reader.GetInt32(colIndex);
+    }
+
+    private static DateTime SafeGetDateTime(DbDataReader reader, int colIndex)
+    {
+        return reader.IsDBNull(colIndex) ? new DateTime() : reader.GetDateTime(colIndex);
+    }
+
+    private static string SafeGetString(DbDataReader reader, int colIndex)
+    {
+        return reader.IsDBNull(colIndex) ? string.Empty : reader.GetString(colIndex);
     }
 }

@@ -29,11 +29,12 @@ namespace AcademyApi.V1.Boundary.Response
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
     }
+
     public class Benefits
     {
         public decimal Amount { get; set; }
         public string Description { get; set; }
         public string Period { get; set; }
-        public string Frequency { get; set; }
+        public int Frequency { get; set; }
     }
 }

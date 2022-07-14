@@ -101,8 +101,8 @@ public class HousingBenefitsGatewayTests : DatabaseTests
         {
             Amount = 89.56M,
             Description = "Future-proofed motivating workforce",
-            Period = "1",
-            Frequency = "2",
+            Period = "Weekly",
+            Frequency = 1
         };
 
         var response = await _classUnderTest.GetBenefits(claimId);

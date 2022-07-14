@@ -211,7 +211,7 @@ CREATE TABLE [hbincome] (
   [house_id] smallint,
   [inc_amt] numeric(14,2),
   [freq_period] smallint,
-  [freq_len] smallint,
+  [freq_len] numeric(3,0),
   [inc_code] nvarchar(3),
   );
 
