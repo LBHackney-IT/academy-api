@@ -14,6 +14,7 @@ namespace AcademyApi.Tests.V1.Controllers
         private Mock<ICouncilTaxSearchUseCase> _mockCouncilTaxSearchUseCase;
         private Fixture _fixture;
         private Mock<IGetCouncilTaxCustomerUseCase> _mockGetCouncilTaxCustomerUseCase;
+        private Mock<IGetCouncilTaxNotesUseCase> _mockGetCouncilTaxNotesUseCase;
 
         [SetUp]
         public void SetUp()
@@ -21,9 +22,11 @@ namespace AcademyApi.Tests.V1.Controllers
             _fixture = new Fixture();
             _mockCouncilTaxSearchUseCase = new Mock<ICouncilTaxSearchUseCase>();
             _mockGetCouncilTaxCustomerUseCase = new Mock<IGetCouncilTaxCustomerUseCase>();
+            _mockGetCouncilTaxNotesUseCase = new Mock<IGetCouncilTaxNotesUseCase>();
             _classUnderTest = new CouncilTaxController(
                 _mockCouncilTaxSearchUseCase.Object,
-                _mockGetCouncilTaxCustomerUseCase.Object
+                _mockGetCouncilTaxCustomerUseCase.Object,
+                _mockGetCouncilTaxNotesUseCase.Object
             );
         }
 
@@ -44,6 +47,15 @@ namespace AcademyApi.Tests.V1.Controllers
             _classUnderTest.ViewRecord(dummyCouncilTaxId);
 
             _mockGetCouncilTaxCustomerUseCase.Verify(x => x.Execute(dummyCouncilTaxId), Times.Once);
+        }
+
+        [Test]
+        public void GetNotesUseCaseIsCalled()
+        {
+            var dummyCouncilTaxId = _fixture.Create<int>();
+            _classUnderTest.GetNotes(dummyCouncilTaxId);
+
+            _mockGetCouncilTaxNotesUseCase.Verify(x => x.Execute(dummyCouncilTaxId), Times.Once);
         }
     }
 }

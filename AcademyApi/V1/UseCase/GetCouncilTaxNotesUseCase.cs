@@ -1,15 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using AcademyApi.V1.Boundary;
 using AcademyApi.V1.Boundary.Response;
-using AcademyApi.V1.Domain;
 using AcademyApi.V1.Gateways.Interfaces;
 using AcademyApi.V1.UseCase.Interfaces;
 using Hackney.Core.Logging;
-using Address = AcademyApi.V1.Boundary.Address;
 
 namespace AcademyApi.V1.UseCase;
 
@@ -47,7 +43,7 @@ public class GetCouncilTaxNotesUseCase : IGetCouncilTaxNotesUseCase
 
             var metaDataStr = rawNote.Where(s => (s.Contains("User Id: "))).ToList().FirstOrDefault();
 
-            var text = rawNote.Where(s => string.IsNullOrEmpty(s) &&  s != metaDataStr ).ToArray();
+            var text = rawNote.Where(s => !string.IsNullOrEmpty(s) &&  s != metaDataStr ).ToArray();
 
             if (metaDataStr != null)
             {

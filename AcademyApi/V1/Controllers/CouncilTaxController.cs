@@ -21,11 +21,13 @@ namespace AcademyApi.V1.Controllers
     {
         private readonly ICouncilTaxSearchUseCase _councilTaxSearchUseCase;
         private readonly IGetCouncilTaxCustomerUseCase _getCouncilTaxCustomerUseCase;
+        private readonly IGetCouncilTaxNotesUseCase _getCouncilTaxNotesUseCase;
 
-        public CouncilTaxController(ICouncilTaxSearchUseCase councilTaxSearchUseCase, IGetCouncilTaxCustomerUseCase getCouncilTaxCustomerUseCase)
+        public CouncilTaxController(ICouncilTaxSearchUseCase councilTaxSearchUseCase, IGetCouncilTaxCustomerUseCase getCouncilTaxCustomerUseCase, IGetCouncilTaxNotesUseCase getCouncilTaxNotesUseCase)
         {
             _councilTaxSearchUseCase = councilTaxSearchUseCase;
             _getCouncilTaxCustomerUseCase = getCouncilTaxCustomerUseCase;
+            _getCouncilTaxNotesUseCase = getCouncilTaxNotesUseCase;
         }
 
         /// <summary>
@@ -70,7 +72,8 @@ namespace AcademyApi.V1.Controllers
         [Route("{councilTaxId}/notes")]
         public IActionResult GetNotes(int councilTaxId)
         {
-            return Ok(new NoteResponseObject());
+            return Ok(_getCouncilTaxNotesUseCase.Execute(councilTaxId).Result);
+
         }
     }
 }
