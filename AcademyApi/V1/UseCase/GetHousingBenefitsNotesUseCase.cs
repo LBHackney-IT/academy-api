@@ -10,21 +10,21 @@ using static AcademyApi.V1.UseCase.Helpers;
 
 namespace AcademyApi.V1.UseCase;
 
-public class GetCouncilTaxNotesUseCase : IGetCouncilTaxNotesUseCase
+public class GetHousingBenefitsNotesUseCase : IGetHousingBenefitsNotesUseCase
 {
-    private readonly ICouncilTaxSearchGateway _councilTaxSearchGateway;
+    private readonly IHousingBenefitsSearchGateway _housingBenefitsSearchGateway;
 
-    public GetCouncilTaxNotesUseCase(ICouncilTaxSearchGateway councilTaxSearchGateway)
+    public GetHousingBenefitsNotesUseCase(IHousingBenefitsSearchGateway housingBenefitsSearchGateway)
     {
-        _councilTaxSearchGateway = councilTaxSearchGateway;
+        _housingBenefitsSearchGateway = housingBenefitsSearchGateway;
     }
 
     [LogCall]
-    public async Task<List<NoteResponseObject>> Execute(int accountReference)
+    public async Task<List<NoteResponseObject>> Execute(int claimId)
     {
         var returnNotes = new List<List<NoteResponseObject>>();
 
-        var res = await _councilTaxSearchGateway.GetNotes(accountReference);
+        var res = await _housingBenefitsSearchGateway.GetNotes(claimId);
         foreach (var n in res)
         {
             string[] notes = Regex.Split(n.Text, @"--+");
@@ -34,4 +34,5 @@ public class GetCouncilTaxNotesUseCase : IGetCouncilTaxNotesUseCase
 
         return returnNotes.SelectMany(x => x).ToList();
     }
+
 }
