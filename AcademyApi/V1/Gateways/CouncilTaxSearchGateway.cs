@@ -239,7 +239,7 @@ SELECT distinct
         return foundResults;
     }
 
-        [LogCall]
+    [LogCall]
     public async Task<List<Note>> GetNotes(int accountRef)
     {
         string notePadQuery = $@"select user_id, notes_db_handle from dbo.ctnotepad where account_ref = {accountRef};";

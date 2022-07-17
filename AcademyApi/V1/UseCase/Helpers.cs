@@ -15,7 +15,7 @@ public static class Helpers
 
             var metaDataStr = rawNote.Where(s => (s.Contains("User Id: "))).ToList().FirstOrDefault();
 
-            var text = rawNote.Where(s => !string.IsNullOrEmpty(s) &&  s != metaDataStr ).ToArray();
+            var text = rawNote.Where(s => !string.IsNullOrEmpty(s) && s != metaDataStr).ToArray();
 
             if (metaDataStr != null)
             {

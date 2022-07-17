@@ -51,7 +51,7 @@ public class HousingBenefitsSearchGatewayTests : DatabaseTests
             Username = "gziregbe",
             StringId = "67788",
             NoteType = "General",
-            Text =$@"User Id: gziregbe  Date: 31.03.2022 15:39:37  1017585577
+            Text = $@"User Id: gziregbe  Date: 31.03.2022 15:39:37  1017585577
 HB and CTS assessed from 13/12/21
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 User Id: pthomas  Date: 16.02.2022 12:35:23  1013862923

@@ -82,7 +82,7 @@ public class CouncilTaxSearchGatewayTests : DatabaseTests
         {
             Username = "VHILL",
             StringId = "218415",
-            Text =$@"ms rosenburg set up as per ctb memo...ni
+            Text = $@"ms rosenburg set up as per ctb memo...ni
 User id : OIBITOYE Date : 12.12.2000
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- TAX PAYER CALLED SHOULD BE GETTING FULL H/B HAVE ADVISED TO SPEAK TO H/BENEFIT....FERNANDA 12/9/2002
 User id : FTOUSSAI Date : 12.09.2002

@@ -39,7 +39,7 @@ public class GetCouncilTaxNotesUseCaseTests : LogCallAspectFixture
         {
             Username = "VHILL",
             StringId = "218415",
-            Text =$@"spd awarded from 15/7/21 sole occupier as per tel cal received.
+            Text = $@"spd awarded from 15/7/21 sole occupier as per tel cal received.
 User Id: jisrael Date: 30.03.2022 11:57:36
 --------------------------------------------------------------------------------
 Move In Notes FLAT B, 24 BARNABAS ROAD
