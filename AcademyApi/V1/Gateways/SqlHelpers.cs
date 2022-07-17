@@ -2,7 +2,7 @@ using System.Data.Common;
 
 namespace AcademyApi.V1.Gateways;
 
-public static class Helpers
+public static class SqlHelpers
 {
     public static string SafeGetString(DbDataReader reader, int colIndex)
     {

@@ -314,7 +314,7 @@ INSERT INTO hbclaimnotes (string_id, row_sequence, text_total, text_value) VALUE
 HB and CTS assessed from 13/12/21
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 User Id: pthomas  Date: 16.02.2022 12:35:23  1013862923
-TC from partner to check on coa sent in on ref JTVNNZJV, advised not yet and have also advised to provide his new TA and proof of the change in earnings as stated on form this has changed. Also advised will also need to send in last 2 monthly b/s. Clmt has requested a HSC app and this has been done. Also advised clmt that will have to make a claim for CTS as can ');
+TC from partner to check on coa sent in on ref JTVNNZJV, advised not yet and have also advised to provide his new TA and proof of the change in earnings as stated on form this has changed. Also advised will also need to send in last 2 monthly b/s. Clmt has requested a HSC app and this has been done. Also advised clmt that will have to make a claim for CTS as can');
 INSERT INTO hbclaimnotes (string_id, row_sequence, text_total, text_value) VALUES (67788, 2, 15435, N'see this has never been paid.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');

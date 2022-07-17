@@ -8,7 +8,7 @@ using AcademyApi.V1.Infrastructure;
 using Hackney.Core.Logging;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using static AcademyApi.V1.Gateways.Helpers;
+using static AcademyApi.V1.Gateways.SqlHelpers;
 
 namespace AcademyApi.V1.Gateways;
 

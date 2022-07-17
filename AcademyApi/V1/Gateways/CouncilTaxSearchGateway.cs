@@ -8,7 +8,7 @@ using AcademyApi.V1.Gateways.Interfaces;
 using AcademyApi.V1.Infrastructure;
 using Hackney.Core.Logging;
 using Microsoft.EntityFrameworkCore;
-using static AcademyApi.V1.Gateways.Helpers;
+using static AcademyApi.V1.Gateways.SqlHelpers;
 using Address = AcademyApi.V1.Domain.Address;
 
 namespace AcademyApi.V1.Gateways;
