@@ -15,10 +15,12 @@ namespace AcademyApi.V1.Controllers
     public class HousingBenefitsController : BaseController
     {
         private readonly IHousingBenefitsSearchUseCase _housingBenefitsSearchUseCase;
+        private readonly IGetHousingBenefitsNotesUseCase _getHousingBenefitsNotesUseCase;
 
-        public HousingBenefitsController(IHousingBenefitsSearchUseCase housingBenefitsSearchUseCase)
+        public HousingBenefitsController(IHousingBenefitsSearchUseCase housingBenefitsSearchUseCase, IGetHousingBenefitsNotesUseCase getHousingBenefitsNotesUseCase)
         {
             _housingBenefitsSearchUseCase = housingBenefitsSearchUseCase;
+            _getHousingBenefitsNotesUseCase = getHousingBenefitsNotesUseCase;
         }
 
         /// <summary>
@@ -60,10 +62,11 @@ namespace AcademyApi.V1.Controllers
         [HttpGet]
         [LogCall(LogLevel.Information)]
         //TODO: rename to match the identifier that will be used
-        [Route("{benefitsId}/notes")]
-        public IActionResult GetNotes(int councilTaxId)
+        [Route("{claimId}/notes")]
+        public IActionResult GetNotes(int claimId)
         {
-            return Ok(new NoteResponseObject());
+            return Ok(_getHousingBenefitsNotesUseCase.Execute(claimId).Result);
+
         }
     }
 }
