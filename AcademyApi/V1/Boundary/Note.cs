@@ -6,6 +6,7 @@ namespace AcademyApi.V1.Boundary
     {
         public string Username { get; set; }
         public string StringId { get; set; }
+        public string NoteType { get; set; }
         public string Text { get; set; }
     }
 }

@@ -97,6 +97,7 @@ User Id: skerr  Date: 09.09.2003 16:57:03
         Assert.AreEqual(expected.Username, response[0].Username);
         Assert.AreEqual(expected.StringId, response[0].StringId);
         Assert.AreEqual(expected.Text, response[0].Text);
+        Assert.AreEqual(2, response.Count);
     }
 
 }

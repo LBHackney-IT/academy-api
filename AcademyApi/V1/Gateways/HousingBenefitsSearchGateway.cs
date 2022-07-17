@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Threading.Tasks;
 using AcademyApi.V1.Boundary;
-using AcademyApi.V1.Boundary.Response;
 using AcademyApi.V1.Domain;
 using AcademyApi.V1.Gateways.Interfaces;
 using AcademyApi.V1.Infrastructure;
+using Hackney.Core.Logging;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using static AcademyApi.V1.Gateways.Helpers;
 
 namespace AcademyApi.V1.Gateways;
 
@@ -89,17 +89,62 @@ WHERE
         return foundResults;
     }
 
-    private static string SafeGetString(DbDataReader reader, int colIndex)
+    [LogCall]
+    public async Task<List<Note>> GetNotes(int claimId)
     {
-        if (!reader.IsDBNull(colIndex))
-            return reader.GetString(colIndex);
-        return string.Empty;
-    }
+        string notePadQuery = $@"select hbdiary.descrip,
+               hbclaimdiary.diary_notes_handle,
+               hbclaimdiary.user_id
+        from dbo.hbclaimdiary left join dbo.hbdiary on dbo.hbdiary.code = dbo.hbclaimdiary.diary_code
+        where hbclaimdiary.claim_id = {claimId};";
 
-    private static int SafeGetInt(DbDataReader reader, int colIndex)
-    {
-        if (!reader.IsDBNull(colIndex))
-            return reader.GetInt32(colIndex);
-        return 0;
+        var foundNotes = new List<Note>();
+
+        using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
+        {
+            command.CommandText = notePadQuery;
+            command.CommandType = CommandType.Text;
+
+            await _academyContext.Database.OpenConnectionAsync();
+            var reader = await command.ExecuteReaderAsync();
+            using (reader)
+            {
+                while (await reader.ReadAsync())
+                {
+                    foundNotes.Add(new Note()
+                    {
+                        NoteType = SafeGetString(reader, 0),
+                        StringId = SafeGetString(reader, 1).Split(':')[1],
+                        Username = SafeGetString(reader, 2),
+                    });
+                }
+            }
+        }
+
+        foreach (var note in foundNotes)
+        {
+            string noteQuery = $@"select text_value from dbo.hbclaimnotes where string_id = {note.StringId};";
+
+            using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = noteQuery;
+                command.CommandType = CommandType.Text;
+
+                await _academyContext.Database.OpenConnectionAsync();
+                var reader = await command.ExecuteReaderAsync();
+
+                var text = new List<string>();
+                using (reader)
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        text.Add(SafeGetString(reader, 0));
+                    }
+                }
+
+                note.Text = string.Join("\n", text);
+            }
+        }
+        return foundNotes;
     }
 }
