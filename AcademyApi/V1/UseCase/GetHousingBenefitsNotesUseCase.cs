@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -12,19 +13,26 @@ namespace AcademyApi.V1.UseCase;
 
 public class GetHousingBenefitsNotesUseCase : IGetHousingBenefitsNotesUseCase
 {
-    private readonly IHousingBenefitsSearchGateway _housingBenefitsSearchGateway;
+    private readonly IHousingBenefitsGateway _housingBenefitsGateway;
+    public static readonly string IdSeparator = "-";
 
-    public GetHousingBenefitsNotesUseCase(IHousingBenefitsSearchGateway housingBenefitsSearchGateway)
+    public GetHousingBenefitsNotesUseCase(IHousingBenefitsGateway housingBenefitsGateway)
     {
-        _housingBenefitsSearchGateway = housingBenefitsSearchGateway;
+        _housingBenefitsGateway = housingBenefitsGateway;
     }
 
     [LogCall]
-    public async Task<List<NoteResponseObject>> Execute(int claimId)
+    public async Task<List<NoteResponseObject>> Execute(string benefitsId)
     {
+
+        var benefitsIdParts = benefitsId.Split(IdSeparator);
+        if (benefitsIdParts.Length < 2) return null;
+
+        int claimId = Int32.Parse(benefitsIdParts[0]);
+
         var returnNotes = new List<List<NoteResponseObject>>();
 
-        var res = await _housingBenefitsSearchGateway.GetNotes(claimId);
+        var res = await _housingBenefitsGateway.GetNotes(claimId);
         foreach (var n in res)
         {
             string[] notes = Regex.Split(n.Text, @"--+");

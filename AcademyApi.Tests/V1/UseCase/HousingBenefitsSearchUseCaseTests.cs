@@ -14,14 +14,14 @@ namespace AcademyApi.Tests.V1.UseCase;
 
 public class HousingBenefitsSearchUseCaseTests : LogCallAspectFixture
 {
-    private Mock<IHousingBenefitsSearchGateway> _mockHousingBenefitsSearchGateway;
+    private Mock<IHousingBenefitsGateway> _mockHousingBenefitsSearchGateway;
     private HousingBenefitsSearchUseCase _classUnderTest;
     private Fixture _fixture;
 
     [SetUp]
     public void Setup()
     {
-        _mockHousingBenefitsSearchGateway = new Mock<IHousingBenefitsSearchGateway>();
+        _mockHousingBenefitsSearchGateway = new Mock<IHousingBenefitsGateway>();
         _classUnderTest = new HousingBenefitsSearchUseCase(_mockHousingBenefitsSearchGateway.Object);
         _fixture = new Fixture();
     }

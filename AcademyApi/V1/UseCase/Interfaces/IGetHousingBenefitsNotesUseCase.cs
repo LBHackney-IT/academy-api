@@ -8,5 +8,5 @@ namespace AcademyApi.V1.UseCase.Interfaces;
 
 public interface IGetHousingBenefitsNotesUseCase
 {
-    Task<List<NoteResponseObject>> Execute(int claimId);
+    Task<List<NoteResponseObject>> Execute(string benefitsId);
 }

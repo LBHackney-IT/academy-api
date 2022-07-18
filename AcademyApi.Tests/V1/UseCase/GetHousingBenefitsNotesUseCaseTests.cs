@@ -12,23 +12,23 @@ namespace AcademyApi.Tests.V1.UseCase;
 
 public class GetHousingBenefitsNotesUseCaseTests : LogCallAspectFixture
 {
-    private Mock<IHousingBenefitsSearchGateway> _mockGateway;
+    private Mock<IHousingBenefitsGateway> _mockGateway;
     private GetHousingBenefitsNotesUseCase _classUnderTest;
     private Fixture _fixture;
 
     [SetUp]
     public void Setup()
     {
-        _mockGateway = new Mock<IHousingBenefitsSearchGateway>();
+        _mockGateway = new Mock<IHousingBenefitsGateway>();
         _classUnderTest = new GetHousingBenefitsNotesUseCase(_mockGateway.Object);
         _fixture = new Fixture();
     }
 
 
     [Test]
-    public async Task ReturnsAListOfSearchResponseObjects()
+    public async Task ReturnsAListOfNoteResponseObjects()
     {
-        var dummyCouncilTaxId = _fixture.Create<int>();
+        var dummyBenefitsId = "12345-2";
         var stubbedRes = new List<Note>();
         var stubbedNote = new Note()
         {
@@ -44,9 +44,9 @@ see this has never been paid.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
         };
         stubbedRes.Add(stubbedNote);
-        _mockGateway.Setup(x => x.GetNotes(dummyCouncilTaxId)).ReturnsAsync(stubbedRes);
+        _mockGateway.Setup(x => x.GetNotes(12345)).ReturnsAsync(stubbedRes);
 
-        var res = await _classUnderTest.Execute(dummyCouncilTaxId);
+        var res = await _classUnderTest.Execute(dummyBenefitsId);
 
         Assert.AreEqual("HB and CTS assessed from 13/12/21", res[0].Note);
         Assert.AreEqual("gziregbe", res[0].UserId);

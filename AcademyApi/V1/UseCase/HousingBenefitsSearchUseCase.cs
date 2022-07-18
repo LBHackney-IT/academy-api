@@ -10,17 +10,17 @@ namespace AcademyApi.V1.UseCase;
 
 public class HousingBenefitsSearchUseCase : IHousingBenefitsSearchUseCase
 {
-    private readonly IHousingBenefitsSearchGateway _housingBenefitsSearchGateway;
+    private readonly IHousingBenefitsGateway _housingBenefitsGateway;
 
-    public HousingBenefitsSearchUseCase(IHousingBenefitsSearchGateway housingBenefitsSearchGateway)
+    public HousingBenefitsSearchUseCase(IHousingBenefitsGateway housingBenefitsGateway)
     {
-        _housingBenefitsSearchGateway = housingBenefitsSearchGateway;
+        _housingBenefitsGateway = housingBenefitsGateway;
     }
 
     [LogCall]
     public async Task<SearchResponseObjectList> Execute(string firstName, string lastName)
     {
-        var accounts = await _housingBenefitsSearchGateway.GetAccountsByFullName(firstName, lastName);
+        var accounts = await _housingBenefitsGateway.GetAccountsByFullName(firstName, lastName);
 
         if (accounts.Count == 0)
         {
@@ -33,7 +33,7 @@ public class HousingBenefitsSearchUseCase : IHousingBenefitsSearchUseCase
         {
             var searchResponse = new SearchResponseObject()
             {
-                Id = account.ClaimId.ToString(),
+                Id = $"{account.ClaimId.ToString()}{GetHousingBenefitsCustomerUseCase.IdSeparator}{account.PersonReference.ToString()}",
                 FirstName = account.FirstName,
                 LastName = account.LastName,
                 DateOfBirth = account.DateOfBirth,
