@@ -15,10 +15,12 @@ namespace AcademyApi.V1.Controllers
     public class HousingBenefitsController : BaseController
     {
         private readonly IHousingBenefitsSearchUseCase _housingBenefitsSearchUseCase;
+        private readonly IGetHousingBenefitsCustomerUseCase _getHousingBenefitsCustomerUseCase;
 
-        public HousingBenefitsController(IHousingBenefitsSearchUseCase housingBenefitsSearchUseCase)
+        public HousingBenefitsController(IHousingBenefitsSearchUseCase housingBenefitsSearchUseCase, IGetHousingBenefitsCustomerUseCase getHousingBenefitsCustomerUseCase)
         {
             _housingBenefitsSearchUseCase = housingBenefitsSearchUseCase;
+            _getHousingBenefitsCustomerUseCase = getHousingBenefitsCustomerUseCase;
         }
 
         /// <summary>
@@ -38,18 +40,20 @@ namespace AcademyApi.V1.Controllers
         /// <summary>
         /// ...
         /// </summary>
-        /// <response code="200">...</response>
-        /// <response code="404">No ? found for the specified ID</response>
+        /// <response code="200">Success</response>
+        /// <response code="404">No customer found for the specified ID</response>
         [ProducesResponseType(typeof(BenefitsResponseObject), StatusCodes.Status200OK)]
         [HttpGet]
         [LogCall(LogLevel.Information)]
-        //TODO: rename to match the identifier that will be used
         [Route("{benefitsId}")]
-        public IActionResult ViewRecord(int benefitsId)
+        public IActionResult ViewRecord(string benefitsId)
         {
-            return Ok(new BenefitsResponseObject());
-        }
+            var benefitsResponseObject = _getHousingBenefitsCustomerUseCase.Execute(benefitsId).Result;
 
+            if (benefitsResponseObject == null) return NotFound(benefitsId);
+
+            return Ok(benefitsResponseObject);
+        }
 
         /// <summary>
         /// ...
