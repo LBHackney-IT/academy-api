@@ -254,6 +254,76 @@ insert into ctnotepad (account_ref, user_id, notes_db_handle)
 values  (30532993, N'VHILL', N'ctnotes_so:218415'),
         (30532993, N'hedwards', N'ctnotes_so:482825');
 
+CREATE TABLE [hbdiary] (
+   [division_id] smallint,
+   [code] nvarchar(2),
+   [last_upd] int,
+   [descrip] nvarchar(30)
+);
+
+insert into hbdiary (division_id, code, last_upd, descrip)
+values  (1, N'', 185123079, N''),
+        (1, N'01', 164336695, N'Referral for next 12 months'),
+        (1, N'02', 249489067, N'Change of Circumstances'),
+        (1, N'03', 390394930, N'Claim pending'),
+        (1, N'04', 390394923, N'WFTC'),
+        (1, N'05', 185123079, N'Income Support'),
+        (1, N'06', 185123079, N'Rent Increase'),
+        (1, N'07', 410801286, N'Manual Adjustment'),
+        (1, N'08', 410801349, N'Claimant in Hospital'),
+        (1, N'09', 410801628, N'Non-dependent CoC''s'),
+        (1, N'10', 410801514, N'Payment on Account'),
+        (1, N'11', 410801547, N'Rent Officer Indicative'),
+        (1, N'12', 410801583, N'Review Visit'),
+        (1, N'13', 410801595, N'Visit'),
+        (1, N'14', 410801690, N'General'),
+        (1, N'15', 410801706, N'Suspension'),
+        (1, N'16', 410801748, N'Supported Accommodation'),
+        (1, N'17', 410801802, N'Claimant CoC''s'),
+        (1, N'18', 410801837, N'JSA(C) ends'),
+        (1, N'19', 418063191, N'Child Benefit check');
+
+CREATE TABLE [hbclaimdiary] (
+   [claim_id] int,
+   [diary_id] int,
+   [diary_code] nvarchar(2),
+   [diary_date] datetime2,
+   [diary_notes_handle] nvarchar(76),
+   [diary_status] numeric(3),
+   [job_id] int,
+   [user_id] nvarchar(8),
+   [report_date] datetime2,
+   [last_upd] int,
+   [diary_set] datetime2,
+   [task_id] int,
+   [frequency] int,
+   [fa_hb_diary_ind] numeric(2)
+);
+
+INSERT INTO hbclaimdiary (claim_id, diary_id, diary_code, diary_date, diary_notes_handle, diary_status, job_id, user_id, report_date, last_upd, diary_set, task_id, frequency, fa_hb_diary_ind) VALUES (5448076, 1869, N'14', N'2005-03-31 00:00:00.0000000', N'hbclaimnotes:67788', 0, 0, N'gziregbe', null, 474466942, N'2005-01-13 00:00:00.0000000', 177, 0, 0);
+INSERT INTO hbclaimdiary (claim_id, diary_id, diary_code, diary_date, diary_notes_handle, diary_status, job_id, user_id, report_date, last_upd, diary_set, task_id, frequency, fa_hb_diary_ind) VALUES (5448076, 1869, N'13', N'2005-03-31 00:00:00.0000000', N'hbclaimnotes:816843', 0, 0, N'soluwole', null, 474466942, N'2005-01-13 00:00:00.0000000', 177, 0, 0);
+
+CREATE TABLE [hbclaimnotes] (
+  [string_id] int,
+  [row_sequence] int,
+  [text_total] int,
+  [text_value] nvarchar(1786)
+);
+
+INSERT INTO hbclaimnotes (string_id, row_sequence, text_total, text_value) VALUES (67788, 1, 15435, N'User Id: gziregbe  Date: 31.03.2022 15:39:37  1017585577
+HB and CTS assessed from 13/12/21
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+User Id: pthomas  Date: 16.02.2022 12:35:23  1013862923
+TC from partner to check on coa sent in on ref JTVNNZJV, advised not yet and have also advised to provide his new TA and proof of the change in earnings as stated on form this has changed. Also advised will also need to send in last 2 monthly b/s. Clmt has requested a HSC app and this has been done. Also advised clmt that will have to make a claim for CTS as can');
+INSERT INTO hbclaimnotes (string_id, row_sequence, text_total, text_value) VALUES (67788, 2, 15435, N'see this has never been paid.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+
+INSERT INTO hbclaimnotes (string_id, row_sequence, text_total, text_value) VALUES (816843, 1, 258, N'User Id: soluwole  Date: 13.01.2005 12:13:54  474466942
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+');
+
 CREATE TABLE [hbincome] (
   [claim_id] int,
   [house_id] smallint,

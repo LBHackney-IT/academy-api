@@ -17,14 +17,16 @@ namespace AcademyApi.Tests.V1.Controllers
         private Mock<IHousingBenefitsSearchUseCase> _mockSearchUseCase;
         private Mock<IGetHousingBenefitsCustomerUseCase> _mockGetCustomerUseCase;
         private Fixture _fixture;
+        private Mock<IGetHousingBenefitsNotesUseCase> _mockGetHousingBenefitsNotesUseCase;
 
         [SetUp]
         public void SetUp()
         {
             _fixture = new Fixture();
             _mockSearchUseCase = new Mock<IHousingBenefitsSearchUseCase>();
+            _mockGetHousingBenefitsNotesUseCase = new Mock<IGetHousingBenefitsNotesUseCase>();
             _mockGetCustomerUseCase = new Mock<IGetHousingBenefitsCustomerUseCase>();
-            _classUnderTest = new HousingBenefitsController(_mockSearchUseCase.Object, _mockGetCustomerUseCase.Object);
+            _classUnderTest = new HousingBenefitsController(_mockSearchUseCase.Object, _mockGetCustomerUseCase.Object,  _mockGetHousingBenefitsNotesUseCase.Object);
         }
 
         [Test]
@@ -71,6 +73,15 @@ namespace AcademyApi.Tests.V1.Controllers
             var response = _classUnderTest.ViewRecord(benefitsId);
 
             response.Should().BeOfType<NotFoundObjectResult>();
+        }
+
+        [Test]
+        public void GetNotesUseCaseIsCalled()
+        {
+            var dummyBenefitsId = "12345-2";
+            _classUnderTest.GetNotes(dummyBenefitsId);
+
+            _mockGetHousingBenefitsNotesUseCase.Verify(x => x.Execute(dummyBenefitsId), Times.Once);
         }
     }
 }

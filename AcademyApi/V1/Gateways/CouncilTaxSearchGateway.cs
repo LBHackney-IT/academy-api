@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
-using System.Dynamic;
 using System.Threading.Tasks;
 using AcademyApi.V1.Boundary;
 using AcademyApi.V1.Domain;
@@ -10,6 +8,7 @@ using AcademyApi.V1.Gateways.Interfaces;
 using AcademyApi.V1.Infrastructure;
 using Hackney.Core.Logging;
 using Microsoft.EntityFrameworkCore;
+using static AcademyApi.V1.Gateways.SqlHelpers;
 using Address = AcademyApi.V1.Domain.Address;
 
 namespace AcademyApi.V1.Gateways;
@@ -240,7 +239,7 @@ SELECT distinct
         return foundResults;
     }
 
-        [LogCall]
+    [LogCall]
     public async Task<List<Note>> GetNotes(int accountRef)
     {
         string notePadQuery = $@"select user_id, notes_db_handle from dbo.ctnotepad where account_ref = {accountRef};";
@@ -279,35 +278,18 @@ SELECT distinct
 
                 await _academyContext.Database.OpenConnectionAsync();
                 var reader = await command.ExecuteReaderAsync();
+                var text = new List<string>();
                 using (reader)
                 {
                     while (await reader.ReadAsync())
                     {
-                        note.Text = SafeGetString(reader, 0);
+                        text.Add(SafeGetString(reader, 0));
+
                     }
                 }
+                note.Text = string.Join("\n", text);
             }
         }
         return foundNotes;
-    }
-
-    private static string SafeGetString(DbDataReader reader, int colIndex)
-    {
-        if (!reader.IsDBNull(colIndex))
-            return reader.GetString(colIndex);
-        return string.Empty;
-    }
-    private static int SafeGetInt(DbDataReader reader, int colIndex)
-    {
-        if (!reader.IsDBNull(colIndex))
-            return reader.GetInt32(colIndex);
-        return 0;
-    }
-
-    private static decimal SafeGetDecimal(DbDataReader reader, int colIndex)
-    {
-        if (!reader.IsDBNull(colIndex))
-            return reader.GetDecimal(colIndex);
-        return 0;
     }
 }

@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
+using AcademyApi.V1.Boundary;
 using AcademyApi.V1.Boundary.Response;
 using AcademyApi.V1.Domain;
 using AcademyApi.V1.Gateways.Interfaces;
 using AcademyApi.V1.Infrastructure;
+using Hackney.Core.Logging;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-
+using static AcademyApi.V1.Gateways.SqlHelpers;
 namespace AcademyApi.V1.Gateways;
 
 public class HousingBenefitsGateway : IHousingBenefitsGateway
@@ -21,6 +23,7 @@ public class HousingBenefitsGateway : IHousingBenefitsGateway
         _academyContext = academyContext;
     }
 
+    [LogCall]
     public async Task<List<HousingBenefitsSearchResult>> GetAccountsByFullName(string firstName, string lastName)
     {
         var foundResults = new List<HousingBenefitsSearchResult>();
@@ -87,6 +90,7 @@ WHERE
         return foundResults;
     }
 
+    [LogCall]
     public async Task<BenefitsResponseObject> GetCustomer(int claimId, int personRef)
     {
         var query = @"
@@ -163,6 +167,7 @@ WHERE dbo.hbmember.claim_id = @claimId
         }
     }
 
+    [LogCall]
     public async Task<List<Benefits>> GetBenefits(int claimId)
     {
 #nullable enable
@@ -241,28 +246,62 @@ AND hbincome.claim_id = @claimId
         return benefitsPeriod;
     }
 
-    private static decimal SafeGetDecimal(DbDataReader reader, int colIndex)
+    [LogCall]
+    public async Task<List<Note>> GetNotes(int claimId)
     {
-        return reader.IsDBNull(colIndex) ? 0.0M : reader.GetDecimal(colIndex);
-    }
+        string notePadQuery = $@"select hbdiary.descrip,
+               hbclaimdiary.diary_notes_handle,
+               hbclaimdiary.user_id
+        from dbo.hbclaimdiary left join dbo.hbdiary on dbo.hbdiary.code = dbo.hbclaimdiary.diary_code
+        where hbclaimdiary.claim_id = {claimId};";
 
-    private static int SafeGetInt16(DbDataReader reader, int colIndex)
-    {
-        return reader.IsDBNull(colIndex) ? 0 : reader.GetInt16(colIndex);
-    }
+        var foundNotes = new List<Note>();
 
-    private static int SafeGetInt32(DbDataReader reader, int colIndex)
-    {
-        return reader.IsDBNull(colIndex) ? 0 : reader.GetInt32(colIndex);
-    }
+        using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
+        {
+            command.CommandText = notePadQuery;
+            command.CommandType = CommandType.Text;
 
-    private static DateTime SafeGetDateTime(DbDataReader reader, int colIndex)
-    {
-        return reader.IsDBNull(colIndex) ? new DateTime() : reader.GetDateTime(colIndex);
-    }
+            await _academyContext.Database.OpenConnectionAsync();
+            var reader = await command.ExecuteReaderAsync();
+            using (reader)
+            {
+                while (await reader.ReadAsync())
+                {
+                    foundNotes.Add(new Note()
+                    {
+                        NoteType = SafeGetString(reader, 0),
+                        StringId = SafeGetString(reader, 1).Split(':')[1],
+                        Username = SafeGetString(reader, 2),
+                    });
+                }
+            }
+        }
 
-    private static string SafeGetString(DbDataReader reader, int colIndex)
-    {
-        return reader.IsDBNull(colIndex) ? string.Empty : reader.GetString(colIndex);
+        foreach (var note in foundNotes)
+        {
+            string noteQuery = $@"select text_value from dbo.hbclaimnotes where string_id = {note.StringId};";
+
+            using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = noteQuery;
+                command.CommandType = CommandType.Text;
+
+                await _academyContext.Database.OpenConnectionAsync();
+                var reader = await command.ExecuteReaderAsync();
+
+                var text = new List<string>();
+                using (reader)
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        text.Add(SafeGetString(reader, 0));
+                    }
+                }
+
+                note.Text = string.Join("\n", text);
+            }
+        }
+        return foundNotes;
     }
 }

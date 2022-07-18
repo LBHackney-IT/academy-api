@@ -16,11 +16,15 @@ namespace AcademyApi.V1.Controllers
     {
         private readonly IHousingBenefitsSearchUseCase _housingBenefitsSearchUseCase;
         private readonly IGetHousingBenefitsCustomerUseCase _getHousingBenefitsCustomerUseCase;
+        private readonly IGetHousingBenefitsNotesUseCase _getHousingBenefitsNotesUseCase;
 
-        public HousingBenefitsController(IHousingBenefitsSearchUseCase housingBenefitsSearchUseCase, IGetHousingBenefitsCustomerUseCase getHousingBenefitsCustomerUseCase)
+        public HousingBenefitsController(IHousingBenefitsSearchUseCase housingBenefitsSearchUseCase,
+            IGetHousingBenefitsCustomerUseCase getHousingBenefitsCustomerUseCase,
+            IGetHousingBenefitsNotesUseCase getHousingBenefitsNotesUseCase)
         {
             _housingBenefitsSearchUseCase = housingBenefitsSearchUseCase;
             _getHousingBenefitsCustomerUseCase = getHousingBenefitsCustomerUseCase;
+            _getHousingBenefitsNotesUseCase = getHousingBenefitsNotesUseCase;
         }
 
         /// <summary>
@@ -65,9 +69,10 @@ namespace AcademyApi.V1.Controllers
         [LogCall(LogLevel.Information)]
         //TODO: rename to match the identifier that will be used
         [Route("{benefitsId}/notes")]
-        public IActionResult GetNotes(int councilTaxId)
+        public IActionResult GetNotes(string benefitsId)
         {
-            return Ok(new NoteResponseObject());
+            return Ok(_getHousingBenefitsNotesUseCase.Execute(benefitsId).Result);
+
         }
     }
 }

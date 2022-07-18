@@ -82,7 +82,7 @@ public class CouncilTaxSearchGatewayTests : DatabaseTests
         {
             Username = "VHILL",
             StringId = "218415",
-            Text =$@"ms rosenburg set up as per ctb memo...ni
+            Text = $@"ms rosenburg set up as per ctb memo...ni
 User id : OIBITOYE Date : 12.12.2000
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- TAX PAYER CALLED SHOULD BE GETTING FULL H/B HAVE ADVISED TO SPEAK TO H/BENEFIT....FERNANDA 12/9/2002
 User id : FTOUSSAI Date : 12.09.2002
@@ -97,6 +97,7 @@ User Id: skerr  Date: 09.09.2003 16:57:03
         Assert.AreEqual(expected.Username, response[0].Username);
         Assert.AreEqual(expected.StringId, response[0].StringId);
         Assert.AreEqual(expected.Text, response[0].Text);
+        Assert.AreEqual(2, response.Count);
     }
 
 }

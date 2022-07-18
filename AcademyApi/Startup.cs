@@ -198,6 +198,7 @@ namespace AcademyApi
             services.AddScoped<IGetHousingBenefitsCustomerUseCase, GetHousingBenefitsCustomerUseCase>();
             services.AddScoped<IGetCouncilTaxCustomerUseCase, GetCouncilTaxCustomerUseCase>();
             services.AddScoped<IGetCouncilTaxNotesUseCase, GetCouncilTaxNotesUseCase>();
+            services.AddScoped<IGetHousingBenefitsNotesUseCase, GetHousingBenefitsNotesUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
