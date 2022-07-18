@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Dynamic;
 using System.Threading.Tasks;
+using AcademyApi.V1.Boundary;
 using AcademyApi.V1.Domain;
 using AcademyApi.V1.Gateways.Interfaces;
 using AcademyApi.V1.Infrastructure;
 using Hackney.Core.Logging;
 using Microsoft.EntityFrameworkCore;
+using Address = AcademyApi.V1.Domain.Address;
 
 namespace AcademyApi.V1.Gateways;
 
@@ -235,6 +238,57 @@ SELECT distinct
         }
 
         return foundResults;
+    }
+
+        [LogCall]
+    public async Task<List<Note>> GetNotes(int accountRef)
+    {
+        string notePadQuery = $@"select user_id, notes_db_handle from dbo.ctnotepad where account_ref = {accountRef};";
+
+        var foundNotes = new List<Note>();
+
+        using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
+        {
+            command.CommandText = notePadQuery;
+            command.CommandType = CommandType.Text;
+
+            await _academyContext.Database.OpenConnectionAsync();
+            var reader = await command.ExecuteReaderAsync();
+            using (reader)
+            {
+                while (await reader.ReadAsync())
+                {
+                    foundNotes.Add(new Note()
+                    {
+                        Username = SafeGetString(reader, 0),
+                        StringId = SafeGetString(reader, 1).Split(':')[1],
+                    });
+                }
+            }
+        }
+
+
+        foreach (var note in foundNotes)
+        {
+            string noteQuery = $@"select text_value from dbo.ctnotes_so where string_id = {note.StringId};";
+
+            using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = noteQuery;
+                command.CommandType = CommandType.Text;
+
+                await _academyContext.Database.OpenConnectionAsync();
+                var reader = await command.ExecuteReaderAsync();
+                using (reader)
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        note.Text = SafeGetString(reader, 0);
+                    }
+                }
+            }
+        }
+        return foundNotes;
     }
 
     private static string SafeGetString(DbDataReader reader, int colIndex)

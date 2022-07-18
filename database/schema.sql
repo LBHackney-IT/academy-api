@@ -206,6 +206,54 @@ insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_
 insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (6724267, 9, '2019-05-01', '540 Pawling Street', '063 Mitchell Way', 'LONDON', 'U9 1CX');
 insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (6969380, 20, '2019-04-28', '0 Clemons Place', '93931 Norway Maple Street', 'LONDON', 'F6 5QI');
 
+CREATE TABLE [ctnotes_so] (
+  [string_id] int,
+  [row_sequence] int,
+  [text_total] int,
+  [text_value] nvarchar(1786),
+  );
+
+
+insert into ctnotes_so (string_id, row_sequence, text_total, text_value)
+values  (1091665, 1, 438, N'spd awarded from 15/7/21 sole occupier as per tel cal received.
+User Id: jisrael Date: 30.03.2022 11:57:36
+--------------------------------------------------------------------------------
+Move In Notes FLAT B, 24 BARNABAS ROAD
+Acct created in new tenants name wef 15.7.2021 - See LL COA form received on 22.11.2021
+User Id: yyasin Date: 21.12.2021 17:30:41
+--------------------------------------------------------------------------------
+');
+insert into ctnotes_so (string_id, row_sequence, text_total, text_value)
+values  (218415, 1, 712, N'ms rosenburg set up as per ctb memo...ni
+User id : OIBITOYE Date : 12.12.2000
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- TAX PAYER CALLED SHOULD BE GETTING FULL H/B HAVE ADVISED TO SPEAK TO H/BENEFIT....FERNANDA 12/9/2002
+User id : FTOUSSAI Date : 12.09.2002
+
+TC FRM TP STATES AWAITING CTB, ADV. WILL CANX SUMMONS ONCE CTB AWARDED
+User Id: skerr  Date: 09.09.2003 16:57:03
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+');
+insert into ctnotes_so (string_id, row_sequence, text_total, text_value)
+values  (482825, 1, 1008, N'balance check
+User id : OIBITOYE Date : 12.12.2000
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- TAX PAYER CALLED SHOULD BE GETTING FULL H/B HAVE ADVISED TO SPEAK TO H/BENEFIT....FERNANDA 12/9/2002
+No further action necessary
+CTB now in payment on 306744352
+User Id: hedwards  Date: 30.07.2004 12:10:24
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+');
+
+CREATE TABLE [ctnotepad] (
+  [account_ref] int,
+  [user_id] nvarchar(8),
+  [notes_db_handle] nvarchar(76),
+  );
+insert into ctnotepad (account_ref, user_id, notes_db_handle) values  (31257355, N'Testy McTestface', N'ctnotes_so:1091665');
+
+insert into ctnotepad (account_ref, user_id, notes_db_handle)
+values  (30532993, N'VHILL', N'ctnotes_so:218415'),
+        (30532993, N'hedwards', N'ctnotes_so:482825');
+
 CREATE TABLE [hbincome] (
   [claim_id] int,
   [house_id] smallint,
