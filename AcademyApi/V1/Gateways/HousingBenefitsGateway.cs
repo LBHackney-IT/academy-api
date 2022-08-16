@@ -91,7 +91,7 @@ WHERE
     }
 
     [LogCall]
-    public async Task<BenefitsResponseObject> GetCustomer(int claimId, int personRef)
+    public async Task<BenefitsResponseObject> GetCustomer(int claimId, int checkDigit)
     {
         var query = @"
 SELECT
@@ -114,7 +114,7 @@ FROM
   JOIN dbo.hbhousehold ON dbo.hbmember.claim_id = dbo.hbhousehold.claim_id
 		AND dbo.hbmember.house_id = dbo.hbhousehold.house_id
 WHERE dbo.hbmember.claim_id = @claimId
-  AND dbo.hbmember.person_ref = @personRef
+  AND dbo.hbclaim.check_digit = @checkDigit
   AND dbo.hbhousehold.to_date = '2099-12-31';
 ";
 
@@ -123,7 +123,7 @@ WHERE dbo.hbmember.claim_id = @claimId
             command.CommandText = query;
             command.CommandType = CommandType.Text;
             command.Parameters.Add(new SqlParameter("@claimId", claimId));
-            command.Parameters.Add(new SqlParameter("@personRef", personRef));
+            command.Parameters.Add(new SqlParameter("@checkDigit", checkDigit));
 
             await _academyContext.Database.OpenConnectionAsync();
             var reader = await command.ExecuteReaderAsync();
