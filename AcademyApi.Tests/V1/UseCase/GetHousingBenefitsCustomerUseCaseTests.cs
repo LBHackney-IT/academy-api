@@ -27,21 +27,21 @@ public class GetHousingBenefitsCustomerUseCaseTests : LogCallAspectFixture
     [Test]
     public async Task ExecuteReturnsHousingBenefitsRecord()
     {
-        var claimId = _fixture.Create<int>();
-        var personReference = _fixture.Create<int>();
+        var claimId = 5189543;
+        var checkDigit = 6;
         var stubBenefitsResponseObject = _fixture.Build<BenefitsResponseObject>()
             .With(o => o.ClaimId, claimId)
-            .With(o => o.PersonReference, personReference)
+            .With(o => o.CheckDigit, checkDigit.ToString())
             .Without(o => o.Benefits)
             .Create();
         var stubBenefits = _fixture.CreateMany<Benefits>().ToList();
         _mockGateway.Setup(x =>
-            x.GetCustomer(claimId, personReference)).ReturnsAsync(stubBenefitsResponseObject);
+            x.GetCustomer(claimId, checkDigit)).ReturnsAsync(stubBenefitsResponseObject);
         _mockGateway.Setup(x =>
             x.GetBenefits(claimId)).ReturnsAsync(stubBenefits);
 
         var response = await _classUnderTest
-            .Execute($"{claimId}{GetHousingBenefitsCustomerUseCase.IdSeparator}{personReference}");
+            .Execute($"{claimId}{checkDigit}");
 
         response.Should().BeEquivalentTo(stubBenefitsResponseObject);
     }
@@ -52,7 +52,7 @@ public class GetHousingBenefitsCustomerUseCaseTests : LogCallAspectFixture
         _mockGateway.Setup(x =>
             x.GetCustomer(1, 1)).ReturnsAsync((BenefitsResponseObject) null);
 
-        var response = await _classUnderTest.Execute($"1{GetHousingBenefitsCustomerUseCase.IdSeparator}1");
+        var response = await _classUnderTest.Execute($"11654342");
 
         response.Should().BeNull();
     }
@@ -60,7 +60,7 @@ public class GetHousingBenefitsCustomerUseCaseTests : LogCallAspectFixture
     [Test]
     public async Task ExecuteReturnsNullIfInvalidBenefitsId()
     {
-        var response = await _classUnderTest.Execute("1");
+        var response = await _classUnderTest.Execute("16553465");
 
         response.Should().BeNull();
     }
