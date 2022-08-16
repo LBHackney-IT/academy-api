@@ -81,7 +81,7 @@ public class HousingBenefitsGatewayTests : DatabaseTests
             },
         };
 
-        var response = _classUnderTest.GetCustomer(stubBenefitsResponseObject.ClaimId, stubBenefitsResponseObject.PersonReference).Result;
+        var response = _classUnderTest.GetCustomer(stubBenefitsResponseObject.ClaimId, Int32.Parse(stubBenefitsResponseObject.CheckDigit)).Result;
 
         response.Should().BeEquivalentTo(stubBenefitsResponseObject);
     }
