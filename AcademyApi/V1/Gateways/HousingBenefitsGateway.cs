@@ -114,7 +114,7 @@ FROM
   JOIN dbo.hbhousehold ON dbo.hbmember.claim_id = dbo.hbhousehold.claim_id
 		AND dbo.hbmember.house_id = dbo.hbhousehold.house_id
 WHERE dbo.hbmember.claim_id = @claimId
-  AND dbo.hbmember.check_digit = @checkDigit
+  AND dbo.hbclaim.check_digit = @checkDigit
   AND dbo.hbhousehold.to_date = '2099-12-31';
 ";
 
