@@ -6,7 +6,7 @@ namespace AcademyApi.V1.Boundary.Response
 
     public class NoteResponseObject
     {
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
         public string UserId { get; set; }
         public string Note { get; set; }
     }

@@ -102,6 +102,19 @@ resources:
                   Resource: "*"
 
 custom:
+  alerts:
+    stages:
+      - ${self:provider.stage}
+    topics:
+      alarm:
+        topic: ${self:service}-${self:provider.stage}-alerts-alarm
+        notifications:
+          - protocol: email
+            endpoint: ${ssm:/academy-api/${self:provider.stage}/alerts-email}
+    alarms:
+      - functionErrors
+      - functionThrottles
+      - functionInvocations
   vpc:
     securityGroupIds:
       - 'sg-0e69148f9b0325410'

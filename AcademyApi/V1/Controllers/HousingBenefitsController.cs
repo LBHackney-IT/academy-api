@@ -15,10 +15,16 @@ namespace AcademyApi.V1.Controllers
     public class HousingBenefitsController : BaseController
     {
         private readonly IHousingBenefitsSearchUseCase _housingBenefitsSearchUseCase;
+        private readonly IGetHousingBenefitsCustomerUseCase _getHousingBenefitsCustomerUseCase;
+        private readonly IGetHousingBenefitsNotesUseCase _getHousingBenefitsNotesUseCase;
 
-        public HousingBenefitsController(IHousingBenefitsSearchUseCase housingBenefitsSearchUseCase)
+        public HousingBenefitsController(IHousingBenefitsSearchUseCase housingBenefitsSearchUseCase,
+            IGetHousingBenefitsCustomerUseCase getHousingBenefitsCustomerUseCase,
+            IGetHousingBenefitsNotesUseCase getHousingBenefitsNotesUseCase)
         {
             _housingBenefitsSearchUseCase = housingBenefitsSearchUseCase;
+            _getHousingBenefitsCustomerUseCase = getHousingBenefitsCustomerUseCase;
+            _getHousingBenefitsNotesUseCase = getHousingBenefitsNotesUseCase;
         }
 
         /// <summary>
@@ -38,18 +44,20 @@ namespace AcademyApi.V1.Controllers
         /// <summary>
         /// ...
         /// </summary>
-        /// <response code="200">...</response>
-        /// <response code="404">No ? found for the specified ID</response>
+        /// <response code="200">Success</response>
+        /// <response code="404">No customer found for the specified ID</response>
         [ProducesResponseType(typeof(BenefitsResponseObject), StatusCodes.Status200OK)]
         [HttpGet]
         [LogCall(LogLevel.Information)]
-        //TODO: rename to match the identifier that will be used
         [Route("{benefitsId}")]
-        public IActionResult ViewRecord(int benefitsId)
+        public IActionResult ViewRecord(string benefitsId)
         {
-            return Ok(new BenefitsResponseObject());
-        }
+            var benefitsResponseObject = _getHousingBenefitsCustomerUseCase.Execute(benefitsId).Result;
 
+            if (benefitsResponseObject == null) return NotFound(benefitsId);
+
+            return Ok(benefitsResponseObject);
+        }
 
         /// <summary>
         /// ...
@@ -61,9 +69,10 @@ namespace AcademyApi.V1.Controllers
         [LogCall(LogLevel.Information)]
         //TODO: rename to match the identifier that will be used
         [Route("{benefitsId}/notes")]
-        public IActionResult GetNotes(int councilTaxId)
+        public IActionResult GetNotes(string benefitsId)
         {
-            return Ok(new NoteResponseObject());
+            return Ok(_getHousingBenefitsNotesUseCase.Execute(benefitsId).Result);
+
         }
     }
 }

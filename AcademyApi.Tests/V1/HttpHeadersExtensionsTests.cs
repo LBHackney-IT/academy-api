@@ -14,15 +14,15 @@ namespace AcademyApi.Tests.V1
     [TestFixture]
     public class HttpHeadersExtensionsTests
     {
-        private const string KEY = "someHeaderKey";
-        private const string VALUE = "some value";
+        private const string Key = "someHeaderKey";
+        private const string Value = "some value";
         private readonly Mock<IHeaderDictionary> _mockHeaders = new Mock<IHeaderDictionary>();
         delegate void SubmitCallback(string x, out StringValues y);
 
         [Test]
         public void GetHeaderValueThrowsNullHeaders()
         {
-            Func<string> func = () => HttpHeadersExtensions.GetHeaderValue(null, KEY);
+            Func<string> func = () => HttpHeadersExtensions.GetHeaderValue(null, Key);
             func.Should().Throw<ArgumentNullException>();
         }
 
@@ -30,44 +30,44 @@ namespace AcademyApi.Tests.V1
         public void GetHeaderValueKeyNotFoundReturnsNull()
         {
             StringValues outVal;
-            _mockHeaders.Setup(x => x.TryGetValue(KEY, out outVal)).Returns(false);
-            _mockHeaders.Object.GetHeaderValue(KEY).Should().BeNull();
+            _mockHeaders.Setup(x => x.TryGetValue(Key, out outVal)).Returns(false);
+            _mockHeaders.Object.GetHeaderValue(Key).Should().BeNull();
         }
 
         [Test]
         public void GetHeaderValueFounddNullKeyValue()
         {
             StringValues outVal;
-            _mockHeaders.Setup(x => x.TryGetValue(KEY, out outVal)).Returns(true);
-            _mockHeaders.Object.GetHeaderValue(KEY).Should().BeNull();
+            _mockHeaders.Setup(x => x.TryGetValue(Key, out outVal)).Returns(true);
+            _mockHeaders.Object.GetHeaderValue(Key).Should().BeNull();
         }
 
         [Test]
         public void GetHeaderValueFoundEmptyKeyValue()
         {
             StringValues outVal = new StringValues("");
-            _mockHeaders.Setup(x => x.TryGetValue(KEY, out outVal)).Returns(true);
-            _mockHeaders.Object.GetHeaderValue(KEY).Should().Be(string.Empty);
+            _mockHeaders.Setup(x => x.TryGetValue(Key, out outVal)).Returns(true);
+            _mockHeaders.Object.GetHeaderValue(Key).Should().Be(string.Empty);
         }
 
         [Test]
         public void GetHeaderValueFoundSingleKeyValue()
         {
             StringValues outVal;
-            _mockHeaders.Setup(x => x.TryGetValue(KEY, out outVal))
-                .Callback(new SubmitCallback((string x, out StringValues y) => y = new StringValues(VALUE)))
+            _mockHeaders.Setup(x => x.TryGetValue(Key, out outVal))
+                .Callback(new SubmitCallback((string x, out StringValues y) => y = new StringValues(Value)))
                 .Returns(true);
-            _mockHeaders.Object.GetHeaderValue(KEY).Should().Be(VALUE);
+            _mockHeaders.Object.GetHeaderValue(Key).Should().Be(Value);
         }
 
         [Test]
         public void GetHeaderValueFoundManyKeyValuesReturnsFirst()
         {
             StringValues outVal;
-            _mockHeaders.Setup(x => x.TryGetValue(KEY, out outVal))
-                .Callback(new SubmitCallback((string x, out StringValues y) => y = new StringValues(new[] { VALUE, "val 2", "val 3" })))
+            _mockHeaders.Setup(x => x.TryGetValue(Key, out outVal))
+                .Callback(new SubmitCallback((string x, out StringValues y) => y = new StringValues(new[] { Value, "val 2", "val 3" })))
                 .Returns(true);
-            _mockHeaders.Object.GetHeaderValue(KEY).Should().Be(VALUE);
+            _mockHeaders.Object.GetHeaderValue(Key).Should().Be(Value);
         }
 
     }

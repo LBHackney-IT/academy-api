@@ -183,7 +183,7 @@ namespace AcademyApi
         private static void RegisterGateways(IServiceCollection services)
         {
             services.AddScoped<ICouncilTaxSearchGateway, CouncilTaxSearchGateway>();
-            services.AddScoped<IHousingBenefitsSearchGateway, HousingBenefitsSearchGateway>();
+            services.AddScoped<IHousingBenefitsGateway, HousingBenefitsGateway>();
 
             //TODO: For DynamoDb, remove the line above and uncomment the line below.
             //services.AddScoped<IExampleDynamoGateway, DynamoDbGateway>();
@@ -195,7 +195,10 @@ namespace AcademyApi
             services.AddScoped<IGetByIdUseCase, GetByIdUseCase>();
             services.AddScoped<ICouncilTaxSearchUseCase, CouncilTaxSearchUseCase>();
             services.AddScoped<IHousingBenefitsSearchUseCase, HousingBenefitsSearchUseCase>();
+            services.AddScoped<IGetHousingBenefitsCustomerUseCase, GetHousingBenefitsCustomerUseCase>();
             services.AddScoped<IGetCouncilTaxCustomerUseCase, GetCouncilTaxCustomerUseCase>();
+            services.AddScoped<IGetCouncilTaxNotesUseCase, GetCouncilTaxNotesUseCase>();
+            services.AddScoped<IGetHousingBenefitsNotesUseCase, GetHousingBenefitsNotesUseCase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

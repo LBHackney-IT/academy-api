@@ -205,3 +205,158 @@ insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_
 insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (6908963, 18, '2019-09-05', '4065 Debs Hill', '8491 John Wall Plaza', 'LONDON', 'R1 1GT');
 insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (6724267, 9, '2019-05-01', '540 Pawling Street', '063 Mitchell Way', 'LONDON', 'U9 1CX');
 insert into hbhousehold (claim_id, house_id, to_date, addr1, addr2, addr3, post_code) values (6969380, 20, '2019-04-28', '0 Clemons Place', '93931 Norway Maple Street', 'LONDON', 'F6 5QI');
+
+CREATE TABLE [ctnotes_so] (
+  [string_id] int,
+  [row_sequence] int,
+  [text_total] int,
+  [text_value] nvarchar(1786),
+  );
+
+
+insert into ctnotes_so (string_id, row_sequence, text_total, text_value)
+values  (1091665, 1, 438, N'spd awarded from 15/7/21 sole occupier as per tel cal received.
+User Id: jisrael Date: 30.03.2022 11:57:36
+--------------------------------------------------------------------------------
+Move In Notes FLAT B, 24 BARNABAS ROAD
+Acct created in new tenants name wef 15.7.2021 - See LL COA form received on 22.11.2021
+User Id: yyasin Date: 21.12.2021 17:30:41
+--------------------------------------------------------------------------------
+');
+insert into ctnotes_so (string_id, row_sequence, text_total, text_value)
+values  (218415, 1, 712, N'ms rosenburg set up as per ctb memo...ni
+User id : OIBITOYE Date : 12.12.2000
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- TAX PAYER CALLED SHOULD BE GETTING FULL H/B HAVE ADVISED TO SPEAK TO H/BENEFIT....FERNANDA 12/9/2002
+User id : FTOUSSAI Date : 12.09.2002
+
+TC FRM TP STATES AWAITING CTB, ADV. WILL CANX SUMMONS ONCE CTB AWARDED
+User Id: skerr  Date: 09.09.2003 16:57:03
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+');
+insert into ctnotes_so (string_id, row_sequence, text_total, text_value)
+values  (482825, 1, 1008, N'balance check
+User id : OIBITOYE Date : 12.12.2000
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- TAX PAYER CALLED SHOULD BE GETTING FULL H/B HAVE ADVISED TO SPEAK TO H/BENEFIT....FERNANDA 12/9/2002
+No further action necessary
+CTB now in payment on 306744352
+User Id: hedwards  Date: 30.07.2004 12:10:24
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+');
+
+CREATE TABLE [ctnotepad] (
+  [account_ref] int,
+  [user_id] nvarchar(8),
+  [notes_db_handle] nvarchar(76),
+  );
+insert into ctnotepad (account_ref, user_id, notes_db_handle) values  (31257355, N'Testy McTestface', N'ctnotes_so:1091665');
+
+insert into ctnotepad (account_ref, user_id, notes_db_handle)
+values  (30532993, N'VHILL', N'ctnotes_so:218415'),
+        (30532993, N'hedwards', N'ctnotes_so:482825');
+
+CREATE TABLE [hbdiary] (
+   [division_id] smallint,
+   [code] nvarchar(2),
+   [last_upd] int,
+   [descrip] nvarchar(30)
+);
+
+insert into hbdiary (division_id, code, last_upd, descrip)
+values  (1, N'', 185123079, N''),
+        (1, N'01', 164336695, N'Referral for next 12 months'),
+        (1, N'02', 249489067, N'Change of Circumstances'),
+        (1, N'03', 390394930, N'Claim pending'),
+        (1, N'04', 390394923, N'WFTC'),
+        (1, N'05', 185123079, N'Income Support'),
+        (1, N'06', 185123079, N'Rent Increase'),
+        (1, N'07', 410801286, N'Manual Adjustment'),
+        (1, N'08', 410801349, N'Claimant in Hospital'),
+        (1, N'09', 410801628, N'Non-dependent CoC''s'),
+        (1, N'10', 410801514, N'Payment on Account'),
+        (1, N'11', 410801547, N'Rent Officer Indicative'),
+        (1, N'12', 410801583, N'Review Visit'),
+        (1, N'13', 410801595, N'Visit'),
+        (1, N'14', 410801690, N'General'),
+        (1, N'15', 410801706, N'Suspension'),
+        (1, N'16', 410801748, N'Supported Accommodation'),
+        (1, N'17', 410801802, N'Claimant CoC''s'),
+        (1, N'18', 410801837, N'JSA(C) ends'),
+        (1, N'19', 418063191, N'Child Benefit check');
+
+CREATE TABLE [hbclaimdiary] (
+   [claim_id] int,
+   [diary_id] int,
+   [diary_code] nvarchar(2),
+   [diary_date] datetime2,
+   [diary_notes_handle] nvarchar(76),
+   [diary_status] numeric(3),
+   [job_id] int,
+   [user_id] nvarchar(8),
+   [report_date] datetime2,
+   [last_upd] int,
+   [diary_set] datetime2,
+   [task_id] int,
+   [frequency] int,
+   [fa_hb_diary_ind] numeric(2)
+);
+
+INSERT INTO hbclaimdiary (claim_id, diary_id, diary_code, diary_date, diary_notes_handle, diary_status, job_id, user_id, report_date, last_upd, diary_set, task_id, frequency, fa_hb_diary_ind) VALUES (5448076, 1869, N'14', N'2005-03-31 00:00:00.0000000', N'hbclaimnotes:67788', 0, 0, N'gziregbe', null, 474466942, N'2005-01-13 00:00:00.0000000', 177, 0, 0);
+INSERT INTO hbclaimdiary (claim_id, diary_id, diary_code, diary_date, diary_notes_handle, diary_status, job_id, user_id, report_date, last_upd, diary_set, task_id, frequency, fa_hb_diary_ind) VALUES (5448076, 1869, N'13', N'2005-03-31 00:00:00.0000000', N'hbclaimnotes:816843', 0, 0, N'soluwole', null, 474466942, N'2005-01-13 00:00:00.0000000', 177, 0, 0);
+
+CREATE TABLE [hbclaimnotes] (
+  [string_id] int,
+  [row_sequence] int,
+  [text_total] int,
+  [text_value] nvarchar(1786)
+);
+
+INSERT INTO hbclaimnotes (string_id, row_sequence, text_total, text_value) VALUES (67788, 1, 15435, N'User Id: gziregbe  Date: 31.03.2022 15:39:37  1017585577
+HB and CTS assessed from 13/12/21
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+User Id: pthomas  Date: 16.02.2022 12:35:23  1013862923
+TC from partner to check on coa sent in on ref JTVNNZJV, advised not yet and have also advised to provide his new TA and proof of the change in earnings as stated on form this has changed. Also advised will also need to send in last 2 monthly b/s. Clmt has requested a HSC app and this has been done. Also advised clmt that will have to make a claim for CTS as can');
+INSERT INTO hbclaimnotes (string_id, row_sequence, text_total, text_value) VALUES (67788, 2, 15435, N'see this has never been paid.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+
+INSERT INTO hbclaimnotes (string_id, row_sequence, text_total, text_value) VALUES (816843, 1, 258, N'User Id: soluwole  Date: 13.01.2005 12:13:54  474466942
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+');
+
+CREATE TABLE [hbincome] (
+  [claim_id] int,
+  [house_id] smallint,
+  [inc_amt] numeric(14,2),
+  [freq_period] smallint,
+  [freq_len] numeric(3,0),
+  [inc_code] nvarchar(3),
+  );
+
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (5260765, 1, 89.56, 1, 2, 'DLL');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (5759744, 1, 27.61, 1, 2, 'DLL');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (6060591, 2, 2.03, 1, 2, 'DLL');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (5479047, 1, 29.48, 1, 2, 'DLL');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (5879391, 3, 22.47, 1, 2, 'DLL');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (6115325, 3, 2.25, 1, 2, 'DLL');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (5696752, 1, 67.75, 1, 2, 'YTS');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (6908963, 1, 58.08, 1, 2, 'YTS');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (6724267, 9, 25.13, 1, 2, 'YTS');
+insert into hbincome (claim_id, house_id, inc_amt, freq_period, freq_len, inc_code) values (6969380, 2, 45.08, 1, 2, 'YTS');
+
+CREATE TABLE [hbinccode] (
+  [code] nvarchar(3),
+  [to_date] datetime2(7),
+  [descrip1] nvarchar(64)
+  );
+
+insert into hbinccode (code, to_date, descrip1) values ('DLL', '2099-12-31', 'Future-proofed motivating workforce');
+insert into hbinccode (code, to_date, descrip1) values ('DLL', '2099-12-31', 'Virtual encompassing internet solution');
+insert into hbinccode (code, to_date, descrip1) values ('DLL', '2099-12-31', 'Multi-lateral tertiary extranet');
+insert into hbinccode (code, to_date, descrip1) values ('DLL', '2099-12-31', 'Advanced clear-thinking algorithm');
+insert into hbinccode (code, to_date, descrip1) values ('YTS', '2099-12-31', 'Managed methodical framework');
+insert into hbinccode (code, to_date, descrip1) values ('YTS', '2099-12-31', 'Enterprise-wide coherent service-desk');
+insert into hbinccode (code, to_date, descrip1) values ('YTS', '2099-12-31', 'Team-oriented system-worthy migration');
+insert into hbinccode (code, to_date, descrip1) values ('YTS', '2099-12-31', 'Multi-channelled holistic alliance');
+insert into hbinccode (code, to_date, descrip1) values ('YTS', '2099-12-31', 'Face to face responsive architecture');
+insert into hbinccode (code, to_date, descrip1) values ('YTS', '2099-12-31', 'Innovative tertiary monitoring');
