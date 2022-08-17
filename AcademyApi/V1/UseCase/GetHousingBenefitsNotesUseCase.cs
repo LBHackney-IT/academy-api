@@ -25,10 +25,7 @@ public class GetHousingBenefitsNotesUseCase : IGetHousingBenefitsNotesUseCase
     public async Task<List<NoteResponseObject>> Execute(string benefitsId)
     {
 
-        var benefitsIdParts = benefitsId.Split(IdSeparator);
-        if (benefitsIdParts.Length < 2) return null;
-
-        int claimId = Int32.Parse(benefitsIdParts[0]);
+        int claimId = Int32.Parse(benefitsId.Remove(benefitsId.Length -1, 1));
 
         var returnNotes = new List<List<NoteResponseObject>>();
 
