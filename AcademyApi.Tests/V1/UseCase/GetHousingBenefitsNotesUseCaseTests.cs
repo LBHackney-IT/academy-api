@@ -28,7 +28,7 @@ public class GetHousingBenefitsNotesUseCaseTests : LogCallAspectFixture
     [Test]
     public async Task ReturnsAListOfNoteResponseObjects()
     {
-        var dummyBenefitsId = "12345-2";
+        var dummyBenefitsId = "12345216";
         var stubbedRes = new List<Note>();
         var stubbedNote = new Note()
         {
@@ -44,7 +44,7 @@ see this has never been paid.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
         };
         stubbedRes.Add(stubbedNote);
-        _mockGateway.Setup(x => x.GetNotes(12345)).ReturnsAsync(stubbedRes);
+        _mockGateway.Setup(x => x.GetNotes(1234521)).ReturnsAsync(stubbedRes);
 
         var res = await _classUnderTest.Execute(dummyBenefitsId);
 
