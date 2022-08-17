@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using AcademyApi.V1.Boundary;
 using AcademyApi.V1.Boundary.Response;
@@ -249,6 +251,9 @@ AND hbincome.claim_id = @claimId
     [LogCall]
     public async Task<List<Note>> GetNotes(int claimId)
     {
+
+        Console.WriteLine("---------- $$ Getting Notes For claimId {0}", claimId);
+
         string notePadQuery = $@"select hbdiary.descrip,
                hbclaimdiary.diary_notes_handle,
                hbclaimdiary.user_id
@@ -278,8 +283,12 @@ AND hbincome.claim_id = @claimId
             }
         }
 
+        Console.WriteLine("Notes found = {0}", JsonSerializer.Serialize(foundNotes));
+
         foreach (var note in foundNotes)
         {
+            Console.WriteLine("Getting text for note {0}", JsonSerializer.Serialize(note));
+
             string noteQuery = $@"select text_value from dbo.hbclaimnotes where string_id = {note.StringId};";
 
             using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
