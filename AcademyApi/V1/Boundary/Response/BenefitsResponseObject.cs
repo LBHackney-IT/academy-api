@@ -19,7 +19,8 @@ namespace AcademyApi.V1.Boundary.Response
         public string PostCode { get; set; }
         public List<HouseHoldMember> HouseholdMembers { get; set; }
         public List<Benefits> Benefits { get; set; }
-        // TODO: consider returning housing benefits claim ID
+
+        public decimal WeeklyHousingBenefitAmount { get; set; }
     }
 
     public class HouseHoldMember

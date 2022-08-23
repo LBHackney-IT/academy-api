@@ -313,4 +313,43 @@ AND hbincome.claim_id = @claimId
         }
         return foundNotes;
     }
+
+    [LogCall]
+    public async Task<decimal> GetWeeklyHousingBenefitAmount(int claimId)
+    {
+        Console.WriteLine("---------- $$ Getting Weekly HB Amount For claimId {0}", claimId);
+
+        var hBAmount = new decimal(0.0);
+
+        var query = @"select distinct a.claim_id,
+                (model_amt + local_amt + thresh_amt) Weekly_Housing_Benefit
+from hbrentass  a , hbclaim b
+where a.claim_id = b.claim_id
+  and b.status_ind = 1
+  and a.from_date < GETDATE()
+  and  a.to_date > GETDATE()
+  and a.type_ind = 1
+  and a.claim_id = @claimId";
+
+        using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
+        {
+            command.CommandText = query;
+            command.CommandType = CommandType.Text;
+            command.Parameters.Add(new SqlParameter("@claimId", claimId));
+
+            await _academyContext.Database.OpenConnectionAsync();
+            var reader = await command.ExecuteReaderAsync();
+            using (reader)
+            {
+                while (await reader.ReadAsync())
+                {
+                    hBAmount = SafeGetDecimal(reader, 1);
+                }
+            }
+
+        }
+
+        return hBAmount;
+
+    }
 }
