@@ -29,7 +29,7 @@ public class GetHousingBenefitsCustomerUseCase : IGetHousingBenefitsCustomerUseC
         var customer = await _housingBenefitsGateway.GetCustomer(claimId, checkDigit);
         if (customer == null) return null;
         customer.Benefits = await _housingBenefitsGateway.GetBenefits(claimId);
-        customer.WeeklyHousingBenefitAmount = await _housingBenefitsGateway.GetWeeklyHousingBenefitAmount(claimId);
+        customer.HousingBenefitDetails = await _housingBenefitsGateway.GetWeeklyHousingBenefitDetails(claimId);
 
         return customer;
     }

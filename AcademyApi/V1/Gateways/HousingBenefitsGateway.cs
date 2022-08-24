@@ -315,20 +315,26 @@ AND hbincome.claim_id = @claimId
     }
 
     [LogCall]
-    public async Task<decimal> GetWeeklyHousingBenefitAmount(int claimId)
+    public async Task<HbInfo> GetWeeklyHousingBenefitDetails(int claimId)
     {
-        Console.WriteLine("---------- $$ Getting Weekly HB Amount For claimId {0}", claimId);
+        Console.WriteLine("---------- $$ Getting Weekly HB Details For claimId {0}", claimId);
 
-        var hBAmount = new decimal(0.0);
+        var hbInfo = new HbInfo();
 
         var query = @"select distinct a.claim_id,
-                (model_amt + local_amt + thresh_amt) Weekly_Housing_Benefit
-from hbrentass  a , hbclaim b
+                (CASE when payee_ind = 0 then 'Direct to Rent account'
+                      when payee_ind = 1 then 'HB direct to resident'
+                      when payee_ind = 2 then 'HB direct to landlord'
+                    END) as Housing_Benefit_Payee,
+    (model_amt + local_amt + thresh_amt) Weekly_Housing_Benefit
+from hbrentass a , hbclaim b
 where a.claim_id = b.claim_id
   and b.status_ind = 1
   and a.from_date < GETDATE()
-  and  a.to_date > GETDATE()
+  and a.to_date > GETDATE()
   and a.type_ind = 1
+  and a.dhp_ind = 0
+  and a.manual_ind = 0
   and a.claim_id = @claimId";
 
         using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
@@ -343,13 +349,14 @@ where a.claim_id = b.claim_id
             {
                 while (await reader.ReadAsync())
                 {
-                    hBAmount = SafeGetDecimal(reader, 1);
+                    hbInfo.HousingBenefitPayee = SafeGetString(reader, 1);
+                    hbInfo.WeeklyHousingBenefit = SafeGetDecimal(reader, 2);
                 }
             }
 
         }
 
-        return hBAmount;
+        return hbInfo;
 
     }
 }
