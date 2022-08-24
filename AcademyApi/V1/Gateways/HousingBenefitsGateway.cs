@@ -93,7 +93,7 @@ WHERE
     }
 
     [LogCall]
-    public async Task<BenefitsResponseObject> GetCustomer(int claimId, int checkDigit)
+    public async Task<BenefitsResponseObject> GetCustomer(int claimId, string checkDigit)
     {
         var query = @"
 SELECT
