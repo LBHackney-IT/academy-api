@@ -31,7 +31,7 @@ public class GetHousingBenefitsCustomerUseCaseTests : LogCallAspectFixture
         var checkDigit = "6";
         var stubBenefitsResponseObject = _fixture.Build<BenefitsResponseObject>()
             .With(o => o.ClaimId, claimId)
-            .With(o => o.CheckDigit, checkDigit.ToString())
+            .With(o => o.CheckDigit, checkDigit)
             .Without(o => o.Benefits)
             .Create();
         var stubBenefits = _fixture.CreateMany<Benefits>().ToList();
