@@ -12,5 +12,5 @@ public interface IHousingBenefitsGateway
     Task<List<Note>> GetNotes(int claimId);
     Task<BenefitsResponseObject> GetCustomer(int claimId, int checkDigit);
     Task<List<Benefits>> GetBenefits(int claimId);
-    Task<decimal> GetWeeklyHousingBenefitAmount(int claimId);
+    Task<HbInfo> GetWeeklyHousingBenefitDetails(int claimId);
 }

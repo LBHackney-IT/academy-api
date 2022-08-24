@@ -20,7 +20,7 @@ namespace AcademyApi.V1.Boundary.Response
         public List<HouseHoldMember> HouseholdMembers { get; set; }
         public List<Benefits> Benefits { get; set; }
 
-        public decimal WeeklyHousingBenefitAmount { get; set; }
+        public HbInfo HousingBenefitDetails { get; set; }
     }
 
     public class HouseHoldMember
@@ -37,5 +37,11 @@ namespace AcademyApi.V1.Boundary.Response
         public string Description { get; set; }
         public string Period { get; set; }
         public int Frequency { get; set; }
+    }
+
+    public class HbInfo
+    {
+        public string HousingBenefitPayee { get; set; }
+        public decimal WeeklyHousingBenefit { get; set; }
     }
 }
