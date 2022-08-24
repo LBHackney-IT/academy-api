@@ -81,7 +81,7 @@ public class HousingBenefitsGatewayTests : DatabaseTests
             },
         };
 
-        var response = _classUnderTest.GetCustomer(stubBenefitsResponseObject.ClaimId, Int32.Parse(stubBenefitsResponseObject.CheckDigit)).Result;
+        var response = _classUnderTest.GetCustomer(stubBenefitsResponseObject.ClaimId, stubBenefitsResponseObject.CheckDigit).Result;
 
         response.Should().BeEquivalentTo(stubBenefitsResponseObject);
     }
@@ -89,7 +89,7 @@ public class HousingBenefitsGatewayTests : DatabaseTests
     [Test]
     public void GetCustomerReturnsNullIfNotFound()
     {
-        var response = _classUnderTest.GetCustomer(1, 1).Result;
+        var response = _classUnderTest.GetCustomer(1, "1").Result;
 
         response.Should().BeNull();
     }

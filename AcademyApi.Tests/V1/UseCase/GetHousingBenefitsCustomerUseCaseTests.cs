@@ -28,7 +28,7 @@ public class GetHousingBenefitsCustomerUseCaseTests : LogCallAspectFixture
     public async Task ExecuteReturnsHousingBenefitsRecord()
     {
         var claimId = 5189543;
-        var checkDigit = 6;
+        var checkDigit = "6";
         var stubBenefitsResponseObject = _fixture.Build<BenefitsResponseObject>()
             .With(o => o.ClaimId, claimId)
             .With(o => o.CheckDigit, checkDigit.ToString())
@@ -50,7 +50,7 @@ public class GetHousingBenefitsCustomerUseCaseTests : LogCallAspectFixture
     public async Task ExecuteReturnsNullIfNotFound()
     {
         _mockGateway.Setup(x =>
-            x.GetCustomer(1, 1)).ReturnsAsync((BenefitsResponseObject) null);
+            x.GetCustomer(1, "1")).ReturnsAsync((BenefitsResponseObject) null);
 
         var response = await _classUnderTest.Execute($"11654342");
 
