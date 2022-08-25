@@ -49,6 +49,6 @@ namespace AcademyApi.V1.Boundary.Response
         public string HousingBenefitPayee { get; set; }
         public decimal WeeklyHousingBenefit { get; set; }
 
-        public int PayeeInd { get; set; }
+        public decimal PayeeInd { get; set; }
     }
 }

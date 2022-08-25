@@ -351,7 +351,7 @@ where a.claim_id = b.claim_id
                 {
                     hbInfo.HousingBenefitPayee = SafeGetString(reader, 1);
                     hbInfo.WeeklyHousingBenefit = SafeGetDecimal(reader, 2);
-                    hbInfo.PayeeInd = SafeGetInt(reader, 3);
+                    hbInfo.PayeeInd = SafeGetDecimal(reader, 3);
                 }
             }
 
