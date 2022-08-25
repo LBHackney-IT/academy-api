@@ -351,12 +351,12 @@ where a.claim_id = b.claim_id
                 {
                     hbInfo.HousingBenefitPayee = SafeGetString(reader, 1);
                     hbInfo.WeeklyHousingBenefit = SafeGetDecimal(reader, 2);
+                    hbInfo.PayeeInd = SafeGetInt(reader, 3);
                 }
             }
 
         }
         return hbInfo;
-
     }
 
     public async Task<HousingBenefitLandlordDetails> GetHousingBenefitLandlordDetails(int claimId)
