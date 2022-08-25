@@ -28,6 +28,12 @@ public class GetHousingBenefitsCustomerUseCase : IGetHousingBenefitsCustomerUseC
         customer.Benefits = await _housingBenefitsGateway.GetBenefits(claimId);
         customer.HousingBenefitDetails = await _housingBenefitsGateway.GetWeeklyHousingBenefitDetails(claimId);
 
+        if (customer.HousingBenefitDetails.PayeeInd == 2)
+        {
+            customer.HousingBenefitLandlordDetails =
+                await _housingBenefitsGateway.GetHousingBenefitLandlordDetails(claimId);
+        }
+
         return customer;
     }
 }

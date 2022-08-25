@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AcademyApi.V1.Domain;
 
 namespace AcademyApi.V1.Boundary.Response
 {
@@ -21,6 +22,10 @@ namespace AcademyApi.V1.Boundary.Response
         public List<Benefits> Benefits { get; set; }
 
         public HbInfo HousingBenefitDetails { get; set; }
+
+        #nullable enable
+        public HousingBenefitLandlordDetails? HousingBenefitLandlordDetails { get; set; }
+        #nullable disable
     }
 
     public class HouseHoldMember
