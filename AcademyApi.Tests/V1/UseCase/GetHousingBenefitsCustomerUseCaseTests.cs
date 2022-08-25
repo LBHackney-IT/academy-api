@@ -31,6 +31,7 @@ public class GetHousingBenefitsCustomerUseCaseTests : LogCallAspectFixture
         var claimId = 5189543;
         var checkDigit = "6";
         var stubbedLandlordDetails = _fixture.Create<HousingBenefitLandlordDetails>();
+        var stubbedBenefitsDetails = _fixture.Create<HbInfo>();
         var stubBenefitsResponseObject = _fixture.Build<BenefitsResponseObject>()
             .With(o => o.ClaimId, claimId)
             .With(o => o.CheckDigit, checkDigit)
@@ -41,6 +42,7 @@ public class GetHousingBenefitsCustomerUseCaseTests : LogCallAspectFixture
             x.GetCustomer(claimId, checkDigit)).ReturnsAsync(stubBenefitsResponseObject);
         _mockGateway.Setup(x =>
             x.GetBenefits(claimId)).ReturnsAsync(stubBenefits);
+        _mockGateway.Setup(x => x.GetWeeklyHousingBenefitDetails(claimId)).ReturnsAsync(stubbedBenefitsDetails);
         _mockGateway.Setup(x => x.GetHousingBenefitLandlordDetails(claimId)).ReturnsAsync(stubbedLandlordDetails);
 
         var response = await _classUnderTest
