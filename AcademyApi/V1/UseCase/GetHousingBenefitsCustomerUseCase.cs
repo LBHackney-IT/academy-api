@@ -20,11 +20,8 @@ public class GetHousingBenefitsCustomerUseCase : IGetHousingBenefitsCustomerUseC
     [LogCall]
     public async Task<BenefitsResponseObject> Execute(string benefitsId)
     {
-
-
-
         int claimId = Int32.Parse(benefitsId.Remove(benefitsId.Length -1, 1));
-        int checkDigit = Int32.Parse(benefitsId.Substring(7,1));
+        string checkDigit = benefitsId.Substring(7,1);
 
         var customer = await _housingBenefitsGateway.GetCustomer(claimId, checkDigit);
         if (customer == null) return null;

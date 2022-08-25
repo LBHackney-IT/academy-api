@@ -1,4 +1,5 @@
 using AcademyApi.V1.Infrastructure;
+using Hackney.Core.Testing.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using NUnit.Framework;
@@ -6,7 +7,7 @@ using NUnit.Framework;
 namespace AcademyApi.Tests
 {
     [TestFixture]
-    public class DatabaseTests
+    public class DatabaseTests : LogCallAspectFixture
     {
         // private IDbContextTransaction _transaction;
         protected AcademyContext AcademyContext { get; private set; }
