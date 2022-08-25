@@ -326,7 +326,7 @@ AND hbincome.claim_id = @claimId
                       when payee_ind = 1 then 'HB direct to resident'
                       when payee_ind = 2 then 'HB direct to landlord'
                     END) as Housing_Benefit_Payee,
-    (model_amt + local_amt + thresh_amt) Weekly_Housing_Benefit
+    (model_amt + local_amt + thresh_amt) Weekly_Housing_Benefit, a.payee_ind
 from hbrentass a , hbclaim b
 where a.claim_id = b.claim_id
   and b.status_ind = 1
@@ -351,12 +351,58 @@ where a.claim_id = b.claim_id
                 {
                     hbInfo.HousingBenefitPayee = SafeGetString(reader, 1);
                     hbInfo.WeeklyHousingBenefit = SafeGetDecimal(reader, 2);
+                    hbInfo.PayeeInd = SafeGetInt(reader, 3);
+                }
+            }
+
+        }
+        return hbInfo;
+    }
+
+    public async Task<HousingBenefitLandlordDetails> GetHousingBenefitLandlordDetails(int claimId)
+    {
+        Console.WriteLine("---------- $$ Getting Landlord Details For claimId {0}", claimId);
+
+        var landlordDetails = new HousingBenefitLandlordDetails();
+
+        var query = @"select distinct a.claim_id, c.name, c.addr1, c.addr2, c.addr3, c.addr4, c.post_code, c.creditor_id
+from hbrentass a , hbclaim b, crcreditor c
+where a.creditor_id = c.creditor_id
+and a.claim_id = b.claim_id
+  and b.status_ind = 1
+  and a.from_date < GETDATE()
+  and a.to_date > GETDATE()
+  and a.payee_ind = 2
+  and a.type_ind = 1
+  and a.dhp_ind = 0
+  and a.manual_ind = 0
+and a.claim_id = @claimId";
+
+        using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
+        {
+            command.CommandText = query;
+            command.CommandType = CommandType.Text;
+            command.Parameters.Add(new SqlParameter("@claimId", claimId));
+
+            await _academyContext.Database.OpenConnectionAsync();
+            var reader = await command.ExecuteReaderAsync();
+            using (reader)
+            {
+                while (await reader.ReadAsync())
+                {
+                    landlordDetails.ClaimId = SafeGetInt(reader, 0);
+                    landlordDetails.Name = SafeGetString(reader, 1);
+                    landlordDetails.Addr1 = SafeGetString(reader, 2);
+                    landlordDetails.Addr2 = SafeGetString(reader, 3);
+                    landlordDetails.Addr3 = SafeGetString(reader, 4);
+                    landlordDetails.Addr4 = SafeGetString(reader, 5);
+                    landlordDetails.Postcode = SafeGetString(reader, 6);
+                    landlordDetails.CreditorId = SafeGetInt(reader, 7);
                 }
             }
 
         }
 
-        return hbInfo;
-
+        return landlordDetails;
     }
 }
