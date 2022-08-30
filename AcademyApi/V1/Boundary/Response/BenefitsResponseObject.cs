@@ -25,6 +25,8 @@ namespace AcademyApi.V1.Boundary.Response
 
         #nullable enable
         public HousingBenefitLandlordDetails? HousingBenefitLandlordDetails { get; set; }
+
+        public PaymentDetails? PaymentDetails { get; set; }
         #nullable disable
     }
 
@@ -51,4 +53,6 @@ namespace AcademyApi.V1.Boundary.Response
 
         public decimal PayeeInd { get; set; }
     }
+
+
 }

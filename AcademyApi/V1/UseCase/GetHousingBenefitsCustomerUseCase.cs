@@ -27,6 +27,7 @@ public class GetHousingBenefitsCustomerUseCase : IGetHousingBenefitsCustomerUseC
         if (customer == null) return null;
         customer.Benefits = await _housingBenefitsGateway.GetBenefits(claimId);
         customer.HousingBenefitDetails = await _housingBenefitsGateway.GetWeeklyHousingBenefitDetails(claimId);
+        customer.PaymentDetails = await _housingBenefitsGateway.GetLatestPaymentDetails(claimId);
 
         if (customer.HousingBenefitDetails.PayeeInd == 2)
         {

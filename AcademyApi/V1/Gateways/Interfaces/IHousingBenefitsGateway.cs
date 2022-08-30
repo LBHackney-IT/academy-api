@@ -14,4 +14,5 @@ public interface IHousingBenefitsGateway
     Task<List<Benefits>> GetBenefits(int claimId);
     Task<HbInfo> GetWeeklyHousingBenefitDetails(int claimId);
     Task<HousingBenefitLandlordDetails> GetHousingBenefitLandlordDetails(int claimId);
+    Task<PaymentDetails> GetLatestPaymentDetails(int claimId);
 }

@@ -405,4 +405,35 @@ and a.claim_id = @claimId";
 
         return landlordDetails;
     }
+
+    [LogCall]
+    public async Task<PaymentDetails> GetLatestPaymentDetails(int claimId)
+    {
+        Console.WriteLine("---------- $$ Getting Latest Payment Details For claimId {0}", claimId);
+
+        var paymentDetails = new PaymentDetails();
+
+        var query = @"select top 1 claim_id, posting_date, pay_net_amt from hbrenttrans where claim_id = @claimId order by last_upd desc";
+
+        using (var command = _academyContext.Database.GetDbConnection().CreateCommand())
+        {
+            command.CommandText = query;
+            command.CommandType = CommandType.Text;
+            command.Parameters.Add(new SqlParameter("@claimId", claimId));
+
+            await _academyContext.Database.OpenConnectionAsync();
+            var reader = await command.ExecuteReaderAsync();
+            using (reader)
+            {
+                while (await reader.ReadAsync())
+                {
+                    paymentDetails.ClaimId = SafeGetInt(reader, 0);
+                    paymentDetails.PostingDate = SafeGetDateTime(reader, 1);
+                    paymentDetails.PaymentAmount = SafeGetDecimal(reader, 2);
+                }
+            }
+
+        }
+        return paymentDetails;
+    }
 }
