@@ -254,11 +254,9 @@ AND hbincome.claim_id = @claimId
 
         Console.WriteLine("---------- $$ Getting Notes For claimId {0}", claimId);
 
-        string notePadQuery = $@"select hbdiary.descrip,
-               hbclaimdiary.diary_notes_handle,
-               hbclaimdiary.user_id
-        from dbo.hbclaimdiary left join dbo.hbdiary on dbo.hbdiary.code = dbo.hbclaimdiary.diary_code
-        where hbclaimdiary.claim_id = {claimId};";
+        string notePadQuery = $@"select dbo.hbclaim.notes_db_handle
+               from dbo.hbclaim
+               where dbo.hbclaim.claim_id = {claimId};";
 
         var foundNotes = new List<Note>();
 
@@ -275,9 +273,7 @@ AND hbincome.claim_id = @claimId
                 {
                     foundNotes.Add(new Note()
                     {
-                        NoteType = SafeGetString(reader, 0),
-                        StringId = SafeGetString(reader, 1).Split(':')[1],
-                        Username = SafeGetString(reader, 2),
+                        StringId = SafeGetString(reader, 0)
                     });
                 }
             }
