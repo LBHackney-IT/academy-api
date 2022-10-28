@@ -138,10 +138,8 @@ see this has never been paid.
         };
 
         var response = _classUnderTest.GetNotes(5448076).Result;
-        Assert.AreEqual(expected.Username, response[0].Username);
-        Assert.AreEqual(expected.StringId, response[0].StringId);
-        Assert.AreEqual(expected.NoteType, response[0].NoteType);
+        //notes are split by the use case, not the gateway
         Assert.AreEqual(expected.Text, response[0].Text);
-        Assert.AreEqual(2, response.Count);
+        Assert.AreEqual(1, response.Count);
     }
 }
