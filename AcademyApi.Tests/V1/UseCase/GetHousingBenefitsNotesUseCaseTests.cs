@@ -44,7 +44,7 @@ see this has never been paid.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
         };
         stubbedRes.Add(stubbedNote);
-        _mockGateway.Setup(x => x.GetNotes(1234521)).ReturnsAsync(stubbedRes);
+        _mockGateway.Setup(x => x.GetNotes(12345216)).ReturnsAsync(stubbedRes);
 
         var res = await _classUnderTest.Execute(dummyBenefitsId);
 
