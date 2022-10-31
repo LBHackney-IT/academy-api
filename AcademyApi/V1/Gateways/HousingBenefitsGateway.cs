@@ -273,7 +273,7 @@ AND hbincome.claim_id = @claimId
                 {
                     foundNotes.Add(new Note()
                     {
-                        StringId = SafeGetString(reader, 0)
+                        StringId = SafeGetString(reader, 0).Split(':')[1]
                     });
                 }
             }

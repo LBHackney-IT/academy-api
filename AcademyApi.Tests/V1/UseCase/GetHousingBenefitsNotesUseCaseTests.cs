@@ -28,7 +28,7 @@ public class GetHousingBenefitsNotesUseCaseTests : LogCallAspectFixture
     [Test]
     public async Task ReturnsAListOfNoteResponseObjects()
     {
-        var dummyBenefitsId = "12345216";
+        var dummyBenefitsId = "123452161";
         var stubbedRes = new List<Note>();
         var stubbedNote = new Note()
         {

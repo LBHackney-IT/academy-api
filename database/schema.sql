@@ -148,7 +148,7 @@ CREATE TABLE [hbclaim] (
   [claim_id] int,
   [check_digit] nvarchar(1),
   [status_ind] int,
-  [notes_db_handle] nvarchar(14)
+  [notes_db_handle] nvarchar(20)
   );
 
 insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values (5260765, '6', 1, '11111111111111');
@@ -160,7 +160,7 @@ insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values 
 insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values (5587103, '4', 7, '11111111111111');
 insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values (5315153, '5', 8, '11111111111111');
 insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values (5167284, '3', 9, '11111111111111');
-insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values (5448076, '2', 0, '67788');
+insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values (5448076, '2', 0, 'hbclaimnotes:67788');
 
 CREATE TABLE [hbmember] (
   [claim_id] int,
