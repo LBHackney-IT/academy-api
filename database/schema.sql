@@ -148,7 +148,7 @@ CREATE TABLE [hbclaim] (
   [claim_id] int,
   [check_digit] nvarchar(1),
   [status_ind] int,
-  [notes_db_handle] nvarchar(14)
+  [notes_db_handle] nvarchar(20)
   );
 
 insert into hbclaim (claim_id, check_digit, status_ind, notes_db_handle) values (5260765, '6', 1, '11111111111111');
