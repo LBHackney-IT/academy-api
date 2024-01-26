@@ -7,10 +7,6 @@ A platform API to share data from the Academy system within the Hackney ecosyste
 - .NET Core as a web framework.
 - nUnit as a test framework.
 
-## Dependencies
-
-- Universal Housing Simulator
-
 ## Contributing
 
 ### Development
