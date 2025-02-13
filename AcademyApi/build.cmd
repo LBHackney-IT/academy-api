@@ -1,2 +1,2 @@
 dotnet restore
-dotnet lambda package --configuration release --framework netcoreapp3.1 --output-package bin/release/netcoreapp3.1/academy-api.zip
+dotnet lambda package --configuration release --framework net8.0 --output-package bin/release/net8.0/academy-api.zip
