@@ -7,8 +7,8 @@ ENV ACCEPT_EULA=Y
 ENV MSSQL_SA_PASSWORD=MyP@w0rd
 ENV PATH="$PATH:/opt/mssql-tools/bin"
 
-# # Switch to root to install dependencies
-# USER root
+# Switch to root to install dependencies
+USER root
 
 # Install dependencies and the SQL Server tools
 RUN apt-get update && \
@@ -23,8 +23,8 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists
 
-# # Switch back to the default user
-# USER mssql
+# Switch back to the default user
+USER mssql
 
 # Initialize database
 RUN /opt/mssql/bin/sqlservr & sleep 20 \
