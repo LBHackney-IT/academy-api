@@ -3,9 +3,12 @@ EXPOSE 1433
 
 COPY . .
 
-ENV MSSQL_SA_PASSWORD "MyP@w0rd"
-ENV ACCEPT_EULA "Y"
-ENV PATH "$PATH:/opt/mssql-tools/bin"
+ENV MSSQL_SA_PASSWORD="MyP@w0rd"
+ENV ACCEPT_EULA="Y"
+ENV PATH="$PATH:/opt/mssql-tools/bin"
+
+# Switch to root to install dependencies
+USER root
 
 # Install SQL Server tools
 RUN apt-get update && \
@@ -14,8 +17,11 @@ RUN apt-get update && \
     curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
     apt-get update && \
     apt-get install -y msodbcsql17 mssql-tools && \
-    sudo apt-get clean && \
-    sudo rm -rf /var/lib/apt/lists
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Switch back to the default user
+USER mssql
 
 # Initialize database
 RUN /opt/mssql/bin/sqlservr & sleep 20 \
