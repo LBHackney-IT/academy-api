@@ -12,8 +12,8 @@ USER mssql
 
 RUN /opt/mssql/bin/sqlservr & sleep 20 \
     && /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P ${MSSQL_SA_PASSWORD} -d master \
-    -Q "create database core;" --TrustServerCertificate \
-    && /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P ${MSSQL_SA_PASSWORD} -d core --TrustServerCertificate \
+    -Q "create database core;" \
+    && /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P ${MSSQL_SA_PASSWORD} -d core \
     -e -i ./database/schema.sql
 
 CMD /opt/mssql/bin/sqlservr
