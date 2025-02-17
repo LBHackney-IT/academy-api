@@ -14,7 +14,8 @@ RUN apt-get update && \
     curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
     apt-get update && \
     apt-get install -y msodbcsql17 mssql-tools && \
-    apt-get clean
+    sudo apt-get clean && \
+    sudo rm -rf /var/lib/apt/lists
 
 # Initialize database
 RUN /opt/mssql/bin/sqlservr & sleep 20 \
