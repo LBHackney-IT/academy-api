@@ -4,10 +4,11 @@ EXPOSE 1433
 COPY . .
 
 ENV MSSQL_SA_PASSWORD "MyP@w0rd"
-
 ENV ACCEPT_EULA "Y"
 
-RUN sudo ACCEPT_EULA=Y apt-get install mssql-tools18 unixodbc-dev
+USER root
+RUN ACCEPT_EULA=Y apt-get update && apt-get install -y mssql-tools18 unixodbc-dev
+USER mssql
 
 RUN /opt/mssql/bin/sqlservr & sleep 90 \
     && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${MSSQL_SA_PASSWORD} -d master \
