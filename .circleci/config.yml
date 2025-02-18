@@ -8,7 +8,7 @@ orbs:
 executors:
   docker-python:
     docker:
-      - image: circleci/python:3.7
+      - image: cimg/python:3.7
   docker-terraform:
     docker:
       - image: "hashicorp/terraform:light"
@@ -71,7 +71,7 @@ commands:
       - run:
           name: Install Node.js
           command: |
-            curl -sL https://deb.nodesource.com/setup_16.x | bash -
+            curl -sL https://deb.nodesource.com/setup_20.x | bash -
             apt-get update && apt-get install -y nodejs
       - run:
           name: Install serverless CLI
@@ -165,7 +165,9 @@ workflows:
              branches:
                only: master
        - deploy-to-staging:
-           context: api-nuget-token-context
+           context: 
+            - api-nuget-token-context
+            - "Serverless Framework"
            requires:
              - terraform-init-and-apply-to-staging
            filters:
@@ -196,7 +198,9 @@ workflows:
              branches:
                only: master
        - deploy-to-production:
-           context: api-nuget-token-context
+           context: 
+            - api-nuget-token-context
+            - "Serverless Framework"
            requires:
              - permit-production-release
              - terraform-init-and-apply-to-production
