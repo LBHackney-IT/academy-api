@@ -67,6 +67,7 @@ namespace AcademyApi
 
             services.AddDynamoDbHealthCheck<CouncilTaxSearchResultDbEntity>();
 
+            // Required by the Hackney.Core.Logging
             services.AddTokenFactory();
 
             services.AddSwaggerGen(c =>
