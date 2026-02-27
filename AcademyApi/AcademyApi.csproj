@@ -24,6 +24,7 @@
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Hackney.Core.DynamoDb" Version="1.51.0" />
     <PackageReference Include="Hackney.Core.HealthCheck" Version="1.49.0" />
+    <PackageReference Include="Hackney.Core.JWT" Version="1.87.0" />
     <PackageReference Include="Hackney.Core.Logging" Version="1.49.0" />
     <PackageReference Include="Hackney.Core.Middleware" Version="1.49.0" />
     <PackageReference Include="Hackney.Core.Validation" Version="1.56.0" />

@@ -67,6 +67,7 @@ namespace AcademyApi
 
             services.AddDynamoDbHealthCheck<CouncilTaxSearchResultDbEntity>();
 
+            // Required by the Logging Middleware core
             services.AddTokenFactory();
 
             services.AddSwaggerGen(c =>
