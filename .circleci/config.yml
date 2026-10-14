@@ -29,6 +29,9 @@ commands:
           account: <<parameters.aws-account>>
           profile_name: default
           role: "LBH_Circle_CI_Deployment_Role"
+      - run:
+          name: Show assumed identity
+          command: aws sts get-caller-identity --profile default
       - persist_to_workspace:
           root: *workspace_root
           paths:
@@ -132,7 +135,7 @@ workflows:
        - permit-staging-removal:
            type: approval
        - assume-role-staging:
-           context: aws-academy-terraform-production-context
+           context: aws-academy-terraform-staging-context
            requires:
                - permit-staging-removal
        - remove-staging:
