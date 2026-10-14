@@ -1,17 +1,12 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@3.0.0
-  aws-cli: circleci/aws-cli@0.1.9
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
 
 executors:
   docker-python:
     docker:
       - image: cimg/python:3.7
-  docker-terraform:
-    docker:
-      - image: "hashicorp/terraform:light"
   docker-dotnet:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:8.0
@@ -34,40 +29,41 @@ commands:
           account: <<parameters.aws-account>>
           profile_name: default
           role: "LBH_Circle_CI_Deployment_Role"
+      - run:
+          name: Show assumed identity
+          command: aws sts get-caller-identity --profile default
       - persist_to_workspace:
           root: *workspace_root
           paths:
             - .aws
-  terraform-init-then-apply:
-    description: "Initializes and applies terraform configuration"
-    parameters:
-      environment:
-        type: string
+  install-aws-cli:
+    description: "Installs AWS CLI v2"
     steps:
-      - *attach_workspace
-      - checkout
       - run:
+          name: Install AWS CLI
           command: |
-            cd ./terraform/<<parameters.environment>>/
-            terraform get -update=true
-            terraform init
-          name: get and init
-      - run:
-          name: apply
-          command: |
-            cd ./terraform/<<parameters.environment>>/
-            terraform apply -auto-approve
-  deploy-lambda:
-    description: "Deploys API via Serverless"
+            apt-get update && apt-get install -y unzip
+            curl -sSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o awscliv2.zip
+            unzip -q awscliv2.zip
+            ./aws/install
+            aws --version
+  remove-lambda:
+    description: "Removes API via Serverless"
     parameters:
       stage:
         type: string
-      aws-account:
-        type: string
     steps:
       - *attach_workspace
       - checkout
-      - setup_remote_docker
+      - install-aws-cli
+      - run:
+          name: Empty deployment bucket
+          command: |
+            bucket=$(aws cloudformation describe-stack-resource --region eu-west-2 \
+              --stack-name academy-api-<<parameters.stage>> \
+              --logical-resource-id ServerlessDeploymentBucket \
+              --query StackResourceDetail.PhysicalResourceId --output text)
+            aws s3 rm "s3://${bucket}" --recursive --region eu-west-2
       - run:
           name: Install Node.js
           command: |
@@ -77,42 +73,31 @@ commands:
           name: Install serverless CLI
           command: npm i -g serverless
       - run:
-          name: Build lambda
+          name: Remove lambda
           command: |
             cd ./AcademyApi/
-            chmod +x ./build.sh
-            ./build.sh
+            sls remove --stage <<parameters.stage>>
+  delete-ssm-parameters:
+    description: "Deletes API SSM parameters"
+    parameters:
+      stage:
+        type: string
+    steps:
+      - *attach_workspace
+      - install-aws-cli
       - run:
-          name: Deploy lambda
+          name: Delete SSM parameters
           command: |
-            cd ./AcademyApi/
-            sls deploy --stage <<parameters.stage>> --conceal
+            aws ssm delete-parameters --region eu-west-2 --output json --names \
+              "/academy-api/<<parameters.stage>>/academy-api-key" \
+              "/academy-api/<<parameters.stage>>/db-hostname" \
+              "/academy-api/<<parameters.stage>>/db-port" \
+              "/academy-api/<<parameters.stage>>/db-database" \
+              "/academy-api/<<parameters.stage>>/db-username" \
+              "/academy-api/<<parameters.stage>>/db-password" \
+              "/academy-api/<<parameters.stage>>/alerts-email"
 
 jobs:
-  check-code-formatting:
-    executor: docker-dotnet
-    steps:
-      - checkout
-      - run:
-          name: Install dotnet format
-          command: dotnet tool install dotnet-format --tool-path ./dotnet-format-local/
-      - run:
-          name: Run formatter check
-          command: ./dotnet-format-local/dotnet-format --check
-  build-and-test:
-    executor: docker-python
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: build
-          command: docker-compose build academy-api-test
-      - run:
-          name: Run tests
-          command: |
-            touch .env
-            echo "DOCKERFILE_DIR=default" >> .env
-            docker-compose run academy-api-test
   assume-role-staging:
     executor: docker-python
     steps:
@@ -123,87 +108,57 @@ jobs:
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_PRODUCTION
-  terraform-init-and-apply-to-staging:
-    executor: docker-terraform
-    steps:
-      - terraform-init-then-apply:
-          environment: "staging"
-  terraform-init-and-apply-to-production:
-    executor: docker-terraform
-    steps:
-      - terraform-init-then-apply:
-          environment: "production"
-  deploy-to-staging:
+  remove-staging:
     executor: docker-dotnet
     steps:
-      - deploy-lambda:
+      - remove-lambda:
           stage: "staging"
-          aws-account: $AWS_ACCOUNT_STAGING
-  deploy-to-production:
+  remove-production:
     executor: docker-dotnet
     steps:
-      - deploy-lambda:
+      - remove-lambda:
           stage: "production"
-          aws-account: $AWS_ACCOUNT_PRODUCTION
+  delete-ssm-staging:
+    executor: docker-dotnet
+    steps:
+      - delete-ssm-parameters:
+          stage: "staging"
+  delete-ssm-production:
+    executor: docker-dotnet
+    steps:
+      - delete-ssm-parameters:
+          stage: "production"
 
 workflows:
-  check-and-deploy-staging-and-production:
+  decommission:
     jobs:
-       - build-and-test:
-           context: api-nuget-token-context
+       - permit-staging-removal:
+           type: approval
        - assume-role-staging:
-           context: aws-academy-terraform-production-context
+           context: aws-academy-terraform-staging-context
            requires:
-               - build-and-test
-           filters:
-              branches:
-                only: master
-       - terraform-init-and-apply-to-staging:
-           requires:
-             - assume-role-staging
-           filters:
-             branches:
-               only: master
-       - deploy-to-staging:
+               - permit-staging-removal
+       - remove-staging:
            context: 
-            - api-nuget-token-context
             - "Serverless Framework"
            requires:
-             - terraform-init-and-apply-to-staging
-           filters:
-             branches:
-               only: master
-       - permit-production-terraform-release:
+             - assume-role-staging
+       - delete-ssm-staging:
+           requires:
+             - remove-staging
+       - permit-production-removal:
            type: approval
            requires:
-             - deploy-to-staging
+             - delete-ssm-staging
        - assume-role-production:
            context: aws-academy-terraform-production-context
            requires:
-               - permit-production-terraform-release
-           filters:
-              branches:
-                only: master
-       - terraform-init-and-apply-to-production:
-           requires:
-             - assume-role-production
-           filters:
-             branches:
-               only: master
-       - permit-production-release:
-           type: approval
-           requires:
-             - deploy-to-staging
-           filters:
-             branches:
-               only: master
-       - deploy-to-production:
+               - permit-production-removal
+       - remove-production:
            context: 
-            - api-nuget-token-context
             - "Serverless Framework"
            requires:
-             - permit-production-release
-             - terraform-init-and-apply-to-production
-           filters:
-             branches:
-               only: master
+             - assume-role-production
+       - delete-ssm-production:
+           requires:
+             - remove-production
