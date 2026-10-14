@@ -135,7 +135,7 @@ workflows:
        - permit-staging-removal:
            type: approval
        - assume-role-staging:
-           context: aws-academy-terraform-staging-context
+           context: aws-academy-terraform-production-context
            requires:
                - permit-staging-removal
        - remove-staging:
