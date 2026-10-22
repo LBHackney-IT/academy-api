@@ -59,6 +59,13 @@ commands:
       - run:
           name: Empty deployment bucket
           command: |
+            status=$(aws cloudformation describe-stacks --region eu-west-2 \
+              --stack-name academy-api-<<parameters.stage>> \
+              --query 'Stacks[0].StackStatus' --output text 2>/dev/null || echo GONE)
+            if [ "$status" = GONE ] || [ "$status" = DELETE_IN_PROGRESS ]; then
+              echo "Stack academy-api-<<parameters.stage>> is ${status}; skipping"
+              exit 0
+            fi
             bucket=$(aws cloudformation describe-stack-resource --region eu-west-2 \
               --stack-name academy-api-<<parameters.stage>> \
               --logical-resource-id ServerlessDeploymentBucket \
@@ -74,7 +81,23 @@ commands:
           command: npm i -g serverless
       - run:
           name: Remove lambda
+          no_output_timeout: 60m
           command: |
+            status=$(aws cloudformation describe-stacks --region eu-west-2 \
+              --stack-name academy-api-<<parameters.stage>> \
+              --query 'Stacks[0].StackStatus' --output text 2>/dev/null || echo GONE)
+            case "$status" in
+              GONE)
+                echo "Stack academy-api-<<parameters.stage>> already deleted; skipping"
+                exit 0
+                ;;
+              DELETE_IN_PROGRESS)
+                echo "Stack academy-api-<<parameters.stage>> is already deleting; waiting"
+                aws cloudformation wait stack-delete-complete --region eu-west-2 \
+                  --stack-name academy-api-<<parameters.stage>>
+                exit 0
+                ;;
+            esac
             cd ./AcademyApi/
             sls remove --stage <<parameters.stage>>
   delete-ssm-parameters:
