@@ -10,6 +10,8 @@ executors:
   docker-dotnet:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:8.0
+    environment:
+      AWS_PAGER: ""
 
 references:
   workspace_root: &workspace_root "~"
