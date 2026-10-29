@@ -1,4 +1,17 @@
-# LBH Academy API
+# LBH Academy API - Decommissioned
+
+> [**IMPORTANT**]
+This API has been decommissioned and all related resources have been destroyed.
+
+---
+
+```text
+    _       ____      _      ____    _____   __  __  __   __
+   / \     / ___|    / \    |  _ \  | ____| |  \/  | \ \ / /
+  / _ \   | |       / _ \   | | | | |  _|   | |\/| |  \ V /
+ / ___ \  | |___   / ___ \  | |_| | | |___  | |  | |   | |
+/_/   \_\  \____| /_/   \_\ |____/  |_____| |_|  |_|   |_|
+```
 
 A platform API to share data from the Academy system within the Hackney ecosystem.
 
