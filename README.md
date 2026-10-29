@@ -1,3 +1,23 @@
+```text
+ _   _ _   _ _  _______ ____  
+| \ | | | | | |/ / ____|  _ \ 
+|  \| | | | | ' /|  _| | | | |
+| |\  | |_| | . \| |___| |_| |
+|_| \_|\___/|_|\_\_____|____/ 
+
++----------------------------------------------------------+
+|  !!!  THIS API HAS BEEN DECOMMISSIONED  !!!              |
+|                                                          |
+|  - The Academy API has been fully nuked from AWS.        |
+|  - All of its AWS resources have been destroyed.         |
+|  - This repository is archived and read-only.            |
+|                                                          |
+|  Do not deploy, fork for use, or rely on this service.   |
++----------------------------------------------------------+
+```
+
+> **Warning:** This API has been fully removed from AWS, all of its resources have been destroyed, and this repository is archived.
+
 # LBH Academy API
 
 A platform API to share data from the Academy system within the Hackney ecosystem.
